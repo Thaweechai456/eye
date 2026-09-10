@@ -1,0 +1,14 @@
+# Sensitive Configuration (Do NOT commit to GitHub)
+backend/mail_config.php
+.env
+
+# OS / Temporary files
+Thumbs.db
+.DS_Store
+
+# IDE configuration
+.vscode/
+.idea/
+
+# Local logs
+*.log

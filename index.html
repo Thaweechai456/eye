@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XCOCO Eyewear - เห็นชัด ในแบบของคุณ | ร้านแว่นตาออนไลน์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <!-- Top Marketing Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="announcement-content">
+      <span>🚚 <strong>จัดส่งฟรีทุกออร์เดอร์</strong> | 🎁 สมาชิกใหม่รับสิทธิพิเศษ | 🎮 เล่นมินิเกมรับโค้ดลด <strong>30% (XCOCO30)</strong></span>
+    </div>
+  </div>
+
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <img src="assets/images/Logo.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <span class="brand-name">XCOCO Eyewear</span>
+          <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#products" class="nav-link">สินค้าทั้งหมด</a>
+        <a href="#recommendations" class="nav-link">สินค้าที่คุณอาจสนใจ</a>
+        <a href="#face-match" class="nav-link">แนะนำตามรูปหน้า</a>
+        <a href="#minigame" class="nav-link">มินิเกมวัดสายตา</a>
+        <a href="#guarantee" class="nav-link">การรับประกัน</a>
+        <a href="#faq" class="nav-link">คำถามที่พบบ่อย</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Auth / User Profile Button -->
+        <div id="authNavSection">
+          <button id="authBtn" class="nav-auth-btn" onclick="openAuthModal('login')">
+            <span>👤 เข้าสู่ระบบ</span>
+          </button>
+          <div id="userProfileDropdown" class="user-dropdown" style="display: none;">
+            <button class="user-avatar-btn" onclick="toggleUserMenu()">
+              <span class="avatar-icon">👤</span>
+              <span id="navUserName" class="user-name-text">สมาชิก</span>
+              <span id="navUserTierBadge" class="user-tier-badge tier-classic">🥉 Classic</span>
+              <span class="dropdown-arrow">▾</span>
+            </button>
+            <div id="userMenuContent" class="user-menu-box" style="display: none;">
+              <div class="user-menu-header">
+                <div class="user-menu-top">
+                  <strong id="menuUserFullName">ผู้ใช้งาน</strong>
+                  <span id="menuUserTierBadge" class="user-tier-badge tier-classic">🥉 Classic</span>
+                </div>
+                <small id="menuUserEmail">user@example.com</small>
+                <div class="tier-progress-box mt-2">
+                  <div class="tier-progress-label">
+                    <span>ยอดสะสม: <strong id="menuUserSpent">฿0</strong></span>
+                    <span id="menuNextTierText">อีก ฿1,500 สู่ Silver</span>
+                  </div>
+                  <div class="tier-progress-bar">
+                    <div id="menuTierProgressFill" class="tier-progress-fill" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="user-menu-item" onclick="openProfileModal('info')">
+                <span>👓 ค่าสายตา & ข้อมูลสมาชิก</span>
+              </div>
+              <div class="user-menu-item" onclick="openProfileModal('orders')">
+                <span>📦 ประวัติคำสั่งซื้อของฉัน</span>
+              </div>
+              <div class="user-menu-divider"></div>
+              <div class="user-menu-item logout-btn" onclick="logoutUser()">
+                <span>🚪 ออกจากระบบ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wishlist Button -->
+        <button id="wishlistNavBtn" class="icon-btn" onclick="openWishlistDrawer()" title="สินค้าที่ถูกใจ" aria-label="สินค้าที่ถูกใจ" style="position: relative;">
+          <span>❤️</span>
+          <span id="wishlistBadge" class="cart-badge" style="display: none; background-color: #ef4444;">0</span>
+        </button>
+
+        <!-- Theme Toggle Button -->
+        <button id="themeToggleBtn" class="icon-btn theme-toggle-btn" title="สลับโหมดขาว/ดำ" aria-label="สลับธีม">
+          <span class="theme-icon sun-icon">☀️</span>
+          <span class="theme-icon moon-icon">🌙</span>
+        </button>
+
+        <!-- Cart Button -->
+        <button id="cartBtn" class="cart-btn" aria-label="ตะกร้าสินค้า">
+          <span class="cart-icon">🛒</span>
+          <span class="cart-text">ตะกร้า</span>
+          <span id="cartCount" class="cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section with Interactive Eyewear Slider Showcase -->
+  <section class="hero-section">
+    <div class="hero-layout">
+      <!-- Left: Brand Story & CTA -->
+      <div class="hero-content">
+        <div class="hero-badge">✨ ไม่ต้องซีเรียส ช้อปง่าย จ่ายสบาย ✨</div>
+        <h1 class="hero-title">เห็นชัด <span class="highlight">ในแบบของคุณ</span></h1>
+        <p class="hero-desc">
+          แว่นตาแฟชั่น & ตัดเลนส์สายตาราคาเป็นมิตร กรอกค่าง่าย ไม่ยุ่งยาก ใส่ทำงาน เล่นเกม เที่ยวชิลได้ทุกวัน
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#products" class="btn btn-primary">เลือกแว่นที่ชอบเลย 🕶️</a>
+          <button class="btn btn-secondary" onclick="openPrescriptionGuide()">📖 ดูวิธีกรอกค่าสายตา</button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">เลนส์คุณภาพ</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">ฟรี</span>
+            <span class="stat-label">กล่อง & ผ้าเช็ดเลนส์</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">1-3 วัน</span>
+            <span class="stat-label">จัดส่งรวดเร็ว</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Interactive Eyewear Showcase Carousel -->
+      <div class="hero-carousel-wrap">
+        <div class="carousel-card">
+          <div class="carousel-badge" id="slideBadge">🔥 ยอดนิยม</div>
+          <div class="carousel-img-wrap">
+            <img id="slideImg" src="assets/images/glasses_minimal_round_1787761859075.jpg" alt="Featured Glasses" class="carousel-img">
+          </div>
+          <div class="carousel-info">
+            <h3 id="slideTitle">Minimalist Round Matte</h3>
+            <p id="slideDesc">กรอบกลมทรงเกาหลี น้ำหนักเบาเพียง 12 กรัม ใส่สบาย</p>
+            <div class="carousel-footer">
+              <span class="carousel-price" id="slidePrice">฿890</span>
+              <button id="slideActionBtn" class="btn btn-primary btn-sm" onclick="openCustomizerModal('frame_minimal_01')">
+                ลองตัดเลนส์รุ่นนี้ 👓
+              </button>
+            </div>
+          </div>
+
+          <!-- Carousel Controls -->
+          <button class="carousel-nav prev-btn" onclick="prevSlide()" aria-label="Previous Slide">‹</button>
+          <button class="carousel-nav next-btn" onclick="nextSlide()" aria-label="Next Slide">›</button>
+
+          <!-- Carousel Dots -->
+          <div class="carousel-dots" id="carouselDots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+            <span class="dot" onclick="goToSlide(3)"></span>
+            <span class="dot" onclick="goToSlide(4)"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Filter & Search Bar -->
+  <section class="catalog-section" id="products">
+    <div class="catalog-header-wrap">
+      <div class="section-title-box">
+        <h2 class="section-title">คอลเลกชันแว่นตาทั้งหมด</h2>
+        <p class="section-subtitle">เลือกกรอบที่ใช่ แล้วปรับแต่งเลนส์ตามใจคุณ</p>
+      </div>
+
+      <!-- Controls Row: Search & Category Filter Tabs -->
+      <div class="catalog-controls-row">
+        <div class="category-tabs">
+          <button class="tab-btn active" data-category="all">ทั้งหมด (<span id="countAll">0</span>)</button>
+          <button class="tab-btn" data-category="minimal">สไตล์มินิมอล</button>
+          <button class="tab-btn" data-category="vintage">วินเทจ/คลาสสิก</button>
+          <button class="tab-btn" data-category="gaming">เกมมิ่ง & กรองแสง</button>
+          <button class="tab-btn" data-category="fashion">สายแฟชั่น</button>
+          <button class="tab-btn" data-category="titanium">ไทเทเนียมพรีเมียม</button>
+          <button class="tab-btn" data-category="care">อุปกรณ์ดูแลแว่น</button>
+        </div>
+
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="productSearchInput" class="search-input" placeholder="ค้นหาชื่อแว่น, ทรง, สไตล์..." oninput="handleSearch(event)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="productGrid">
+      <!-- Generated via JavaScript -->
+    </div>
+  </section>
+
+  <!-- AI & Behavioral Recommendations Section (Requirement #5: "สินค้าที่คุณอาจสนใจ") -->
+  <section class="recommendations-section" id="recommendations">
+    <div class="section-container">
+      <div class="text-center mb-3">
+        <div class="badge-ai">🤖 AI & BEHAVIOR RECOMMENDATIONS</div>
+        <h2 class="section-title">สินค้าที่คุณอาจสนใจ</h2>
+        <p class="section-subtitle">คัดสรรพิเศษสำหรับคุณ วิเคราะห์จากพฤติกรรมการเข้าชม ประวัติคำสั่งซื้อ และรูปหน้าของคุณ</p>
+      </div>
+
+      <!-- Recommendation Filter Chips -->
+      <div class="recommend-filter-tabs">
+        <button class="recom-chip active" data-recom="all" onclick="filterRecommendations('all')">🔥 แนะนำทั้งหมดสำหรับคุณ</button>
+        <button class="recom-chip" data-recom="recent" onclick="filterRecommendations('recent')">👁️ ดูล่าสุด (Recently Viewed)</button>
+        <button class="recom-chip" data-recom="face" onclick="filterRecommendations('face')">🎯 แมตช์ตามรูปหน้า</button>
+        <button class="recom-chip" data-recom="wishlist" onclick="filterRecommendations('wishlist')">❤️ จากรายการที่ถูกใจ</button>
+        <button class="recom-chip" data-recom="cross" onclick="filterRecommendations('cross')">✨ ไอเทมคู่หูสำหรับคุณ</button>
+      </div>
+
+      <!-- Recommended Product Grid -->
+      <div class="product-grid" id="recommendProductGrid">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Reviews & Social Proof Section (Marketing Trust Builder) -->
+  <section class="reviews-section">
+    <div class="section-container">
+      <div class="text-center mb-3">
+        <span class="badge-vip">⭐ REAL CUSTOMER REVIEWS</span>
+        <h2 class="section-title">รีวิวจากลูกค้า XCOCO</h2>
+        <p class="section-subtitle">ความประทับใจจากลูกค้าที่สั่งตัดแว่นกับเรา</p>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"สั่งรุ่น Minimalist Round มาใส่ตัดเลนส์บลูบล็อก กรอบเบามาก ใส่ทำงานหน้าคอมทั้งวันไม่ปวดหัวเลย แถมได้ส่วนลดมินิเกมด้วย คุ้มมาก!"</p>
+          <div class="reviewer">
+            <span class="reviewer-avatar">👩🏻‍💻</span>
+            <div>
+              <strong>คุณพิมพ์นารา ก.</strong>
+              <small>UX Designer</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"ตอนแรกกังวลเรื่องสั่งตัดแว่นออนไลน์ แต่ระบบกรอกค่าง่ายมาก มีปุ่มดึงค่าจากโปรไฟล์ด้วย 3 วันได้ของ เลนส์ตรงเป๊ะ ภาพคมชัดสุดๆ"</p>
+          <div class="reviewer">
+            <span class="reviewer-avatar">👨🏻‍💼</span>
+            <div>
+              <strong>คุณธนภัทร ส.</strong>
+              <small>Content Creator</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-text">"แว่น Cat-Eye ทรงสวยหรูมาก ใส่ไปคาเฟ่เพื่อนทักทุกคนเลย กรอบทนทาน ไม่ก๊องแก๊ง แนะนำเลยครับ แบรนด์นี้ 10/10"</p>
+          <div class="reviewer">
+            <span class="reviewer-avatar">✨</span>
+            <div>
+              <strong>คุณนลินดา ช.</strong>
+              <small>Fashion Blogger</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promotion Banner Section -->
+  <section class="promo-section" id="promotions">
+    <div class="promo-card">
+      <div class="promo-badge">PROMOTION</div>
+      <h3>🎉 โค้ดส่วนลดพิเศษสำหรับคุณ</h3>
+      <p>กรอกโค้ด <strong><span class="code-tag" onclick="copyPromo('CLEAR20')">CLEAR20</span></strong> ลดทันที 20% เมื่อสั่งซื้อวันนี้!</p>
+      <small>*คลิกที่โค้ดเพื่อคัดลอกได้เลย</small>
+    </div>
+  </section>
+
+  <!-- Mini Game Section: Interactive Eye Test / Color Vision Challenge -->
+  <section class="game-section" id="minigame">
+    <div class="game-container">
+      <div class="game-badge">🎮 MARKETING MINI-GAME</div>
+      <h2 class="section-title text-center">มินิเกม "ท้าทายสายตา XCOCO"</h2>
+      <p class="section-subtitle text-center">เล่นเกมทดสอบความไวและสายตา ชนะรับโค้ดส่วนลดพิเศษ <strong>30% (XCOCO30)</strong> ไปเลย!</p>
+
+      <div class="game-box" id="gameBox">
+        <!-- Game Start Screen -->
+        <div id="gameStartScreen" class="game-screen">
+          <div class="game-icon">👁️ ⚡</div>
+          <h3>พร้อมทดสอบสายตาของคุณหรือยัง?</h3>
+          <p>กติกา: ค้นหาช่องที่มี "เฉดสีต่างจากช่องอื่น" ให้ได้มากที่สุดภายใน 15 วินาที<br>ทำคะแนนถึง <strong>5 คะแนน</strong> รับส่วนลดลับทันที!</p>
+          <button class="btn btn-primary btn-game-start" onclick="startEyeGame()">🚀 เริ่มเล่นเกมเลย!</button>
+        </div>
+
+        <!-- Game Playing Screen -->
+        <div id="gamePlayScreen" class="game-screen" style="display: none;">
+          <div class="game-hud">
+            <div class="hud-item">
+              <span>⏱️ เวลา:</span>
+              <strong id="gameTimer">15</strong>s
+            </div>
+            <div class="hud-item">
+              <span>🎯 คะแนน:</span>
+              <strong id="gameScore">0</strong>/5
+            </div>
+          </div>
+          
+          <div class="color-grid" id="colorGrid">
+            <!-- Grid tiles generated dynamically -->
+          </div>
+        </div>
+
+        <!-- Game Result Screen -->
+        <div id="gameResultScreen" class="game-screen" style="display: none;">
+          <div id="gameResultIcon" class="result-icon">🎉</div>
+          <h3 id="gameResultTitle">ยินดีด้วย! สายตาของคุณเฉียบคมมาก</h3>
+          <p id="gameResultDesc">คุณทำได้ 5 คะแนน ผ่านเกณฑ์รับรางวัลพิเศษ!</p>
+          
+          <div id="gameRewardBox" class="game-reward-box">
+            <span>🎁 โค้ดส่วนลดลับของคุณ:</span>
+            <div class="reward-code-wrap">
+              <strong class="reward-code">XCOCO30</strong>
+              <button class="btn btn-secondary btn-sm" onclick="copyAndApplyPromo('XCOCO30')">คัดลอก & นำไปใช้</button>
+            </div>
+            <small>ลด 30% ทันทีไม่มีขั้นต่ำ</small>
+          </div>
+
+          <div class="game-result-actions">
+            <button class="btn btn-primary" onclick="restartEyeGame()">🔄 เล่นใหม่อีกครั้ง</button>
+            <a href="#products" class="btn btn-secondary">🛍️ ไปช้อปแว่นกันเลย</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Face Shape Matcher Quiz Section (Interactive Personalized Experience) -->
+  <section class="faceshape-section" id="face-match">
+    <div class="section-container">
+      <div class="text-center mb-3">
+        <span class="badge-vip">🪞 PERSONALIZED STYLING</span>
+        <h2 class="section-title">เลือกแว่นที่เหมาะกับ "รูปหน้าของคุณ"</h2>
+        <p class="section-subtitle">คลิกเลือกรูปทรงใบหน้าของคุณเพื่อดูทรงแว่นตาที่เสริมบุคลิกได้ดีที่สุด</p>
+      </div>
+
+      <div class="faceshape-cards">
+        <div class="face-card active" onclick="selectFaceShape('oval')">
+          <div class="face-icon">🥚</div>
+          <h4>หน้ารูปไข่ (Oval)</h4>
+          <p>เข้าได้กับแว่นทุกทรง แนะนำทรงเหลี่ยม หรือ ทรงนักบิน เพื่อเพิ่มมิติ</p>
+        </div>
+        <div class="face-card" onclick="selectFaceShape('round')">
+          <div class="face-icon">🌕</div>
+          <h4>หน้ากลม (Round)</h4>
+          <p>แนะนำแว่นทรงเหลี่ยม หรือ ทรง Cat-Eye ช่วยให้ใบหน้าดูเรียวยาวขึ้น</p>
+        </div>
+        <div class="face-card" onclick="selectFaceShape('square')">
+          <div class="face-icon">⏹️</div>
+          <h4>หน้าเหลี่ยม (Square)</h4>
+          <p>แนะนำแว่นทรงกลมมน หรือ วงรี ช่วยปรับเส้นโครงหน้าให้ดูนุ่มนวล</p>
+        </div>
+        <div class="face-card" onclick="selectFaceShape('heart')">
+          <div class="face-icon">💖</div>
+          <h4>หน้ารูปหัวใจ (Heart)</h4>
+          <p>แนะนำแว่นทรง Browline หรือ แว่นไร้กรอบ ช่วยสร้างความสมดุล</p>
+        </div>
+      </div>
+
+      <div class="face-match-result" id="faceMatchResult">
+        <div class="match-result-text">
+          <span>🎯 แว่นตาที่แนะนำสำหรับ <strong>หน้ารูปไข่ (Oval)</strong>: เข้าได้กับแว่นทุกทรง แนะนำทรงเหลี่ยม หรือ ทรงนักบิน</span>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary btn-sm" onclick="filterByFaceMatch('oval')">กรองดูแว่นที่แนะนำ ✨</button>
+            <button class="btn btn-primary btn-sm" onclick="triggerFaceMatchEmail('oval')">📩 ส่งแว่นที่เหมาะกับฉันเข้าอีเมล</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Guarantee & Trust Section (Marketing Assurance - Horizontal Trust Bar) -->
+  <section class="guarantee-section" id="guarantee">
+    <div class="guarantee-banner">
+      <div class="guarantee-item">
+        <div class="guarantee-icon-badge">🔄</div>
+        <div class="guarantee-info">
+          <h4>รับประกันสายตา 30 วัน</h4>
+          <p>ใส่ไม่สบายตา ตัดเลนส์ใหม่ให้ฟรี</p>
+        </div>
+      </div>
+
+      <div class="guarantee-divider"></div>
+
+      <div class="guarantee-item">
+        <div class="guarantee-icon-badge">🚚</div>
+        <div class="guarantee-info">
+          <h4>จัดส่งฟรี ปลอดภัย 100%</h4>
+          <p>กล่องพรีเมียมกันกระแทก 1-3 วันถึง</p>
+        </div>
+      </div>
+
+      <div class="guarantee-divider"></div>
+
+      <div class="guarantee-item">
+        <div class="guarantee-icon-badge">🎁</div>
+        <div class="guarantee-info">
+          <h4>ฟรี Premium Gift Box</h4>
+          <p>กล่องหนัง + ผ้าเช็ดเลนส์ + น้ำยา</p>
+        </div>
+      </div>
+
+      <div class="guarantee-divider"></div>
+
+      <div class="guarantee-item">
+        <div class="guarantee-icon-badge">🔧</div>
+        <div class="guarantee-info">
+          <h4>ดูแลฟรีตลอดชีพ</h4>
+          <p>ดัดทรง ขันน็อต เปลี่ยนแป้นจมูกฟรี</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion Section -->
+  <section class="faq-section" id="faq">
+    <div class="section-container">
+      <div class="text-center mb-3">
+        <span class="badge-vip">❓ FREQUENTLY ASKED QUESTIONS</span>
+        <h2 class="section-title">คำถามที่พบบ่อย</h2>
+        <p class="section-subtitle">ข้อสงสัยยอดฮิตเกี่ยวกับการสั่งตัดแว่นตาออนไลน์กับ XCOCO</p>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>1. สั่งตัดแว่นใช้เวลากี่วันจึงจะได้รับของ?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>ทีมช่างประกอบเลนส์จะใช้เวลาตัดประกอบอย่างประณีต 1 วัน และจัดส่งด่วนโดย Kerry/EMS ใช้เวลารวมเพียง 1 - 3 วันทำการ สินค้าส่งตรงถึงบ้านคุณครับ</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>2. ถ้าไม่ทราบระยะห่างตาดำ (PD) ต้องทำอย่างไร?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>สามารถใช้ค่ามาตรฐานปกติที่ระบบตั้งไว้ (62 mm สำหรับผู้หญิง / 64 mm สำหรับผู้ชาย) ได้เลยครับ หรือจะใช้ไม้บรรทัดวัดระยะระหว่างตาดำทั้งสองข้างเองแบบง่ายๆ ก็ได้เช่นกัน</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>3. มีใบวัดสายตาจากคลินิกหรือร้านเดิม สามารถแนบรูปได้ไหม?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>ได้เลยครับ! ในหน้าต่างสั่งตัดแว่น ให้เลือกแท็บ "แนบรูปใบวัด" แล้วอัปโหลดรูปถ่ายใบค่าสายตา ช่างผู้เชี่ยวชาญจะช่วยอ่านค่าและตัดเลนส์ตามใบวัดให้อย่างแม่นยำ</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>4. หากได้รับแว่นแล้วใส่ไม่สบายตา มีการรับประกันอย่างไร?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>XCOCO มีการรับประกันความพึงพอใจ 30 วัน หากใส่แล้วเวียนหัวหรือไม่คมชัด สามารถส่งกลับมาเปลี่ยนค่าสายตาและตัดเลนส์คู่ใหม่ให้ฟรีทันทีครับ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works Section -->
+  <section class="guide-section" id="how-to-order">
+    <h2 class="section-title text-center">สั่งตัดแว่นง่ายๆ ใน 3 สเต็ป</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>เลือกกรอบแว่น</h3>
+        <p>เลือกดีไซน์และสีที่เข้ากับรูปหน้าและสไตล์ของคุณ</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>เลือกเลนส์ & ใส่ค่าสายตา</h3>
+        <p>เลือกชนิดเลนส์ แล้วกรอกค่าสายตา หรือแนบรูปใบวัดสายตาง่ายๆ</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>รอรับแว่นที่บ้าน</h3>
+        <p>ช่างประกอบเลนส์อย่างประณีต จัดส่งถึงมือพร้อมใช้งาน</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Subscription Section -->
+  <section class="newsletter-section" id="newsletter">
+    <div class="section-container">
+      <div class="newsletter-card">
+        <div class="newsletter-badge">📧 XCOCO NEWSLETTER</div>
+        <h2 class="newsletter-title">รับข่าวสาร & สิทธิพิเศษจาก XCOCO 👓</h2>
+        <p class="newsletter-desc">กรอกอีเมลเพื่อรับคำแนะนำกรอบแว่นตาคอลเลกชันใหม่ เทคนิคการดูแลสายตา และรับโค้ดส่วนลด 10% ส่งตรงถึงกล่องจดหมายของคุณ</p>
+        
+        <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+          <input type="email" id="newsletterEmail" class="newsletter-input" placeholder="กรอกอีเมลของคุณ (เช่น name@example.com)" required>
+          <button type="submit" class="btn btn-primary" id="newsletterBtn">
+            <span>สมัครรับข่าวสาร ✨</span>
+          </button>
+        </form>
+        <div id="newsletterMsg" class="newsletter-msg"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-text">
+          <span class="brand-name">XCOCO Eyewear</span>
+          <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
+        </div>
+        <p class="footer-desc">มินิโปรเจกต์เว็บขายแว่นตาเพื่อการตลาด ช้อปง่าย สไตล์สบายๆ ไม่ต้องซีเรียส</p>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 XCOCO Eyewear - Eyewear Mini Project. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal: Prescription / Product Configurator -->
+  <div class="modal-backdrop" id="customizerModal">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeCustomizerModal()">&times;</button>
+      
+      <div class="modal-header">
+        <div class="modal-thumb-wrap">
+          <img id="modalProductImg" src="" alt="Product" class="modal-thumb">
+          <div id="lensTintOverlay" class="lens-tint-overlay"></div>
+        </div>
+        <div>
+          <h3 id="modalProductName" class="modal-title">ชื่อแว่นตา</h3>
+          <p id="modalProductPrice" class="modal-price">฿0</p>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Step 1: Lens Usage Type -->
+        <div class="form-group">
+          <label class="form-label">1. เลือกประเภทการใช้งานเลนส์:</label>
+          <div class="option-grid">
+            <label class="option-card">
+              <input type="radio" name="lensType" value="prescription" checked onchange="toggleLensForm()">
+              <div class="option-content">
+                <span class="option-title">👓 เลนส์สายตา</span>
+                <span class="option-desc">สั่งตัดตามค่าสายตาสั้น/ยาว/เอียง</span>
+              </div>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="lensType" value="bluelight" onchange="toggleLensForm()">
+              <div class="option-content">
+                <span class="option-title">💻 เลนส์กรองแสงคอม</span>
+                <span class="option-desc">ไม่มีค่าสายตา ป้องกันแสงสีฟ้า</span>
+              </div>
+            </label>
+            <label class="option-card">
+              <input type="radio" name="lensType" value="frameonly" onchange="toggleLensForm()">
+              <div class="option-content">
+                <span class="option-title">📦 เฉพาะกรอบแว่น</span>
+                <span class="option-desc">นำไปตัดเลนส์เองที่ร้าน</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Interactive Lens Visual Simulator -->
+          <div class="lens-sim-box">
+            <div class="lens-sim-header">
+              <span>🔮 จำลองเฉดสีและประกายเลนส์ (Lens Visualizer):</span>
+            </div>
+            <div class="lens-sim-chips">
+              <button type="button" class="lens-sim-chip active" onclick="simulateLensTint('clear')">✨ เลนส์ใสปกติ</button>
+              <button type="button" class="lens-sim-chip" onclick="simulateLensTint('blue')">💻 กรองแสงสีฟ้า (Blue Cut)</button>
+              <button type="button" class="lens-sim-chip" onclick="simulateLensTint('photo')">☀️ ออกแดดเปลี่ยนสี (Auto)</button>
+              <button type="button" class="lens-sim-chip" onclick="simulateLensTint('dark')">🕶️ เลนส์กันแดดเข้ม</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Prescription Inputs (Only shown if 'prescription' selected) -->
+        <div id="prescriptionFieldsSection" class="prescription-box">
+          <div class="rx-header">
+            <div>
+              <span class="form-label">2. ระบุค่าสายตาของคุณ:</span>
+              <button type="button" id="btnAutofillProfile" class="btn-autofill-rx" onclick="autofillRxFromProfile()" style="display: none;">
+                ⚡ ดึงค่าสายตาจากโปรไฟล์
+              </button>
+            </div>
+            <div class="rx-tabs">
+              <button type="button" class="mini-tab active" id="tabManual" onclick="switchRxMode('manual')">กรอกตัวเลข</button>
+              <button type="button" class="mini-tab" id="tabUpload" onclick="switchRxMode('upload')">แนบรูปใบวัด</button>
+            </div>
+          </div>
+
+          <!-- Mode A: Manual Inputs -->
+          <div id="manualRxContent">
+            <table class="rx-table">
+              <thead>
+                <tr>
+                  <th>ข้าง</th>
+                  <th>สั้น/ยาว (SPH)</th>
+                  <th>เอียง (CYL)</th>
+                  <th>องศา (AXIS)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ตาขวา (R / OD)</strong></td>
+                  <td>
+                    <select id="rightSph" class="input-select"></select>
+                  </td>
+                  <td>
+                    <select id="rightCyl" class="input-select"></select>
+                  </td>
+                  <td>
+                    <input type="number" id="rightAxis" class="input-text" placeholder="1-180" min="1" max="180">
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>ตาซ้าย (L / OS)</strong></td>
+                  <td>
+                    <select id="leftSph" class="input-select"></select>
+                  </td>
+                  <td>
+                    <select id="leftCyl" class="input-select"></select>
+                  </td>
+                  <td>
+                    <input type="number" id="leftAxis" class="input-text" placeholder="1-180" min="1" max="180">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="pd-wrapper">
+              <label for="inputPd"><strong>ระยะห่างตาดำ (PD):</strong></label>
+              <input type="number" id="inputPd" class="input-text pd-input" value="62" min="50" max="75">
+              <span class="helper-text">(ค่ามาตรฐานปกติ 60-64 มม.)</span>
+            </div>
+          </div>
+
+          <!-- Mode B: Upload Slip -->
+          <div id="uploadRxContent" class="upload-box" style="display: none;">
+            <div class="upload-area">
+              <span class="upload-icon">📄</span>
+              <p>คลิกเพื่อแนบรูปถ่ายใบวัดสายตาจากคลินิกหรือร้านแว่น</p>
+              <input type="file" id="slipUploadInput" accept="image/*" onchange="handleSlipUpload(event)">
+            </div>
+            <div id="uploadSuccessText" class="upload-success" style="display: none;">
+              ✅ แนบรูปใบวัดสายตาเรียบร้อยแล้ว
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Lens Upgrades / Add-ons -->
+        <div class="form-group" id="lensUpgradeSection">
+          <label class="form-label">3. ตัวเลือกอัปเกรดเลนส์เสริม (Optional):</label>
+          <div class="addon-list">
+            <label class="addon-item">
+              <input type="radio" name="lensUpgrade" value="standard" data-price="0" checked onchange="updateModalTotal()">
+              <div class="addon-info">
+                <span>เลนส์ใสมาตรฐาน (Standard Clear)</span>
+                <small>คมชัด เคลือบมัลติโค้ตกันรอย</small>
+              </div>
+              <span class="addon-price">+฿0</span>
+            </label>
+            <label class="addon-item">
+              <input type="radio" name="lensUpgrade" value="blueblock" data-price="350" onchange="updateModalTotal()">
+              <div class="addon-info">
+                <span>เลนส์ Blue Block กรองแสงสีฟ้า</span>
+                <small>ตัดแสงหน้าจอคอม & สมาร์ตโฟน</small>
+              </div>
+              <span class="addon-price">+฿350</span>
+            </label>
+            <label class="addon-item">
+              <input type="radio" name="lensUpgrade" value="auto_photo" data-price="750" onchange="updateModalTotal()">
+              <div class="addon-info">
+                <span>เลนส์ Auto ปรับแสงเปลี่ยนสี (ออกแดดเปลี่ยนสีเทาเข้ม)</span>
+                <small>2 in 1 เป็นทั้งแว่นสายตาและแว่นกันแดด</small>
+              </div>
+              <span class="addon-price">+฿750</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-total-wrap">
+          <span class="total-label">ยอดรวมรายการนี้:</span>
+          <span id="modalTotalCalculated" class="total-amount">฿0</span>
+        </div>
+        <button class="btn btn-primary btn-add-cart" onclick="confirmAddToCart()">
+          🛒 เพิ่มลงในตะกร้า
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping Cart Drawer -->
+  <div class="cart-drawer-backdrop" id="cartDrawerBackdrop" onclick="closeCartDrawer()"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>🛍️ ตะกร้าสินค้า (<span id="cartDrawerCount">0</span>)</h3>
+      <button class="icon-btn" onclick="closeCartDrawer()">&times;</button>
+    </div>
+
+    <div class="cart-items" id="cartItemsContainer">
+      <!-- Items generated dynamically -->
+    </div>
+
+    <div class="cart-footer">
+      <!-- Promo code input -->
+      <div class="coupon-box">
+        <input type="text" id="couponInput" placeholder="ใส่โค้ดส่วนลด (เช่น CLEAR20)" class="input-text">
+        <button class="btn btn-secondary" onclick="applyCoupon()">ใช้โค้ด</button>
+      </div>
+      <div id="couponMessage" class="coupon-msg"></div>
+
+      <!-- Shipping Address section in Cart -->
+      <div class="cart-address-box">
+        <label class="form-label" for="checkoutAddress">📍 ที่อยู่จัดส่งสินค้า:</label>
+        <textarea id="checkoutAddress" class="input-text" rows="2" placeholder="กรอกชื่อ-นามสกุล เบอร์โทร และที่อยู่จัดส่งสินค้า"></textarea>
+      </div>
+
+      <!-- Price summary -->
+      <div class="price-breakdown">
+        <div class="price-row">
+          <span>ราคารวมสินค้า:</span>
+          <span id="cartSubtotal">฿0</span>
+        </div>
+        <div class="price-row discount-row" id="discountRow" style="display: none;">
+          <span>ส่วนลด (<span id="discountLabel">0%</span>):</span>
+          <span id="cartDiscount">-฿0</span>
+        </div>
+        <div class="price-row">
+          <span>ค่าจัดส่ง:</span>
+          <span class="text-free">ฟรี (โปรโมชัน)</span>
+        </div>
+        <div class="price-row grand-total">
+          <span>ยอดชำระสุทธิ:</span>
+          <span id="cartGrandTotal">฿0</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="openCheckoutModal()">
+        ดำเนินการสั่งซื้อ (Checkout) ✨
+      </button>
+    </div>
+  </aside>
+
+  <!-- Checkout / Success Modal -->
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="modal-container receipt-modal">
+      <button class="modal-close" onclick="closeCheckoutModal()">&times;</button>
+      
+      <div class="receipt-header">
+        <div class="success-icon">🎉</div>
+        <h2>สั่งซื้อสำเร็จเรียบร้อย!</h2>
+        <p class="receipt-sub">ขอบคุณที่เลือก <strong>XCOCO Eyewear</strong> เห็นชัด ในแบบของคุณ</p>
+      </div>
+
+      <div class="receipt-card">
+        <div class="receipt-meta">
+          <span>หมายเลขคำสั่งซื้อ: <strong id="receiptOrderId">#XC-88921</strong></span>
+          <span>วันที่: <strong id="receiptDate">26 ส.ค. 2026</strong></span>
+        </div>
+        
+        <div class="receipt-address-row mt-2" id="receiptAddressRow">
+          <span>📍 จัดส่งไปที่: <strong id="receiptDeliveryAddress">กรุงเทพมหานคร</strong></span>
+        </div>
+        
+        <hr class="receipt-divider">
+
+        <div id="receiptItemsList" class="receipt-items-list">
+          <!-- Receipt summary items -->
+        </div>
+
+        <hr class="receipt-divider">
+
+        <div class="receipt-total-row">
+          <span>ยอดสุทธิทั้งหมด:</span>
+          <span id="receiptFinalTotal" class="receipt-final-price">฿0</span>
+        </div>
+      </div>
+
+      <div class="receipt-info-box">
+        <p>🚚 ทีมงานจะประกอบเลนส์ตามค่าสายตาของคุณอย่างประณีต และจัดส่งถึงบ้านภายใน 1-3 วันทำการ</p>
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="finishOrderAndClear()">
+        เสร็จสิ้น / ช้อปต่อ 🕶️
+      </button>
+    </div>
+  </div>
+
+  <!-- Prescription Guide Modal -->
+  <div class="modal-backdrop" id="guideModal" onclick="if(event.target===this) closeGuideModal()">
+    <div class="modal-container guide-modal-card">
+      <button class="modal-close" onclick="closeGuideModal()">&times;</button>
+      
+      <div class="guide-modal-header">
+        <div class="guide-header-icon">📖</div>
+        <div>
+          <h3 class="modal-title">คู่มือการอ่านและระบุค่าสายตา</h3>
+          <p class="guide-header-sub">อธิบายศัพท์ค่าสายตาแบบเข้าใจง่าย ช่วยให้คุณสั่งตัดแว่นได้อย่างถูกต้อง</p>
+        </div>
+      </div>
+
+      <div class="guide-grid-cards">
+        <div class="guide-card-box">
+          <div class="guide-card-head">
+            <span class="guide-badge">1. SPH</span>
+            <strong>ค่าสายตาสั้น / ยาว (Sphere)</strong>
+          </div>
+          <p>
+            • <strong>เครื่องหมาย (-) ลบ</strong> = สายตาสั้น (เช่น -1.50, -2.00)<br>
+            • <strong>เครื่องหมาย (+) บวก</strong> = สายตายาว (เช่น +1.00, +2.50)
+          </p>
+        </div>
+
+        <div class="guide-card-box">
+          <div class="guide-card-head">
+            <span class="guide-badge">2. CYL</span>
+            <strong>ค่าสายตาเอียง (Cylinder)</strong>
+          </div>
+          <p>
+            ค่าความโค้งของกระจกตาที่ทำให้ภาพเบลอ<br>
+            • หากไม่มีสายตาเอียง ให้เลือก <strong>0.00 (ไม่มีค่าเอียง)</strong>
+          </p>
+        </div>
+
+        <div class="guide-card-box">
+          <div class="guide-card-head">
+            <span class="guide-badge">3. AXIS</span>
+            <strong>องศาของสายตาเอียง</strong>
+          </div>
+          <p>
+            ทิศทางแนวองศาของสายตาเอียง (ค่าระหว่าง 1 - 180°)<br>
+            • <em>*ต้องระบุเฉพาะเมื่อมีค่าสายตาเอียง (CYL)</em>
+          </p>
+        </div>
+
+        <div class="guide-card-box">
+          <div class="guide-card-head">
+            <span class="guide-badge">4. PD</span>
+            <strong>ระยะห่างตาดำ (Pupillary Distance)</strong>
+          </div>
+          <p>
+            ระยะห่างระหว่างจุดกึ่งกลางตาดำทั้ง 2 ข้าง<br>
+            • ผู้ใหญ่ทั่วไปมีค่ามาตรฐานประมาณ <strong>60 - 64 มม.</strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-tip-box">
+        💡 <strong>คำแนะนำ:</strong> หากมีใบวัดสายตาจากคลินิกหรือร้านเดิม สามารถเลือกแท็บ <em>"แนบรูปใบวัด"</em> เพื่อให้ช่างผู้เชี่ยวชาญช่วยอ่านค่าให้ได้เลยครับ
+      </div>
+
+      <button class="btn btn-primary btn-block" onclick="closeGuideModal()">เข้าใจแล้ว เริ่มสั่งแว่นเลย 👓</button>
+    </div>
+  </div>
+
+  <!-- Auth Modal: Login / Register -->
+  <div class="modal-backdrop" id="authModal" onclick="if(event.target===this) closeAuthModal()">
+    <div class="modal-container auth-modal-card">
+      <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      
+      <div class="auth-header">
+        <h3 id="authModalTitle">เข้าสู่ระบบสมาชิก XCOCO</h3>
+        <p id="authModalSub">เข้าสู่ระบบเพื่อรับสิทธิพิเศษและบันทึกค่าสายตา</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">เข้าสู่ระบบ</button>
+        <button type="button" class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthTab('register')">สมัครสมาชิกใหม่ (+รับส่วนลด)</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="auth-form">
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">อีเมล:</label>
+          <input type="email" id="loginEmail" class="input-text" placeholder="name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">รหัสผ่าน:</label>
+          <input type="password" id="loginPassword" class="input-text" placeholder="••••••••" required>
+        </div>
+        <small class="helper-text">💡 ทดลองล็อกอินบัญชีตัวอย่าง: <strong>demo@xcoco.com</strong> / รหัส <strong>1234</strong></small>
+        <div id="loginErrorMsg" class="auth-error-msg"></div>
+        <button type="submit" class="btn btn-primary btn-block mt-2">เข้าสู่ระบบ ✨</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" onsubmit="handleRegisterSubmit(event)" class="auth-form" style="display: none;">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="regName">ชื่อ-นามสกุล / ชื่อเล่น: *</label>
+            <input type="text" id="regName" class="input-text" placeholder="เช่น คุณสมชาย สายตาดี" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPhone">เบอร์โทรศัพท์: *</label>
+            <input type="tel" id="regPhone" class="input-text" placeholder="0812345678" pattern="[0-9]{9,10}" required>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="regEmail">อีเมล: *</label>
+            <input type="email" id="regEmail" class="input-text" placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regBirthdate">วันเกิด: *</label>
+            <input type="date" id="regBirthdate" class="input-text" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regAddress">📍 ที่อยู่สำหรับจัดส่งสินค้า (กรอกเพื่อความสะดวกตอนสั่งซื้อ):</label>
+          <textarea id="regAddress" class="input-text" rows="2" placeholder="เช่น 123/45 หมู่ 6 ถ.สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPassword">รหัสผ่าน: *</label>
+          <input type="password" id="regPassword" class="input-text" placeholder="กำหนดรหัสผ่าน (อย่างน้อย 4 ตัว)" minlength="4" required>
+        </div>
+
+        <div class="reg-rx-section">
+          <label class="form-label">👓 บันทึกค่าสายตาของคุณไว้ล่วงหน้า (กรอกหรือไม่กรอกก็ได้):</label>
+          <div class="reg-rx-grid">
+            <div>
+              <small>ตาขวา (R) สั้น/ยาว:</small>
+              <select id="regRightSph" class="input-select"></select>
+            </div>
+            <div>
+              <small>ตาซ้าย (L) สั้น/ยาว:</small>
+              <select id="regLeftSph" class="input-select"></select>
+            </div>
+            <div>
+              <small>ระยะห่างตา (PD):</small>
+              <input type="number" id="regPd" class="input-text" placeholder="62" value="62" min="50" max="75">
+            </div>
+          </div>
+        </div>
+
+        <!-- Permission / Terms Agreement Section -->
+        <div class="terms-agreement-box">
+          <label class="checkbox-label" for="regAgreeTerms">
+            <input type="checkbox" id="regAgreeTerms" required>
+            <span>ฉันได้อ่านและยินยอมตาม <a href="javascript:void(0)" onclick="toggleTermsDetail()" class="link-terms">ข้อตกลงและเงื่อนไขการให้บริการ</a> รวมถึงนโยบายความเป็นส่วนตัว (PDPA) ของ XCOCO Eyewear *</span>
+          </label>
+          <div id="termsDetailBox" class="terms-detail-box" style="display: none;">
+            <div class="terms-content">
+              <strong>📜 เงื่อนไขและข้อตกลงการใช้บริการ XCOCO Eyewear:</strong>
+              <ul>
+                <li>ข้อมูลส่วนบุคคล (ชื่อ, เบอร์โทร, อีเมล, ค่าสายตา, ที่อยู่) จะถูกเก็บเป็นความลับเพื่อใช้ในขั้นตอนการตัดเลนส์และจัดส่งเท่านั้น</li>
+                <li>รับประกันค่าสายตา 30 วัน หากใส่แล้วไม่สบายตาสามารถส่งกลับมาตัดเลนส์คู่ใหม่ได้ฟรี</li>
+                <li>สมาชิกยินยอมรับข่าวสารโปรโมชันและโค้ดส่วนลดพิเศษผ่านทางอีเมล</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="regErrorMsg" class="auth-error-msg"></div>
+        <button type="submit" class="btn btn-primary btn-block mt-2">สมัครสมาชิก & รับสิทธิ์ 🎉</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Profile & Saved Prescription Modal -->
+  <div class="modal-backdrop" id="profileModal" onclick="if(event.target===this) closeProfileModal()">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+      
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">👤 ข้อมูลสมาชิก & ค่าสายตาประจำตัว</h3>
+          <p class="modal-price" id="profileUserEmail">email@example.com</p>
+        </div>
+      </div>
+
+      <div class="profile-tabs">
+        <button type="button" class="profile-tab-btn active" id="tabProfileInfoBtn" onclick="switchProfileTab('info')">👤 ข้อมูลทั่วไป & ค่าสายตา</button>
+        <button type="button" class="profile-tab-btn" id="tabProfileOrdersBtn" onclick="switchProfileTab('orders')">📦 ประวัติคำสั่งซื้อ (<span id="profileOrdersCount">0</span>)</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Tab 1: Info & Prescription -->
+        <div id="profileInfoTabContent">
+          <!-- View Mode: Profile Info Display -->
+          <div id="profileViewSection">
+            <div class="profile-info-card">
+              <div class="profile-row">
+                <span>ชื่อสมาชิก:</span>
+                <strong id="profileUserName">-</strong>
+              </div>
+              <div class="profile-row">
+                <span>📱 เบอร์โทรศัพท์:</span>
+                <strong id="profileUserPhone">-</strong>
+              </div>
+              <div class="profile-row">
+                <span>🎂 วันเกิด:</span>
+                <strong id="profileUserBirthdate">-</strong>
+              </div>
+              <div class="profile-row">
+                <span>📍 ที่อยู่จัดส่ง:</span>
+                <strong id="profileUserAddress" style="max-width: 60%; text-align: right;">-</strong>
+              </div>
+              <div class="profile-row">
+                <span>ระดับสมาชิก:</span>
+                <span id="profileTierBadge" class="user-tier-badge tier-classic">🥉 Classic Member</span>
+              </div>
+              <div class="profile-row">
+                <span>💳 ยอดสั่งซื้อสะสม:</span>
+                <strong id="profileTotalSpent">฿0</strong>
+              </div>
+              <div class="profile-row">
+                <span>🎯 เป้าหมายเลื่อนขั้น:</span>
+                <span id="profileNextTierDesc" style="font-size: 0.85rem; color: var(--primary);">อีก ฿1,500 เป็น Silver Member</span>
+              </div>
+            </div>
+
+            <h4 class="form-label mt-2">👓 ค่าสายตาที่บันทึกไว้ในระบบ:</h4>
+            <div class="saved-rx-card">
+              <table class="rx-table">
+                <thead>
+                  <tr>
+                    <th>ข้าง</th>
+                    <th>SPH (สั้น/ยาว)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ตาขวา (R / OD)</td>
+                    <td><strong id="profileRightSph">-1.50</strong></td>
+                  </tr>
+                  <tr>
+                    <td>ตาซ้าย (L / OS)</td>
+                    <td><strong id="profileLeftSph">-1.50</strong></td>
+                  </tr>
+                  <tr>
+                    <td>ระยะตาดำ (PD)</td>
+                    <td><strong id="profilePd">62 mm</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <small class="helper-text">*คุณสามารถกด "ดึงค่าสายตาจากโปรไฟล์" ตอนเลือกสั่งตัดแว่นได้ทันทีโดยไม่ต้องพิมพ์ใหม่</small>
+            </div>
+          </div>
+
+          <!-- Edit Mode: Profile Info Edit Form (Hidden by default) -->
+          <div id="profileEditSection" style="display: none;">
+            <div class="form-group">
+              <label class="form-label" for="editProfilePhone">📱 เบอร์โทรศัพท์:</label>
+              <input type="tel" id="editProfilePhone" class="input-text" placeholder="0812345678">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editProfileAddress">📍 ที่อยู่จัดส่งสินค้า:</label>
+              <textarea id="editProfileAddress" class="input-text" rows="2" placeholder="กรอกที่อยู่จัดส่งของคุณ"></textarea>
+            </div>
+            
+            <h4 class="form-label mt-2">👓 แก้ไขค่าสายตาประจำตัว:</h4>
+            <div class="reg-rx-grid">
+              <div>
+                <small>ตาขวา (R) สั้น/ยาว:</small>
+                <select id="editProfileRightSph" class="input-select"></select>
+              </div>
+              <div>
+                <small>ตาซ้าย (L) สั้น/ยาว:</small>
+                <select id="editProfileLeftSph" class="input-select"></select>
+              </div>
+              <div>
+                <small>ระยะตาดำ (PD):</small>
+                <input type="number" id="editProfilePd" class="input-text" min="50" max="75" value="62">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Order History & Tracking Stepper -->
+        <div id="profileOrdersTabContent" style="display: none;">
+          <div id="ordersListContainer" class="order-history-list">
+            <!-- Rendered dynamically by JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" id="profileViewFooter">
+        <button class="btn btn-secondary" onclick="closeProfileModal()">ปิดหน้าต่าง</button>
+        <button class="btn btn-secondary" id="btnEditProfileMode" onclick="toggleEditProfileMode(true)">✏️ แก้ไขข้อมูล / ค่าสายตา</button>
+        <button class="btn btn-primary" onclick="closeProfileModal(); window.location.href='#products';">🛍️ ไปเลือกแว่นตา</button>
+      </div>
+
+      <div class="modal-footer" id="profileEditFooter" style="display: none;">
+        <button class="btn btn-secondary" onclick="toggleEditProfileMode(false)">ยกเลิก</button>
+        <button class="btn btn-primary" onclick="saveProfileChanges()">💾 บันทึกข้อมูล</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wishlist Drawer (❤️ สินค้าที่ถูกใจ) -->
+  <div class="cart-drawer-backdrop" id="wishlistBackdrop" onclick="closeWishlistDrawer()"></div>
+  <aside class="cart-drawer" id="wishlistDrawer">
+    <div class="cart-header">
+      <div style="display: flex; align-items: center; gap: 0.6rem;">
+        <h3 style="margin: 0; font-size: 1.15rem; display: flex; align-items: center; gap: 0.4rem;">❤️ สินค้าที่ถูกใจ</h3>
+        <span id="wishlistDrawerCount" class="cart-count-pill" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 0.15rem 0.6rem; border-radius: 9999px; font-weight: 700; font-size: 0.8rem;">0</span>
+      </div>
+      <button class="icon-btn" onclick="closeWishlistDrawer()">&times;</button>
+    </div>
+    <div class="cart-items" id="wishlistItemsContainer">
+      <!-- Rendered dynamically -->
+    </div>
+  </aside>
+
+  <!-- Face Match Email Modal (Requirement #3 Trigger) -->
+  <div class="modal-backdrop" id="faceEmailModal" onclick="if(event.target===this) closeFaceEmailModal()">
+    <div class="modal-container auth-modal-card">
+      <button class="modal-close" onclick="closeFaceEmailModal()">&times;</button>
+      <div class="auth-header">
+        <h3>📩 รับผลวิเคราะห์และแว่นตาแนะนำทางอีเมล</h3>
+        <p>ระบบจะส่งสรุปทรงแว่นตาที่เหมาะกับรูปหน้าของคุณโดยเฉพาะ พร้อมคำแนะนำจากช่างแว่นตา</p>
+      </div>
+      <form id="faceEmailForm" onsubmit="handleSendFaceEmailSubmit(event)" class="auth-form">
+        <div class="form-group">
+          <label class="form-label" for="faceEmailInput">ระบุอีเมลของคุณ:</label>
+          <input type="email" id="faceEmailInput" class="input-text" placeholder="yourname@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="faceNameInput">ชื่อของคุณ (ไม่บังคับ):</label>
+          <input type="text" id="faceNameInput" class="input-text" placeholder="เช่น คุณสมชาย">
+        </div>
+        <input type="hidden" id="faceShapeHidden" value="oval">
+        <div id="faceEmailStatusMsg" class="auth-error-msg" style="display: none;"></div>
+        <button type="submit" id="faceEmailSubmitBtn" class="btn btn-primary btn-block mt-2">
+          🚀 ส่งผลวิเคราะห์เข้าอีเมลทันที
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js?v=3.0"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?php
+// ============================================================================
+// XCOCO Eyewear - Database Connection (db.php)
+// ============================================================================
+
+$db_host = 'localhost';
+$db_name = 'xcoco_db';
+$db_user = 'root';
+$db_pass = '';
+$db_port = 3306;
+
+try {
+    $dsn = "mysql:host={$db_host};port={$db_port};dbname={$db_name};charset=utf8mb4";
+    $pdo = new PDO($dsn, $db_user, $db_pass, [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ]);
+} catch (PDOException $e) {
+    // ถ้ายังไม่ได้เชื่อมต่อฐานข้อมูล ให้ส่งสถานะ false เพื่อให้ระบบจัดการต่อไปได้
+    $pdo = null;
+    $db_error = $e->getMessage();
+}
