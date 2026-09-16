@@ -115,7 +115,7 @@ const PRODUCTS = [
     originalPrice: 1950,
     badge: "ดาราใส่เพียบ 🌟",
     desc: "กรอบ Oversized ขาสีทอง ลุคคุณหนูปารีส ถ่ายรูปขึ้นกล้องสุดๆ",
-    image: "assets/images/glasses_cateye_luxury_1787762132982.jpg"
+    image: "assets/images/glasses_oversized_gold.jpg"
   },
   {
     id: "frame_titanium_11",
@@ -192,7 +192,7 @@ const PRODUCTS = [
     originalPrice: 450,
     badge: "ไอเทมคู่หู 🧼",
     desc: "สเปรย์ทำความสะอาดเลนส์นาโนกันฝ้า 30ml พร้อมผ้าไมโครไฟเบอร์พรีเมียม ไม่ทิ้งคราบ",
-    image: "assets/images/email_glasses_sub_opt.jpg"
+    image: "assets/images/lens_cleaner_kit.jpg"
   },
   {
     id: "frame_care_18",
@@ -203,7 +203,7 @@ const PRODUCTS = [
     originalPrice: 650,
     badge: "หนังแท้ 🎁",
     desc: "กล่องใส่แว่นตาหนังแท้เย็บมือ ฝาปิดแม่เหล็ก บุผ้ากำมะหยี่ด้านใน กันรอยขีดข่วน 100%",
-    image: "assets/images/glasses_pedestal_cropped.jpg"
+    image: "assets/images/leather_glasses_case.jpg"
   }
 ];
 
