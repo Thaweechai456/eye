@@ -47,6 +47,9 @@ if (isset($pdo) && $pdo !== null) {
     }
 }
 
+// 1.1 บันทึกลง subscribers.txt ตามข้อกำหนดอาจารย์
+@file_put_contents(dirname(__DIR__) . '/subscribers.txt', $email . "\n", FILE_APPEND);
+
 // 2. สร้าง Content อีเมลตาม Template
 $config = require __DIR__ . '/mail_config.php';
 $baseUrl = $config['base_url'] ?? 'http://localhost/eye';
