@@ -3297,3 +3297,20 @@ button, input, select {
   mix-blend-mode: multiply;
 }
 
+/* ==========================================================================
+   21. Transactional Email & Checkout Animations
+   ========================================================================== */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.cart-email-box {
+  margin-top: 0.85rem;
+}
+
+.receipt-email-notice {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+

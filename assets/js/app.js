@@ -1676,6 +1676,12 @@ function openCartDrawer() {
     addressInput.value = `${currentUser.name} (${currentUser.phone || ''}) - ${currentUser.address}`;
   }
 
+  // Pre-fill user email if logged in
+  const emailInput = document.getElementById("checkoutEmail");
+  if (emailInput && currentUser && currentUser.email && !emailInput.value) {
+    emailInput.value = currentUser.email;
+  }
+
   document.getElementById("cartDrawer").classList.add("active");
   document.getElementById("cartDrawerBackdrop").classList.add("active");
 }
@@ -1844,6 +1850,16 @@ function openCheckoutModal() {
     ? deliveryAddressInput.value.trim() 
     : (currentUser && currentUser.address ? `${currentUser.name} - ${currentUser.address}` : "จัดส่งตามที่อยู่ที่ระบุไว้กับทีมงาน");
 
+  const emailInput = document.getElementById("checkoutEmail");
+  let customerEmail = emailInput ? emailInput.value.trim() : "";
+  if (!customerEmail && currentUser && currentUser.email) {
+    customerEmail = currentUser.email;
+  }
+  if (!customerEmail) {
+    customerEmail = "robloxmakethegame123@gmail.com";
+  }
+  const customerName = currentUser ? (currentUser.name || "คุณลูกค้า") : "คุณลูกค้า";
+
   const orderId = "#XC-" + Math.floor(10000 + Math.random() * 90000);
   const today = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
 
@@ -1862,6 +1878,8 @@ function openCheckoutModal() {
 
   pendingOrderData = {
     orderId,
+    customerName,
+    email: customerEmail,
     date: today,
     items: JSON.parse(JSON.stringify(cart)),
     subtotal,
@@ -1880,6 +1898,50 @@ function openCheckoutModal() {
   `).join("");
 
   document.getElementById("receiptFinalTotal").innerText = `฿${grandTotal.toLocaleString()}`;
+
+  // Update & trigger Transactional Email Receipt
+  const receiptEmailNotice = document.getElementById("receiptEmailNotice");
+  const receiptEmailSpinner = document.getElementById("receiptEmailSpinner");
+  const receiptEmailText = document.getElementById("receiptEmailText");
+
+  if (receiptEmailNotice && receiptEmailText) {
+    receiptEmailNotice.style.display = "flex";
+    receiptEmailNotice.style.background = "rgba(59, 130, 246, 0.12)";
+    receiptEmailNotice.style.borderColor = "rgba(59, 130, 246, 0.35)";
+    receiptEmailNotice.style.color = "#93c5fd";
+    if (receiptEmailSpinner) receiptEmailSpinner.style.display = "inline-block";
+    receiptEmailText.innerHTML = `กำลังจัดส่งใบเสร็จและยืนยันคำสั่งซื้อไปยัง <strong>${customerEmail}</strong>...`;
+
+    fetch("backend/api_order_email.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pendingOrderData)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        receiptEmailNotice.style.background = "rgba(16, 185, 129, 0.12)";
+        receiptEmailNotice.style.borderColor = "rgba(16, 185, 129, 0.35)";
+        receiptEmailNotice.style.color = "#6ee7b7";
+        if (receiptEmailSpinner) receiptEmailSpinner.style.display = "none";
+        receiptEmailText.innerHTML = `✅ จัดส่งใบเสร็จดิจิทัลและเอกสารยืนยันไปยัง <strong>${customerEmail}</strong> สำเร็จเรียบร้อย!`;
+      } else {
+        receiptEmailNotice.style.background = "rgba(239, 68, 68, 0.12)";
+        receiptEmailNotice.style.borderColor = "rgba(239, 68, 68, 0.35)";
+        receiptEmailNotice.style.color = "#fca5a5";
+        if (receiptEmailSpinner) receiptEmailSpinner.style.display = "none";
+        receiptEmailText.innerHTML = `⚠️ ${data.message || 'บันทึกคำสั่งซื้อแล้ว (ไม่สามารถส่งอีเมลได้)'}`;
+      }
+    })
+    .catch(err => {
+      console.warn("Transactional email dispatch error:", err);
+      receiptEmailNotice.style.background = "rgba(245, 158, 11, 0.12)";
+      receiptEmailNotice.style.borderColor = "rgba(245, 158, 11, 0.35)";
+      receiptEmailNotice.style.color = "#fcd34d";
+      if (receiptEmailSpinner) receiptEmailSpinner.style.display = "none";
+      receiptEmailText.innerHTML = `ℹ️ บันทึกคำสั่งซื้อเรียบร้อย (ระบบออฟไลน์)`;
+    });
+  }
 
   closeCartDrawer();
   document.getElementById("checkoutModal").classList.add("active");

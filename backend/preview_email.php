@@ -27,8 +27,11 @@ $demoUser = [
   <a href="?type=register" style="display: inline-block; padding: 6px 14px; border-radius: 6px; font-size: 13px; text-decoration: none; font-weight: 600; margin-right: 8px; <?= $type === 'register' ? 'background: #ffffff; color: #000000;' : 'background: #27272a; color: #e4e4e7;' ?>">
     📧 อีเมลต้อนรับสมาชิกใหม่ (Register)
   </a>
-  <a href="?type=subscribe" style="display: inline-block; padding: 6px 14px; border-radius: 6px; font-size: 13px; text-decoration: none; font-weight: 600; <?= $type === 'subscribe' ? 'background: #ffffff; color: #000000;' : 'background: #27272a; color: #e4e4e7;' ?>">
+  <a href="?type=subscribe" style="display: inline-block; padding: 6px 14px; border-radius: 6px; font-size: 13px; text-decoration: none; font-weight: 600; margin-right: 8px; <?= $type === 'subscribe' ? 'background: #ffffff; color: #000000;' : 'background: #27272a; color: #e4e4e7;' ?>">
     📬 อีเมลรับข่าวสาร (Subscribe)
+  </a>
+  <a href="?type=order" style="display: inline-block; padding: 6px 14px; border-radius: 6px; font-size: 13px; text-decoration: none; font-weight: 600; <?= $type === 'order' ? 'background: #ffffff; color: #000000;' : 'background: #27272a; color: #e4e4e7;' ?>">
+    🧾 อีเมลธุรกรรมใบเสร็จสั่งซื้อ (Order Receipt)
   </a>
   <a href="../index.html" style="display: inline-block; padding: 6px 14px; border-radius: 6px; font-size: 13px; text-decoration: none; color: #71717a; margin-left: 15px;">
     ← กลับหน้าร้าน
@@ -38,6 +41,32 @@ $demoUser = [
 <?php
 if ($type === 'register') {
     echo getRegisterEmailTemplate($demoUser, '../index.html', true);
+} elseif ($type === 'order') {
+    $demoOrder = [
+        'orderId' => '#XC-88921',
+        'customerName' => 'คุณสมชาย สายตาดี',
+        'email' => 'robloxmakethegame123@gmail.com',
+        'deliveryAddress' => '123/45 หมู่ 6 ถ.สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110 (โทร 081-234-5678)',
+        'items' => [
+            [
+                'name' => 'Titanium Hexagon Modern (กรอบไทเทเนียม)',
+                'quantity' => 1,
+                'unitPrice' => 1590,
+                'rxSummary' => 'ขวา: SPH -1.50, CYL -0.50, AXIS 90 / ซ้าย: SPH -1.50'
+            ],
+            [
+                'name' => 'Nano Anti-Fog Lens Cleaner Kit',
+                'quantity' => 1,
+                'unitPrice' => 390,
+                'rxSummary' => ''
+            ]
+        ],
+        'subtotal' => 1980,
+        'discountAmount' => 198,
+        'grandTotal' => 1782,
+        'date' => date('d M Y')
+    ];
+    echo getOrderReceiptEmailTemplate($demoOrder, '../index.html');
 } else {
     echo getSubscribeEmailTemplate('customer@example.com', '../index.html', true);
 }

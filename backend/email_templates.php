@@ -487,3 +487,233 @@ function getPersonalizedRecommendationEmailTemplate($email, $name, $shapeKey = '
 </html>
 HTML;
 }
+
+/**
+ * 4. Template สำหรับอีเมลธุรกรรมยืนยันคำสั่งซื้อและใบเสร็จดิจิทัล (Transactional Order Receipt)
+ */
+function getOrderReceiptEmailTemplate($orderData, $baseUrl = 'http://localhost/eye') {
+    $safeOrderId = htmlspecialchars($orderData['orderId'] ?? '#XC-' . rand(10000, 99999), ENT_QUOTES, 'UTF-8');
+    $safeName = htmlspecialchars($orderData['customerName'] ?? 'คุณลูกค้า', ENT_QUOTES, 'UTF-8');
+    $safeEmail = htmlspecialchars($orderData['email'] ?? '', ENT_QUOTES, 'UTF-8');
+    $safeAddress = nl2br(htmlspecialchars($orderData['deliveryAddress'] ?? 'จัดส่งตามที่อยู่ที่ระบุไว้กับทีมงาน', ENT_QUOTES, 'UTF-8'));
+    $safeDate = htmlspecialchars($orderData['date'] ?? date('d M Y'), ENT_QUOTES, 'UTF-8');
+    $subtotal = number_format($orderData['subtotal'] ?? 0);
+    $discountAmount = number_format($orderData['discountAmount'] ?? 0);
+    $grandTotal = number_format($orderData['grandTotal'] ?? 0);
+    $targetUrl = rtrim($baseUrl, '/') . '#profile';
+
+    $itemsHtml = '';
+    if (!empty($orderData['items']) && is_array($orderData['items'])) {
+        foreach ($orderData['items'] as $item) {
+            $name = htmlspecialchars($item['name'] ?? 'กรอบแว่นตา XCOCO', ENT_QUOTES, 'UTF-8');
+            $qty = (int)($item['quantity'] ?? 1);
+            $price = number_format(($item['unitPrice'] ?? 0) * $qty);
+            $rx = !empty($item['rxSummary']) ? htmlspecialchars($item['rxSummary'], ENT_QUOTES, 'UTF-8') : '';
+
+            $itemsHtml .= '
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #232328;">
+                <div style="font-weight: 600; color: #ffffff; font-size: 14px;">' . $name . '</div>';
+            if ($rx) {
+                $itemsHtml .= '<div style="font-size: 11.5px; color: #a1a1aa; margin-top: 3px;">🔍 ค่าสายตา: ' . $rx . '</div>';
+            }
+            $itemsHtml .= '
+                <div style="font-size: 12px; color: #71717a; margin-top: 2px;">จำนวน: ' . $qty . ' ชิ้น</div>
+              </td>
+              <td align="right" style="padding: 12px 0; border-bottom: 1px solid #232328; font-weight: 700; color: #ffffff; font-size: 14px; vertical-align: top;">
+                ฿' . $price . '
+              </td>
+            </tr>';
+        }
+    } else {
+        $itemsHtml = '<tr><td colspan="2" style="padding: 12px 0; color: #a1a1aa;">ไม่มีรายการสินค้า</td></tr>';
+    }
+
+    $discountRowHtml = '';
+    if (!empty($orderData['discountAmount']) && $orderData['discountAmount'] > 0) {
+        $discountRowHtml = '
+        <tr>
+          <td style="padding: 5px 0; color: #34d399; font-size: 13px;">ส่วนลดโปรโมชัน:</td>
+          <td align="right" style="padding: 5px 0; color: #34d399; font-weight: 600; font-size: 13px;">-฿' . $discountAmount . '</td>
+        </tr>';
+    }
+
+    return <<<HTML
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใบเสร็จคำสั่งซื้อ {$safeOrderId} - XCOCO Eyewear</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0c0c0e; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Prompt', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+  
+  <div style="display: none; font-size: 1px; color: #0c0c0e; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+    ยืนยันคำสั่งซื้อ {$safeOrderId} ขอบคุณที่สั่งซื้อกับ XCOCO Eyewear ยอดรวม ฿{$grandTotal}
+  </div>
+
+  <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #0c0c0e; padding: 30px 12px;">
+    <tr>
+      <td align="center">
+        <!-- Main Receipt Container -->
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; margin: 0 auto; background-color: #141416; border: 1px solid #232328; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.85);">
+          
+          <!-- Header -->
+          <tr>
+            <td align="center" style="padding: 32px 24px 16px;">
+              <div style="font-size: 11px; color: #52525b; letter-spacing: 1.5px; margin-bottom: 10px;">XCOCO EYEWEAR · TRANSACTIONAL RECEIPT</div>
+              <div style="font-size: 26px; font-weight: 800; letter-spacing: 3px; color: #ffffff; text-transform: uppercase;">XCOCO</div>
+              <div style="font-size: 11px; font-weight: 600; letter-spacing: 2px; color: #a1a1aa; margin-top: 2px; text-transform: uppercase;">EYEWEAR</div>
+              <div style="font-size: 12.5px; color: #71717a; margin-top: 6px;">เห็นชัด ในแบบของคุณ</div>
+            </td>
+          </tr>
+
+          <!-- Success Badge Banner -->
+          <tr>
+            <td style="padding: 0 28px 20px;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background: linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(5,150,105,0.08) 100%); border: 1px solid rgba(16,185,129,0.3); border-radius: 14px; padding: 18px 20px; text-align: center;">
+                <tr>
+                  <td>
+                    <div style="font-size: 28px; line-height: 1; margin-bottom: 8px;">🎉</div>
+                    <div style="font-size: 18px; font-weight: 700; color: #6ee7b7; margin-bottom: 4px;">สั่งซื้อและชำระเงินสำเร็จ!</div>
+                    <div style="font-size: 13px; color: #d1fae5; line-height: 1.5;">
+                      ขอบคุณ <strong style="color: #ffffff;">{$safeName}</strong> ที่ไว้วางใจให้เราดูแลสายตาคุณ
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Order Meta (ID & Date) -->
+          <tr>
+            <td style="padding: 0 28px 18px;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #1a1a1f; border: 1px solid #282830; border-radius: 12px; padding: 14px 18px;">
+                <tr>
+                  <td style="font-size: 12.5px; color: #a1a1aa;">
+                    หมายเลขคำสั่งซื้อ: <strong style="color: #ffffff; font-family: monospace; font-size: 13.5px;">{$safeOrderId}</strong>
+                  </td>
+                  <td align="right" style="font-size: 12.5px; color: #a1a1aa;">
+                    วันที่: <strong style="color: #ffffff;">{$safeDate}</strong>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Shipping Address -->
+          <tr>
+            <td style="padding: 0 28px 20px;">
+              <div style="font-size: 12px; font-weight: 700; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
+                📍 ที่อยู่จัดส่งพัสดุ
+              </div>
+              <div style="background-color: #1a1a1f; border: 1px solid #282830; border-radius: 12px; padding: 14px 18px; font-size: 13px; color: #e4e4e7; line-height: 1.6;">
+                {$safeAddress}
+              </div>
+            </td>
+          </tr>
+
+          <!-- Order Items Table -->
+          <tr>
+            <td style="padding: 0 28px 16px;">
+              <div style="font-size: 12px; font-weight: 700; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
+                🛍️ รายการสินค้าที่สั่งตัด
+              </div>
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                {$itemsHtml}
+              </table>
+            </td>
+          </tr>
+
+          <!-- Cost Breakdown & Grand Total -->
+          <tr>
+            <td style="padding: 0 28px 24px;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 16px 20px;">
+                <tr>
+                  <td style="padding: 4px 0; color: #a1a1aa; font-size: 13px;">ราคารวมสินค้า:</td>
+                  <td align="right" style="padding: 4px 0; color: #ffffff; font-size: 13px;">฿{$subtotal}</td>
+                </tr>
+                {$discountRowHtml}
+                <tr>
+                  <td style="padding: 4px 0; color: #a1a1aa; font-size: 13px;">ค่าจัดส่ง:</td>
+                  <td align="right" style="padding: 4px 0; color: #34d399; font-weight: 600; font-size: 13px;">ฟรี (โปรโมชัน)</td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="padding: 10px 0 6px;"><div style="border-top: 1px solid #2f2f38;"></div></td>
+                </tr>
+                <tr>
+                  <td style="font-size: 15px; font-weight: 700; color: #ffffff;">ยอดชำระสุทธิ:</td>
+                  <td align="right" style="font-size: 20px; font-weight: 800; color: #facc15;">฿{$grandTotal}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- 4-Step Order Tracker Progress -->
+          <tr>
+            <td style="padding: 0 28px 24px;">
+              <div style="font-size: 12px; font-weight: 700; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
+                🚚 ขั้นตอนการดำเนินการผลิตและจัดส่ง
+              </div>
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #1a1a1f; border: 1px solid #282830; border-radius: 12px; padding: 16px 14px;">
+                <tr>
+                  <td align="center" width="25%" style="font-size: 11px; color: #34d399; font-weight: 600;">
+                    <div style="width: 24px; height: 24px; line-height: 24px; border-radius: 50%; background-color: #059669; color: #ffffff; font-size: 12px; margin: 0 auto 6px;">✓</div>
+                    1. ได้รับคำสั่งซื้อ
+                  </td>
+                  <td align="center" width="25%" style="font-size: 11px; color: #60a5fa; font-weight: 700;">
+                    <div style="width: 24px; height: 24px; line-height: 24px; border-radius: 50%; background-color: #2563eb; color: #ffffff; font-size: 12px; margin: 0 auto 6px; box-shadow: 0 0 10px rgba(37,99,235,0.6);">⚡</div>
+                    2. เจียระไนเลนส์
+                  </td>
+                  <td align="center" width="25%" style="font-size: 11px; color: #71717a;">
+                    <div style="width: 24px; height: 24px; line-height: 24px; border-radius: 50%; background-color: #27272a; color: #71717a; font-size: 12px; margin: 0 auto 6px;">3</div>
+                    3. QC ตรวจสอบ
+                  </td>
+                  <td align="center" width="25%" style="font-size: 11px; color: #71717a;">
+                    <div style="width: 24px; height: 24px; line-height: 24px; border-radius: 50%; background-color: #27272a; color: #71717a; font-size: 12px; margin: 0 auto 6px;">4</div>
+                    4. จัดส่งพัสดุ
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Action Button: Track Order -->
+          <tr>
+            <td align="center" style="padding: 0 28px 24px;">
+              <a href="{$targetUrl}" target="_blank" style="display: block; width: 85%; max-width: 320px; background-color: #ffffff; color: #000000; text-align: center; text-decoration: none; padding: 14px 0; border-radius: 9999px; font-weight: 700; font-size: 14.5px; letter-spacing: 0.4px; box-shadow: 0 6px 20px rgba(255,255,255,0.18);">
+                ดูประวัติคำสั่งซื้อบนเว็บไซต์ 👓
+              </a>
+            </td>
+          </tr>
+
+          <!-- Help / Contact Support -->
+          <tr>
+            <td style="padding: 0 28px 24px;">
+              <div style="border: 1px dashed #2f2f38; border-radius: 10px; padding: 12px 16px; text-align: center; font-size: 11.5px; color: #a1a1aa; line-height: 1.6;">
+                💬 หากต้องการสอบถามสถานะ หรือส่งใบวัดสายตาเพิ่มเติม สามารถตอบกลับอีเมลนี้ หรือแอด LINE: <strong style="color: #ffffff;">@xcoco</strong> ได้ตลอด 24 ชม.
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td align="center" style="background-color: #0c0c0e; padding: 20px; border-top: 1px solid #1f1f26;">
+              <div style="font-size: 12px; color: #71717a; margin-bottom: 4px;">
+                XCOCO Eyewear · เห็นชัด ในแบบของคุณ
+              </div>
+              <div style="font-size: 11px; color: #52525b;">
+                อีเมลนี้เป็นเอกสารธุรกรรมอัตโนมัติ ส่งถึง {$safeEmail} สำหรับคำสั่งซื้อ {$safeOrderId}
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+HTML;
+}
+
