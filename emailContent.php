@@ -6,7 +6,7 @@
 
 // ดึงการตั้งค่า Base URL ของเว็บไซต์
 $cfg = file_exists(__DIR__ . '/backend/mail_config.php') ? require __DIR__ . '/backend/mail_config.php' : [];
-$baseUrl = !empty($cfg['base_url']) ? rtrim($cfg['base_url'], '/') : 'http://localhost/eye';
+$baseUrl = !empty($cfg['base_url']) ? rtrim($cfg['base_url'], '/') : 'https://thaweechai456.github.io/eye';
 $shopUrl = $baseUrl . '/#products';
 $quizUrl = $baseUrl . '/#quiz';
 

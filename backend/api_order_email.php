@@ -35,7 +35,7 @@ if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $config = require __DIR__ . '/mail_config.php';
-$baseUrl = $config['base_url'] ?? 'http://localhost/eye';
+$baseUrl = $config['base_url'] ?? 'https://thaweechai456.github.io/eye';
 
 // เตรียมข้อมูล Order
 $orderData = [

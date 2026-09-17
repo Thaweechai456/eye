@@ -7,10 +7,10 @@
 /**
  * 1. Template สำหรับอีเมล Subscribe ข่าวสาร (Luxury Edition)
  */
-function getSubscribeEmailTemplate($subscriberEmail, $baseUrl = 'http://localhost/eye', $isWebPreview = false) {
+function getSubscribeEmailTemplate($subscriberEmail, $baseUrl = 'https://thaweechai456.github.io/eye', $isWebPreview = false) {
     $imgProduct = $isWebPreview ? 'assets/images/email_glasses_sub_opt.jpg' : 'cid:product_image';
-    $targetShop = rtrim($baseUrl, '/') . '#products';
-    $targetQuiz = rtrim($baseUrl, '/') . '#quiz';
+    $targetShop = rtrim($baseUrl, '/') . '/#products';
+    $targetQuiz = rtrim($baseUrl, '/') . '/#quiz';
 
     return <<<HTML
 <!DOCTYPE html>
@@ -140,9 +140,9 @@ HTML;
 /**
  * 2. Template สำหรับอีเมลยืนยันการสมัครสมาชิกใหม่ (Luxury Dynamic Edition)
  */
-function getRegisterEmailTemplate($userData, $baseUrl = 'http://localhost/eye', $isWebPreview = false) {
+function getRegisterEmailTemplate($userData, $baseUrl = 'https://thaweechai456.github.io/eye', $isWebPreview = false) {
     $imgGlasses = $isWebPreview ? 'assets/images/glasses_inner_showcase.jpg' : 'cid:showcase_image';
-    $targetUrl = rtrim($baseUrl, '/') . '#products';
+    $targetUrl = rtrim($baseUrl, '/') . '/#products';
 
     $name = htmlspecialchars($userData['name'] ?? 'สมาชิก XCOCO', ENT_QUOTES, 'UTF-8');
     $email = htmlspecialchars($userData['email'] ?? '', ENT_QUOTES, 'UTF-8');
@@ -322,9 +322,9 @@ HTML;
 /**
  * 3. Template สำหรับอีเมล Personalized Marketing แนะนำสินค้าตามรูปหน้า/ความสนใจ (Luxury Edition)
  */
-function getPersonalizedRecommendationEmailTemplate($email, $name, $shapeKey = 'oval', $baseUrl = 'http://localhost/eye', $isWebPreview = false) {
+function getPersonalizedRecommendationEmailTemplate($email, $name, $shapeKey = 'oval', $baseUrl = 'https://thaweechai456.github.io/eye', $isWebPreview = false) {
     $imgProduct = $isWebPreview ? 'assets/images/glasses_inner_showcase.jpg' : 'cid:recommend_image';
-    $targetShop = rtrim($baseUrl, '/') . '#products';
+    $targetShop = rtrim($baseUrl, '/') . '/#products';
 
     $shapeMap = [
         'oval' => [
@@ -491,7 +491,7 @@ HTML;
 /**
  * 4. Template สำหรับอีเมลธุรกรรมยืนยันคำสั่งซื้อและใบเสร็จดิจิทัล (Transactional Order Receipt)
  */
-function getOrderReceiptEmailTemplate($orderData, $baseUrl = 'http://localhost/eye') {
+function getOrderReceiptEmailTemplate($orderData, $baseUrl = 'https://thaweechai456.github.io/eye') {
     $safeOrderId = htmlspecialchars($orderData['orderId'] ?? '#XC-' . rand(10000, 99999), ENT_QUOTES, 'UTF-8');
     $safeName = htmlspecialchars($orderData['customerName'] ?? 'คุณลูกค้า', ENT_QUOTES, 'UTF-8');
     $safeEmail = htmlspecialchars($orderData['email'] ?? '', ENT_QUOTES, 'UTF-8');
@@ -500,7 +500,7 @@ function getOrderReceiptEmailTemplate($orderData, $baseUrl = 'http://localhost/e
     $subtotal = number_format($orderData['subtotal'] ?? 0);
     $discountAmount = number_format($orderData['discountAmount'] ?? 0);
     $grandTotal = number_format($orderData['grandTotal'] ?? 0);
-    $targetUrl = rtrim($baseUrl, '/') . '#profile';
+    $targetUrl = rtrim($baseUrl, '/') . '/#profile';
 
     $itemsHtml = '';
     if (!empty($orderData['items']) && is_array($orderData['items'])) {

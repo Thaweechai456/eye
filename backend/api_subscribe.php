@@ -52,7 +52,7 @@ if (isset($pdo) && $pdo !== null) {
 
 // 2. สร้าง Content อีเมลตาม Template
 $config = require __DIR__ . '/mail_config.php';
-$baseUrl = $config['base_url'] ?? 'http://localhost/eye';
+$baseUrl = $config['base_url'] ?? 'https://thaweechai456.github.io/eye';
 $emailHtml = getSubscribeEmailTemplate($email, $baseUrl);
 $subject = 'ขอบคุณที่สมัครรับข่าวสาร - XCOCO Eyewear 👓✨';
 

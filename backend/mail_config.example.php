@@ -19,7 +19,7 @@ return [
     'from_name'  => 'XCOCO Eyewear',
 
     // URL ของเว็บไซต์
-    'base_url'   => 'http://localhost/eye',
+    'base_url'   => 'https://thaweechai456.github.io/eye',
     
     // โหมดจำลอง (true = บันทึก log แทนการส่งจริง, false = ส่งจริง)
     'simulate_mode' => false
