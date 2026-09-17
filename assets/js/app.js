@@ -1653,6 +1653,8 @@ function confirmAddToCart() {
     cartId: "item_" + Date.now(),
     productId: currentSelectingProduct.id,
     name: currentSelectingProduct.name,
+    image: currentSelectingProduct.image,
+    categoryLabel: currentSelectingProduct.categoryLabel,
     lensType: lensType,
     rxSummary: rxSummaryText,
     unitPrice: unitPrice,
@@ -1663,6 +1665,103 @@ function confirmAddToCart() {
   saveCart();
   closeCustomizerModal();
   openCartDrawer();
+}
+
+function formatCartRxBadges(rxSummary) {
+  if (!rxSummary) return '';
+  const text = String(rxSummary).trim();
+
+  // 1. Slip upload
+  if (text.includes('รูปใบวัด') || text.includes('แนบใบวัด')) {
+    const parts = text.split('|');
+    const lens = parts[1] ? parts[1].trim() : 'เลนส์สั่งตัด';
+    return `
+      <div class="cart-rx-tags">
+        <span class="rx-tag rx-slip">📄 แนบใบวัดสายตาแล้ว</span>
+        <span class="rx-tag rx-lens">✨ ${lens}</span>
+      </div>
+    `;
+  }
+
+  // 2. Bluelight filter only (no Rx)
+  if (text.includes('กรองแสง') || text.includes('ไม่มีค่าสายตา')) {
+    return `
+      <div class="cart-rx-tags">
+        <span class="rx-tag rx-blue">💻 เลนส์กรองแสงฟ้า Blue Block</span>
+        <span class="rx-tag rx-neutral">ไม่มีค่าสายตา</span>
+      </div>
+    `;
+  }
+
+  // 3. Frame only
+  if (text.includes('เฉพาะกรอบ') || text.includes('ตัดเลนส์เอง')) {
+    return `
+      <div class="cart-rx-tags">
+        <span class="rx-tag rx-frame">📦 เฉพาะกรอบแว่นตา</span>
+      </div>
+    `;
+  }
+
+  // 4. Standard Prescription format
+  const rMatch = text.match(/R:\s*([^\(|\|]+)(?:\(([^)]+)\))?/i);
+  const lMatch = text.match(/L:\s*([^\(|\|]+)(?:\(([^)]+)\))?/i);
+  const pdMatch = text.match(/PD\s*([\d\.]+)mm?/i);
+
+  const parts = text.split('|');
+  const lensName = parts.length > 1 ? parts[parts.length - 1].trim() : 'เลนส์สั่งตัด';
+
+  if (rMatch && lMatch) {
+    const rSph = rMatch[1].trim();
+    const rExtra = rMatch[2] ? rMatch[2].trim() : '';
+    const lSph = lMatch[1].trim();
+    const lExtra = lMatch[2] ? lMatch[2].trim() : '';
+    const pd = pdMatch ? pdMatch[1].trim() : '62';
+
+    let rExtraClean = '';
+    if (rExtra) {
+      const cylMatch = rExtra.match(/CYL\s*([^\s]+)/i);
+      const axisMatch = rExtra.match(/AXIS\s*([^\s]+)/i);
+      const cylVal = cylMatch ? cylMatch[1] : '';
+      const axisVal = axisMatch ? axisMatch[1] : '';
+      if (cylVal && cylVal !== '0.00' && cylVal !== '0') {
+        rExtraClean = `เอียง ${cylVal}${axisVal && axisVal !== '-' ? ' ' + axisVal + '°' : ''}`;
+      }
+    }
+
+    let lExtraClean = '';
+    if (lExtra) {
+      const cylMatch = lExtra.match(/CYL\s*([^\s]+)/i);
+      const axisMatch = lExtra.match(/AXIS\s*([^\s]+)/i);
+      const cylVal = cylMatch ? cylMatch[1] : '';
+      const axisVal = axisMatch ? axisMatch[1] : '';
+      if (cylVal && cylVal !== '0.00' && cylVal !== '0') {
+        lExtraClean = `เอียง ${cylVal}${axisVal && axisVal !== '-' ? ' ' + axisVal + '°' : ''}`;
+      }
+    }
+
+    return `
+      <div class="cart-rx-tags">
+        <span class="rx-tag rx-r" title="ค่าสายตาตาขวา">
+          <span class="rx-lbl">R</span> ${rSph}${rExtraClean ? ` <span class="rx-sub">(${rExtraClean})</span>` : ''}
+        </span>
+        <span class="rx-tag rx-l" title="ค่าสายตาตาซ้าย">
+          <span class="rx-lbl">L</span> ${lSph}${lExtraClean ? ` <span class="rx-sub">(${lExtraClean})</span>` : ''}
+        </span>
+        <span class="rx-tag rx-pd" title="ระยะห่างรูม่านตา">
+          <span class="rx-lbl">PD</span> ${pd}mm
+        </span>
+        <span class="rx-tag rx-lens">
+          ✨ ${lensName}
+        </span>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="cart-rx-tags">
+      <span class="rx-tag rx-generic">${text}</span>
+    </div>
+  `;
 }
 
 function saveCart() {
@@ -1677,38 +1776,76 @@ function updateCartUI() {
 
   const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
   countBadge.innerText = totalQty;
-  drawerCount.innerText = totalQty;
+  if (drawerCount) drawerCount.innerText = totalQty;
 
   if (cart.length === 0) {
     container.innerHTML = `
       <div class="empty-cart-view">
-        <span class="empty-cart-icon">🛒</span>
-        <p>ยังไม่มีสินค้าในตะกร้า</p>
-        <button class="btn btn-secondary" onclick="closeCartDrawer()">ไปเลือกแว่นตากัน</button>
+        <div class="empty-cart-circle">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </div>
+        <h4>ยังไม่มีสินค้าในตะกร้า</h4>
+        <p>เลือกกรอบแว่นตาและสั่งตัดเลนส์คู่โปรดของคุณได้เลย</p>
+        <button class="btn btn-primary btn-sm" onclick="closeCartDrawer(); document.getElementById('products')?.scrollIntoView({behavior:'smooth'});">
+          สำรวจคอลเลกชันแว่นตา ✨
+        </button>
       </div>
     `;
   } else {
-    container.innerHTML = cart.map(item => `
-      <div class="cart-item">
-        <div class="cart-item-header">
-          <div>
-            <h4 class="cart-item-name">${item.name}</h4>
+    container.innerHTML = cart.map(item => {
+      const prod = PRODUCTS.find(p => p.id === item.productId || p.name === item.name);
+      const itemImage = item.image || prod?.image || 'assets/images/glasses_classic_aviator_1787761881857.jpg';
+      const categoryLabel = item.categoryLabel || prod?.categoryLabel || 'แว่นตาสั่งตัด';
+      const rxHtml = formatCartRxBadges(item.rxSummary);
+
+      return `
+        <div class="cart-item">
+          <div class="cart-item-card-inner">
+            <div class="cart-item-thumb-box">
+              <img src="${itemImage}" alt="${item.name}" class="cart-item-thumb" onerror="this.src='assets/images/glasses_classic_aviator_1787761881857.jpg'">
+            </div>
+            <div class="cart-item-info">
+              <div class="cart-item-header">
+                <div class="cart-item-heading">
+                  <span class="cart-item-badge-tag">${categoryLabel}</span>
+                  <h4 class="cart-item-name" title="${item.name}">${item.name}</h4>
+                </div>
+                <button class="cart-item-remove" onclick="removeCartItem('${item.cartId}')" title="ลบรายการนี้" aria-label="ลบรายการ">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="cart-item-rx-box">
+                ${rxHtml}
+              </div>
+
+              <div class="cart-item-footer">
+                <div class="cart-qty-ctrl">
+                  <button class="qty-btn" onclick="changeQty('${item.cartId}', -1)" title="ลดจำนวน" aria-label="ลดจำนวน">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  </button>
+                  <span class="qty-number">${item.quantity}</span>
+                  <button class="qty-btn" onclick="changeQty('${item.cartId}', 1)" title="เพิ่มจำนวน" aria-label="เพิ่มจำนวน">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  </button>
+                </div>
+                <div class="cart-price-col">
+                  ${item.quantity > 1 ? `<span class="cart-unit-price">@฿${item.unitPrice.toLocaleString()}</span>` : ''}
+                  <span class="cart-item-price">฿${(item.unitPrice * item.quantity).toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <button class="cart-item-remove" onclick="removeCartItem('${item.cartId}')" title="ลบรายการ">&times;</button>
         </div>
-        <div class="cart-item-rx-details">
-          ${item.rxSummary}
-        </div>
-        <div class="cart-item-footer">
-          <div class="cart-qty-ctrl">
-            <button class="qty-btn" onclick="changeQty('${item.cartId}', -1)">-</button>
-            <span>${item.quantity}</span>
-            <button class="qty-btn" onclick="changeQty('${item.cartId}', 1)">+</button>
-          </div>
-          <span class="cart-item-price">฿${(item.unitPrice * item.quantity).toLocaleString()}</span>
-        </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 
   // Calculate pricing breakdown

@@ -722,8 +722,17 @@
   <div class="cart-drawer-backdrop" id="cartDrawerBackdrop" onclick="closeCartDrawer()"></div>
   <aside class="cart-drawer" id="cartDrawer">
     <div class="cart-header">
-      <h3>🛍️ ตะกร้าสินค้า (<span id="cartDrawerCount">0</span>)</h3>
-      <button class="icon-btn" onclick="closeCartDrawer()">&times;</button>
+      <div class="cart-header-title-box">
+        <span class="cart-header-icon">🛍️</span>
+        <div>
+          <h3 class="cart-title">ตะกร้าสินค้า</h3>
+          <span class="cart-subtitle">ตรวจทานรายการและสั่งตัดเลนส์</span>
+        </div>
+      </div>
+      <div class="cart-header-right">
+        <span class="cart-count-pill"><span id="cartDrawerCount">0</span> ชิ้น</span>
+        <button class="cart-close-btn" onclick="closeCartDrawer()" aria-label="ปิด">&times;</button>
+      </div>
     </div>
 
     <!-- Scrollable content: items list + coupon + address + email -->
@@ -733,26 +742,35 @@
       </div>
 
       <div class="cart-checkout-inputs">
-        <!-- Promo code input -->
-        <div class="coupon-box">
-          <input type="text" id="couponInput" placeholder="ใส่โค้ดส่วนลด (เช่น CLEAR20)" class="input-text">
-          <button class="btn btn-secondary" onclick="applyCoupon()">ใช้โค้ด</button>
+        <div class="cart-section-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span>ข้อมูลสำหรับจัดส่งและออกใบเสร็จ</span>
         </div>
-        <div id="couponMessage" class="coupon-msg"></div>
+
+        <!-- Promo code input -->
+        <div class="cart-field-group">
+          <label class="form-label" for="couponInput">🏷️ โค้ดส่วนลด (Promo Code):</label>
+          <div class="coupon-box">
+            <input type="text" id="couponInput" placeholder="ใส่โค้ดส่วนลด (เช่น CLEAR20)" class="input-text coupon-input">
+            <button class="btn btn-secondary coupon-btn" onclick="applyCoupon()">ใช้โค้ด</button>
+          </div>
+          <div id="couponMessage" class="coupon-msg"></div>
+        </div>
 
         <!-- Shipping Address section in Cart -->
-        <div class="cart-address-box">
+        <div class="cart-field-group">
           <label class="form-label" for="checkoutAddress">📍 ที่อยู่จัดส่งสินค้า:</label>
-          <textarea id="checkoutAddress" class="input-text" rows="2" placeholder="กรอกชื่อ-นามสกุล เบอร์โทร และที่อยู่จัดส่งสินค้า"></textarea>
+          <textarea id="checkoutAddress" class="input-text cart-textarea" rows="2" placeholder="กรอกชื่อ-นามสกุล เบอร์โทรศัพท์ และที่อยู่จัดส่งสินค้า"></textarea>
         </div>
 
         <!-- Customer Email for Order Confirmation / Receipt -->
-        <div class="cart-email-box">
+        <div class="cart-field-group">
           <label class="form-label" for="checkoutEmail">📧 อีเมลรับใบเสร็จคำสั่งซื้อ (Order Confirmation):</label>
           <input type="email" id="checkoutEmail" class="input-text" placeholder="yourname@gmail.com" required>
-          <small style="color: var(--text-muted); font-size: 0.72rem; display: block; margin-top: 3px;">
-            ระบบจะส่งใบเสร็จดิจิทัลและอัปเดตสถานะการตัดเลนส์ไปยังอีเมลนี้อัตโนมัติ
-          </small>
+          <div class="cart-field-hint">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>ระบบจะส่งใบเสร็จดิจิทัลและอัปเดตสถานะการตัดเลนส์ไปยังอีเมลนี้อัตโนมัติ</span>
+          </div>
         </div>
       </div>
     </div>
@@ -761,26 +779,39 @@
     <div class="cart-footer">
       <div class="price-breakdown">
         <div class="price-row">
-          <span>ราคารวมสินค้า:</span>
-          <span id="cartSubtotal">฿0</span>
+          <span class="price-label">ราคารวมสินค้า</span>
+          <span class="price-val" id="cartSubtotal">฿0</span>
         </div>
         <div class="price-row discount-row" id="discountRow" style="display: none;">
-          <span>ส่วนลด (<span id="discountLabel">0%</span>):</span>
-          <span id="cartDiscount">-฿0</span>
+          <span class="price-label">ส่วนลดพิเศษ (<span id="discountLabel">0%</span>)</span>
+          <span class="price-val text-discount" id="cartDiscount">-฿0</span>
         </div>
         <div class="price-row">
-          <span>ค่าจัดส่ง:</span>
-          <span class="text-free">ฟรี (โปรโมชัน)</span>
+          <span class="price-label">ค่าจัดส่งด่วน EMS</span>
+          <span class="price-val text-free">
+            <span class="shipping-badge">ฟรี</span> ทั่วไทย
+          </span>
         </div>
         <div class="price-row grand-total">
-          <span>ยอดชำระสุทธิ:</span>
-          <span id="cartGrandTotal">฿0</span>
+          <div class="grand-total-label-wrap">
+            <span class="grand-total-text">ยอดชำระสุทธิ</span>
+            <span class="vat-badge">รวม VAT แล้ว</span>
+          </div>
+          <span class="grand-total-val" id="cartGrandTotal">฿0</span>
         </div>
       </div>
 
-      <button class="btn btn-primary btn-block" onclick="openCheckoutModal()">
-        ดำเนินการสั่งซื้อ (Checkout) ✨
+      <button class="btn btn-primary btn-block checkout-btn" onclick="openCheckoutModal()">
+        <span>ดำเนินการสั่งซื้อ (Checkout) ✨</span>
       </button>
+
+      <div class="cart-trust-bar">
+        <span>🔒 ปลอดภัย 100%</span>
+        <span>•</span>
+        <span>🚚 ส่งด่วนฟรี</span>
+        <span>•</span>
+        <span>👓 รับประกันเลนส์ 1 ปี</span>
+      </div>
     </div>
   </aside>
 
