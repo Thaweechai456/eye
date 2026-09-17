@@ -726,34 +726,39 @@
       <button class="icon-btn" onclick="closeCartDrawer()">&times;</button>
     </div>
 
-    <div class="cart-items" id="cartItemsContainer">
-      <!-- Items generated dynamically -->
+    <!-- Scrollable content: items list + coupon + address + email -->
+    <div class="cart-scroll-content">
+      <div class="cart-items" id="cartItemsContainer">
+        <!-- Items generated dynamically -->
+      </div>
+
+      <div class="cart-checkout-inputs">
+        <!-- Promo code input -->
+        <div class="coupon-box">
+          <input type="text" id="couponInput" placeholder="ใส่โค้ดส่วนลด (เช่น CLEAR20)" class="input-text">
+          <button class="btn btn-secondary" onclick="applyCoupon()">ใช้โค้ด</button>
+        </div>
+        <div id="couponMessage" class="coupon-msg"></div>
+
+        <!-- Shipping Address section in Cart -->
+        <div class="cart-address-box">
+          <label class="form-label" for="checkoutAddress">📍 ที่อยู่จัดส่งสินค้า:</label>
+          <textarea id="checkoutAddress" class="input-text" rows="2" placeholder="กรอกชื่อ-นามสกุล เบอร์โทร และที่อยู่จัดส่งสินค้า"></textarea>
+        </div>
+
+        <!-- Customer Email for Order Confirmation / Receipt -->
+        <div class="cart-email-box">
+          <label class="form-label" for="checkoutEmail">📧 อีเมลรับใบเสร็จคำสั่งซื้อ (Order Confirmation):</label>
+          <input type="email" id="checkoutEmail" class="input-text" placeholder="yourname@gmail.com" required>
+          <small style="color: var(--text-muted); font-size: 0.72rem; display: block; margin-top: 3px;">
+            ระบบจะส่งใบเสร็จดิจิทัลและอัปเดตสถานะการตัดเลนส์ไปยังอีเมลนี้อัตโนมัติ
+          </small>
+        </div>
+      </div>
     </div>
 
+    <!-- Pinned bottom footer: Price summary & Checkout button -->
     <div class="cart-footer">
-      <!-- Promo code input -->
-      <div class="coupon-box">
-        <input type="text" id="couponInput" placeholder="ใส่โค้ดส่วนลด (เช่น CLEAR20)" class="input-text">
-        <button class="btn btn-secondary" onclick="applyCoupon()">ใช้โค้ด</button>
-      </div>
-      <div id="couponMessage" class="coupon-msg"></div>
-
-      <!-- Shipping Address section in Cart -->
-      <div class="cart-address-box">
-        <label class="form-label" for="checkoutAddress">📍 ที่อยู่จัดส่งสินค้า:</label>
-        <textarea id="checkoutAddress" class="input-text" rows="2" placeholder="กรอกชื่อ-นามสกุล เบอร์โทร และที่อยู่จัดส่งสินค้า"></textarea>
-      </div>
-
-      <!-- Customer Email for Order Confirmation / Receipt -->
-      <div class="cart-email-box mt-2">
-        <label class="form-label" for="checkoutEmail">📧 อีเมลรับใบเสร็จคำสั่งซื้อ (Order Confirmation):</label>
-        <input type="email" id="checkoutEmail" class="input-text" placeholder="yourname@gmail.com" required>
-        <small style="color: var(--text-muted); font-size: 0.72rem; display: block; margin-top: 3px;">
-          ระบบจะส่งใบเสร็จดิจิทัลและอัปเดตสถานะการตัดเลนส์ไปยังอีเมลนี้อัตโนมัติ
-        </small>
-      </div>
-
-      <!-- Price summary -->
       <div class="price-breakdown">
         <div class="price-row">
           <span>ราคารวมสินค้า:</span>
