@@ -1436,7 +1436,6 @@ function openCustomizerModal(productId) {
 
   // Reset to default settings
   document.querySelector('input[name="lensType"][value="prescription"]').checked = true;
-  document.querySelector('input[name="lensUpgrade"][value="standard"]').checked = true;
   switchRxMode("manual");
   toggleLensForm();
   updateModalTotal();
@@ -1468,6 +1467,69 @@ function closeCustomizerModal() {
   document.getElementById("uploadSuccessText").style.display = "none";
 }
 
+function renderLensUpgradeOptions(selectedType) {
+  const container = document.getElementById("addonListContainer");
+  const titleEl = document.getElementById("lensUpgradeTitle");
+  if (!container) return;
+
+  if (selectedType === "bluelight") {
+    if (titleEl) titleEl.innerText = "3. คุณสมบัติเลนส์กรองแสงคอม (Blue Block):";
+    container.innerHTML = `
+      <label class="addon-item">
+        <input type="radio" name="lensUpgrade" value="blueblock_base" data-price="0" checked onchange="handleUpgradeChange('blue')">
+        <div class="addon-info">
+          <span>เลนส์ Blue Block กรองแสงคอมพิวเตอร์ (รวมในแพ็กเกจ)</span>
+          <small>กรองแสงสีฟ้า 420nm จากจอคอม & สมาร์ตโฟน ถนอมสายตา เคลือบมัลติโค้ต</small>
+        </div>
+        <span class="addon-price" style="color: #10b981; font-weight: 700;">+฿0 (รวมแล้ว)</span>
+      </label>
+      <label class="addon-item">
+        <input type="radio" name="lensUpgrade" value="blue_auto" data-price="400" onchange="handleUpgradeChange('photo')">
+        <div class="addon-info">
+          <span>อัปเกรดเป็น Blue Block + Auto ออกแดดเปลี่ยนสี (2 in 1)</span>
+          <small>กรองแสงสีฟ้าหน้าจอ พร้อมเปลี่ยนสีเข้มเป็นแว่นกันแดดเมื่อออกกลางแจ้ง</small>
+        </div>
+        <span class="addon-price">+฿400</span>
+      </label>
+    `;
+    simulateLensTint("blue");
+  } else {
+    if (titleEl) titleEl.innerText = "3. ตัวเลือกอัปเกรดเลนส์เสริม (Optional):";
+    container.innerHTML = `
+      <label class="addon-item">
+        <input type="radio" name="lensUpgrade" value="standard" data-price="0" checked onchange="handleUpgradeChange('clear')">
+        <div class="addon-info">
+          <span>เลนส์ใสมาตรฐาน (Standard Clear)</span>
+          <small>คมชัด เคลือบมัลติโค้ตกันรอย</small>
+        </div>
+        <span class="addon-price">+฿0</span>
+      </label>
+      <label class="addon-item">
+        <input type="radio" name="lensUpgrade" value="blueblock" data-price="350" onchange="handleUpgradeChange('blue')">
+        <div class="addon-info">
+          <span>เลนส์ Blue Block กรองแสงสีฟ้า</span>
+          <small>ตัดแสงหน้าจอคอม & สมาร์ตโฟน</small>
+        </div>
+        <span class="addon-price">+฿350</span>
+      </label>
+      <label class="addon-item">
+        <input type="radio" name="lensUpgrade" value="auto_photo" data-price="750" onchange="handleUpgradeChange('photo')">
+        <div class="addon-info">
+          <span>เลนส์ Auto ปรับแสงเปลี่ยนสี (ออกแดดเปลี่ยนสีเทาเข้ม)</span>
+          <small>2 in 1 เป็นทั้งแว่นสายตาและแว่นกันแดด</small>
+        </div>
+        <span class="addon-price">+฿750</span>
+      </label>
+    `;
+    simulateLensTint("clear");
+  }
+}
+
+function handleUpgradeChange(tint) {
+  simulateLensTint(tint);
+  updateModalTotal();
+}
+
 function toggleLensForm() {
   const selectedType = document.querySelector('input[name="lensType"]:checked').value;
   const rxSection = document.getElementById("prescriptionFieldsSection");
@@ -1476,13 +1538,16 @@ function toggleLensForm() {
   if (selectedType === "prescription") {
     rxSection.style.display = "block";
     upgradeSection.style.display = "block";
+    renderLensUpgradeOptions("prescription");
   } else if (selectedType === "bluelight") {
     rxSection.style.display = "none";
     upgradeSection.style.display = "block";
+    renderLensUpgradeOptions("bluelight");
   } else {
     // เฉพาะกรอบแว่น: ซ่อนทั้งฟอร์มค่าสายตา และตัวเลือกอัปเกรดเลนส์
     rxSection.style.display = "none";
     upgradeSection.style.display = "none";
+    simulateLensTint("clear");
   }
   updateModalTotal();
 }
@@ -1540,12 +1605,23 @@ function confirmAddToCart() {
   const lensType = document.querySelector('input[name="lensType"]:checked').value;
   const lensUpgradeRadio = document.querySelector('input[name="lensUpgrade"]:checked');
   let upgradePrice = 0;
-  
   let upgradeName = "เลนส์ใสมาตรฐาน";
-  if (lensType !== "frameonly") {
-    upgradePrice = parseInt(lensUpgradeRadio.getAttribute("data-price") || "0", 10);
-    if (lensUpgradeRadio.value === "blueblock") upgradeName = "เลนส์ Blue Block (+฿350)";
-    if (lensUpgradeRadio.value === "auto_photo") upgradeName = "เลนส์ Auto ปรับแสง (+฿750)";
+
+  if (lensType === "bluelight") {
+    if (lensUpgradeRadio && lensUpgradeRadio.value === "blue_auto") {
+      upgradePrice = 400;
+      upgradeName = "เลนส์ Blue Block + Auto ออกแดดเปลี่ยนสี (+฿400)";
+    } else {
+      upgradePrice = 0;
+      upgradeName = "เลนส์ Blue Block กรองแสงคอมพิวเตอร์";
+    }
+  } else if (lensType === "prescription") {
+    if (lensUpgradeRadio) {
+      upgradePrice = parseInt(lensUpgradeRadio.getAttribute("data-price") || "0", 10);
+      if (lensUpgradeRadio.value === "blueblock") upgradeName = "เลนส์ Blue Block (+฿350)";
+      else if (lensUpgradeRadio.value === "auto_photo") upgradeName = "เลนส์ Auto ปรับแสง (+฿750)";
+      else upgradeName = "เลนส์ใสมาตรฐาน";
+    }
   }
 
   let rxSummaryText = "";
@@ -1565,9 +1641,9 @@ function confirmAddToCart() {
       rxSummaryText = `R: ${rSph} (CYL ${rCyl} AXIS ${rAxis}) | L: ${lSph} (CYL ${lCyl} AXIS ${lAxis}) | PD ${pd}mm | ${upgradeName}`;
     }
   } else if (lensType === "bluelight") {
-    rxSummaryText = `💻 เลนส์กรองแสงคอมพิวเตอร์ (ไม่มีค่าสายตา) | ${upgradeName}`;
+    rxSummaryText = `💻 ${upgradeName} (ไม่มีค่าสายตา)`;
   } else {
-    rxSummaryText = `📦 เฉพาะกรอบแว่นตา`;
+    rxSummaryText = `📦 เฉพาะกรอบแว่นตา (นำไปตัดเลนส์เอง)`;
   }
 
   const unitPrice = currentSelectingProduct.price + upgradePrice;
