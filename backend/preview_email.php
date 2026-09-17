@@ -40,7 +40,7 @@ $demoUser = [
 
 <?php
 if ($type === 'register') {
-    echo getRegisterEmailTemplate($demoUser, '../index.html', true);
+    echo getRegisterEmailTemplate($demoUser, 'https://thaweechai456.github.io/eye', true);
 } elseif ($type === 'order') {
     $demoOrder = [
         'orderId' => '#XC-88921',
@@ -66,8 +66,8 @@ if ($type === 'register') {
         'grandTotal' => 1782,
         'date' => date('d M Y')
     ];
-    echo getOrderReceiptEmailTemplate($demoOrder, '../index.html');
+    echo getOrderReceiptEmailTemplate($demoOrder, 'https://thaweechai456.github.io/eye');
 } else {
-    echo getSubscribeEmailTemplate('customer@example.com', '../index.html', true);
+    echo getSubscribeEmailTemplate('customer@example.com', 'https://thaweechai456.github.io/eye', true);
 }
 ?>
