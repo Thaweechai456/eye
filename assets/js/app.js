@@ -416,44 +416,17 @@ function logoutUser() {
   currentUser = null;
   localStorage.removeItem("xcoco_current_user");
   initAuthUI();
-  document.getElementById("userMenuContent").style.display = "none";
-  alert("ออกจากระบบเรียบร้อยแล้ว 🕶️");
+  const menu = document.getElementById("userMenuContent");
+  if (menu) menu.style.display = "none";
+  alert("ออกจากระบบเรียบร้อยแล้ว");
 }
 
 function openProfileModal(initialTab = 'info') {
   if (!currentUser) {
-    openAuthModal('login');
+    window.location.href = 'auth.html?mode=login&redirect=orders.html';
     return;
   }
-  toggleEditProfileMode(false);
-  const menu = document.getElementById("userMenuContent");
-  if (menu) menu.style.display = "none";
-  
-  document.getElementById("profileUserName").innerText = currentUser.name;
-  document.getElementById("profileUserEmail").innerText = currentUser.email;
-  
-  // Phone, Birthdate & Address
-  document.getElementById("profileUserPhone").innerText = currentUser.phone || "-";
-  
-  if (currentUser.birthdate) {
-    const d = new Date(currentUser.birthdate);
-    const dateStr = d.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-    document.getElementById("profileUserBirthdate").innerText = dateStr;
-  } else {
-    document.getElementById("profileUserBirthdate").innerText = "-";
-  }
-
-  document.getElementById("profileUserAddress").innerText = currentUser.address || "ยังไม่ได้ระบุที่อยู่";
-
-  const rx = currentUser.rx || { rSph: "-1.50", lSph: "-1.50", pd: "62" };
-  document.getElementById("profileRightSph").innerText = rx.rSph;
-  document.getElementById("profileLeftSph").innerText = rx.lSph;
-  document.getElementById("profilePd").innerText = `${rx.pd} mm`;
-
-  updateMemberTierUI();
-  switchProfileTab(initialTab);
-
-  document.getElementById("profileModal").classList.add("active");
+  window.location.href = initialTab === 'orders' ? 'orders.html' : 'orders.html#profile';
 }
 
 function switchProfileTab(tab) {
@@ -1021,6 +994,7 @@ function toggleTheme() {
   currentTheme = currentTheme === "dark" ? "light" : "dark";
   document.documentElement.setAttribute("data-theme", currentTheme);
   localStorage.setItem("xcoco_theme", currentTheme);
+  localStorage.setItem("theme", currentTheme);
 }
 
 // ==========================================
@@ -1135,8 +1109,7 @@ function toggleUserMenu() {
 }
 
 function openAuthModal(mode = "login") {
-  switchAuthTab(mode);
-  document.getElementById("authModal").classList.add("active");
+  window.location.href = `auth.html?mode=${mode}`;
 }
 
 function closeAuthModal() {

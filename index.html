@@ -32,7 +32,7 @@
         <a href="#products" class="nav-link">สินค้าทั้งหมด</a>
         <a href="#recommendations" class="nav-link">แนะนำสำหรับคุณ</a>
         <a href="#face-match" class="nav-link">เช็คทรงหน้า</a>
-        <a href="#minigame" class="nav-link">เกมวัดสายตา</a>
+        <a href="orders.html" class="nav-link">ประวัติคำสั่งซื้อ</a>
         <a href="#guarantee" class="nav-link">การรับประกัน</a>
         <a href="#faq" class="nav-link">คำถามที่พบบ่อย</a>
       </nav>
@@ -40,21 +40,28 @@
       <div class="nav-actions">
         <!-- Auth / User Profile Button -->
         <div id="authNavSection">
-          <button id="authBtn" class="nav-auth-btn" onclick="openAuthModal('login')">
-            <span>👤 เข้าสู่ระบบ</span>
-          </button>
+          <a id="authBtn" href="auth.html" class="nav-auth-btn" style="text-decoration: none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>เข้าสู่ระบบ / สมาชิก</span>
+          </a>
           <div id="userProfileDropdown" class="user-dropdown" style="display: none;">
             <button class="user-avatar-btn" onclick="toggleUserMenu()">
-              <span class="avatar-icon">👤</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
               <span id="navUserName" class="user-name-text">สมาชิก</span>
-              <span id="navUserTierBadge" class="user-tier-badge tier-classic">🥉 Classic</span>
+              <span id="navUserTierBadge" class="user-tier-badge tier-classic">Classic</span>
               <span class="dropdown-arrow">▾</span>
             </button>
             <div id="userMenuContent" class="user-menu-box" style="display: none;">
               <div class="user-menu-header">
                 <div class="user-menu-top">
                   <strong id="menuUserFullName">ผู้ใช้งาน</strong>
-                  <span id="menuUserTierBadge" class="user-tier-badge tier-classic">🥉 Classic</span>
+                  <span id="menuUserTierBadge" class="user-tier-badge tier-classic">Classic</span>
                 </div>
                 <small id="menuUserEmail">user@example.com</small>
                 <div class="tier-progress-box mt-2">
@@ -67,15 +74,30 @@
                   </div>
                 </div>
               </div>
-              <div class="user-menu-item" onclick="openProfileModal('info')">
-                <span>👓 ค่าสายตา & ข้อมูลสมาชิก</span>
-              </div>
-              <div class="user-menu-item" onclick="openProfileModal('orders')">
-                <span>📦 ประวัติคำสั่งซื้อของฉัน</span>
-              </div>
+              <a href="orders.html" class="user-menu-item" style="text-decoration: none;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>ประวัติคำสั่งซื้อของฉัน</span>
+              </a>
+              <a href="orders.html#profile" class="user-menu-item" style="text-decoration: none;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="6" cy="12" r="4"></circle>
+                  <circle cx="18" cy="12" r="4"></circle>
+                  <line x1="10" y1="12" x2="14" y2="12"></line>
+                </svg>
+                <span>ค่าสายตา & ข้อมูลสมาชิก</span>
+              </a>
               <div class="user-menu-divider"></div>
               <div class="user-menu-item logout-btn" onclick="logoutUser()">
-                <span>🚪 ออกจากระบบ</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>ออกจากระบบ</span>
               </div>
             </div>
           </div>
@@ -83,19 +105,37 @@
 
         <!-- Wishlist Button -->
         <button id="wishlistNavBtn" class="icon-btn" onclick="openWishlistDrawer()" title="สินค้าที่ถูกใจ" aria-label="สินค้าที่ถูกใจ" style="position: relative;">
-          <span>❤️</span>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
           <span id="wishlistBadge" class="cart-badge" style="display: none; background-color: #ef4444;">0</span>
         </button>
 
         <!-- Theme Toggle Button -->
-        <button id="themeToggleBtn" class="icon-btn theme-toggle-btn" title="สลับโหมดขาว/ดำ" aria-label="สลับธีม">
-          <span class="theme-icon sun-icon">☀️</span>
-          <span class="theme-icon moon-icon">🌙</span>
+        <button id="themeToggleBtn" class="icon-btn theme-toggle-btn" title="สลับโหมดสว่าง/มืด" aria-label="สลับธีม">
+          <svg class="theme-icon sun-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon moon-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
         </button>
 
         <!-- Cart Button -->
         <button id="cartBtn" class="cart-btn" aria-label="ตะกร้าสินค้า">
-          <span class="cart-icon">🛒</span>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
           <span class="cart-text">ตะกร้า</span>
           <span id="cartCount" class="cart-badge">0</span>
         </button>
@@ -108,15 +148,30 @@
     <div class="hero-layout">
       <!-- Left: Brand Story & CTA -->
       <div class="hero-content">
-        <div class="hero-badge">✨ ไม่ต้องซีเรียส ช้อปง่าย จ่ายสบาย ✨</div>
+        <div class="hero-badge">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block; margin-right: 6px;"></span>
+          <span>NEW COLLECTION 2026 • HANDCRAFTED ACCURACY</span>
+        </div>
         <h1 class="hero-title">เห็นชัด <span class="highlight">ในแบบของคุณ</span></h1>
         <p class="hero-desc">
-          แว่นตาแฟชั่น & ตัดเลนส์สายตาราคาเป็นมิตร กรอกค่าง่าย ไม่ยุ่งยาก ใส่ทำงาน เล่นเกม เที่ยวชิลได้ทุกวัน
+          แว่นตาแฟชั่น & สั่งตัดเลนส์สายตาระดับพรีเมียม สั่งทำแม่นยำ กรอกค่าง่าย ดีไซน์น้ำหนักเบา ใส่ทำงาน เล่นเกม และชีวิตประจำวันได้อย่างลงตัว
         </p>
 
         <div class="hero-buttons">
-          <a href="#products" class="btn btn-primary">เลือกแว่นที่ชอบเลย 🕶️</a>
-          <button class="btn btn-secondary" onclick="openPrescriptionGuide()">📖 ดูวิธีกรอกค่าสายตา</button>
+          <a href="#products" class="btn btn-primary">
+            <span>เลือกชมแว่นตาทั้งหมด</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+          <button class="btn btn-secondary" onclick="openPrescriptionGuide()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <span>วิธีกรอกค่าสายตา</span>
+          </button>
         </div>
 
         <div class="hero-stats">
@@ -191,7 +246,12 @@
         </div>
 
         <div class="search-wrap">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
           <input type="text" id="productSearchInput" class="search-input" placeholder="ค้นหาชื่อแว่น, ทรง, สไตล์..." oninput="handleSearch(event)">
         </div>
       </div>
@@ -203,22 +263,22 @@
     </div>
   </section>
 
-  <!-- AI & Behavioral Recommendations Section (Requirement #5: "สินค้าที่คุณอาจสนใจ") -->
+  <!-- AI & Behavioral Recommendations Section -->
   <section class="recommendations-section" id="recommendations">
     <div class="section-container">
       <div class="text-center mb-3">
-        <div class="badge-ai">🤖 AI & BEHAVIOR RECOMMENDATIONS</div>
-        <h2 class="section-title">สินค้าที่คุณอาจสนใจ</h2>
-        <p class="section-subtitle">คัดสรรพิเศษสำหรับคุณ วิเคราะห์จากพฤติกรรมการเข้าชม ประวัติคำสั่งซื้อ และรูปหน้าของคุณ</p>
+        <div class="badge-tag-modern accent" style="margin-bottom: 0.5rem;">AI & BEHAVIORAL RECOMMENDATIONS</div>
+        <h2 class="section-title">สินค้าแนะนำเฉพาะสำหรับคุณ</h2>
+        <p class="section-subtitle">คัดสรรพิเศษ วิเคราะห์จากประวัติการสั่งตัดแว่น พฤติกรรมการเข้าชม และการคำนวณทรงหน้า</p>
       </div>
 
       <!-- Recommendation Filter Chips -->
       <div class="recommend-filter-tabs">
-        <button class="recom-chip active" data-recom="all" onclick="filterRecommendations('all')">🔥 แนะนำทั้งหมดสำหรับคุณ</button>
-        <button class="recom-chip" data-recom="recent" onclick="filterRecommendations('recent')">👁️ ดูล่าสุด (Recently Viewed)</button>
-        <button class="recom-chip" data-recom="face" onclick="filterRecommendations('face')">🎯 แมตช์ตามรูปหน้า</button>
-        <button class="recom-chip" data-recom="wishlist" onclick="filterRecommendations('wishlist')">❤️ จากรายการที่ถูกใจ</button>
-        <button class="recom-chip" data-recom="cross" onclick="filterRecommendations('cross')">✨ ไอเทมคู่หูสำหรับคุณ</button>
+        <button class="recom-chip active" data-recom="all" onclick="filterRecommendations('all')">แนะนำทั้งหมด</button>
+        <button class="recom-chip" data-recom="recent" onclick="filterRecommendations('recent')">ดูล่าสุด (Recently Viewed)</button>
+        <button class="recom-chip" data-recom="face" onclick="filterRecommendations('face')">แมตช์ตามรูปหน้า</button>
+        <button class="recom-chip" data-recom="wishlist" onclick="filterRecommendations('wishlist')">จากรายการโปรด</button>
+        <button class="recom-chip" data-recom="cross" onclick="filterRecommendations('cross')">ไอเทมคู่หูดูแลแว่น</button>
       </div>
 
       <!-- Recommended Product Grid -->
@@ -511,14 +571,18 @@
   <section class="newsletter-section" id="newsletter">
     <div class="section-container">
       <div class="newsletter-card">
-        <div class="newsletter-badge">📧 XCOCO NEWSLETTER</div>
-        <h2 class="newsletter-title">รับข่าวสาร & สิทธิพิเศษจาก XCOCO 👓</h2>
+        <div class="badge-tag-modern accent" style="margin-bottom: 0.75rem;">XCOCO VIP NEWSLETTER</div>
+        <h2 class="newsletter-title">รับข่าวสารและสิทธิพิเศษจาก XCOCO</h2>
         <p class="newsletter-desc">กรอกอีเมลเพื่อรับคำแนะนำกรอบแว่นตาคอลเลกชันใหม่ เทคนิคการดูแลสายตา และรับโค้ดส่วนลด 10% ส่งตรงถึงกล่องจดหมายของคุณ</p>
         
         <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
           <input type="email" id="newsletterEmail" class="newsletter-input" placeholder="กรอกอีเมลของคุณ (เช่น name@example.com)" required>
           <button type="submit" class="btn btn-primary" id="newsletterBtn">
-            <span>สมัครรับข่าวสาร ✨</span>
+            <span>สมัครรับข่าวสาร</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
           </button>
         </form>
         <div id="newsletterMsg" class="newsletter-msg"></div>

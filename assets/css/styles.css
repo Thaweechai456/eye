@@ -3833,4 +3833,971 @@ button, input, select {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* ==========================================================================
+   22. SVG Icons & Modern UI Utilities (Refined, Minimalist, No Clutter)
+   ========================================================================== */
+.icon-svg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.icon-svg svg {
+  width: 1.15em;
+  height: 1.15em;
+  stroke-width: 2;
+  stroke: currentColor;
+  fill: none;
+}
+
+.icon-svg.sm svg { width: 0.95em; height: 0.95em; }
+.icon-svg.lg svg { width: 1.45em; height: 1.45em; }
+
+.badge-tag-modern {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.badge-tag-modern.accent {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   23. Dedicated Auth Page (auth.html)
+   ========================================================================== */
+.auth-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.auth-nav {
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.auth-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.auth-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.auth-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.auth-back-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-subtle);
+  border-color: var(--border-focus);
+}
+
+.auth-main-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.auth-grid {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+}
+
+/* Left Showcase Pane */
+.auth-brand-pane {
+  background: linear-gradient(145deg, #18181b 0%, #09090b 100%);
+  padding: 3.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  border-right: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+[data-theme="light"] .auth-brand-pane {
+  background: linear-gradient(145deg, #f4f4f5 0%, #e4e4e7 100%);
+}
+
+.auth-brand-pane::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.auth-brand-top {
+  position: relative;
+  z-index: 2;
+}
+
+.auth-brand-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+}
+
+.auth-brand-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.auth-brand-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.auth-perks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.auth-perk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.auth-perk-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.auth-brand-bottom {
+  position: relative;
+  z-index: 2;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Right Form Pane */
+.auth-form-pane {
+  padding: 3rem 2.5rem;
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-tab-nav {
+  display: flex;
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  padding: 0.3rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.auth-tab-btn {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.92rem;
+  border-radius: calc(var(--radius-md) - 2px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.auth-tab-btn.active {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form-heading {
+  margin-bottom: 1.5rem;
+}
+
+.auth-form-heading h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.auth-form-heading p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.auth-form-group {
+  margin-bottom: 1.15rem;
+}
+
+.auth-form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.input-with-icon input,
+.input-with-icon textarea,
+.input-with-icon select {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.65rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-with-icon input:focus,
+.input-with-icon textarea:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.85rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.auth-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.auth-rx-box {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.15rem;
+}
+
+.auth-rx-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.auth-alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  margin-bottom: 1.25rem;
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auth-alert.error {
+  display: flex;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.auth-alert.success {
+  display: flex;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.btn-auth-primary {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.btn-auth-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-demo-quick {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.65rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.82rem;
+  border: 1px dashed var(--border-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-demo-quick:hover {
+  border-color: var(--border-focus);
+  color: var(--text-primary);
+  background: var(--bg-subtle);
+}
+
+/* ==========================================================================
+   24. Dedicated Orders & Account Dashboard Page (orders.html)
+   ========================================================================== */
+.orders-page {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.orders-hero {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  padding: 2.5rem 1.5rem 0;
+}
+
+.orders-hero-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.account-profile-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.account-user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.account-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #27272a 0%, #18181b 100%);
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .account-avatar {
+  background: linear-gradient(135deg, #e4e4e7 0%, #d4d4d8 100%);
+}
+
+.account-name-block h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.25rem;
+}
+
+.account-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+.account-hero-stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.hero-stat-card {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.25rem;
+  min-width: 140px;
+}
+
+.hero-stat-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.hero-stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Tier Progress in Orders */
+.orders-tier-banner {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.orders-tier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.tier-badge-pro {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid transparent;
+}
+
+.tier-badge-pro.classic {
+  background: rgba(161, 161, 170, 0.15);
+  border-color: rgba(161, 161, 170, 0.3);
+  color: #d4d4d8;
+}
+
+.tier-badge-pro.silver {
+  background: rgba(148, 163, 184, 0.2);
+  border-color: rgba(148, 163, 184, 0.4);
+  color: #e2e8f0;
+}
+
+.tier-badge-pro.gold {
+  background: rgba(234, 179, 8, 0.15);
+  border-color: rgba(234, 179, 8, 0.35);
+  color: #facc15;
+}
+
+.tier-badge-pro.platinum {
+  background: rgba(192, 132, 252, 0.15);
+  border-color: rgba(192, 132, 252, 0.35);
+  color: #c084fc;
+}
+
+.tier-bar-pro {
+  height: 8px;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.tier-fill-pro {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: width 0.6s ease;
+}
+
+/* Nav Tabs in Orders Dashboard */
+.orders-nav-tabs {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.orders-nav-tab {
+  padding: 0.9rem 0;
+  background: transparent;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.orders-nav-tab:hover {
+  color: var(--text-primary);
+}
+
+.orders-nav-tab.active {
+  color: var(--text-primary);
+}
+
+.orders-nav-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--text-primary);
+}
+
+/* Orders List Layout */
+.orders-main-content {
+  max-width: 1180px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.order-filter-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-pills-wrap {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filter-pill {
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill.active,
+.filter-pill:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+/* Luxury Order Card */
+.order-card-pro {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.2s ease;
+}
+
+.order-card-pro:hover {
+  border-color: var(--border-focus);
+}
+
+.order-card-header-pro {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-surface-elevated);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.order-meta-group {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.order-id-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+}
+
+.order-date-text {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.order-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.order-status-pill.completed {
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.order-status-pill.in-progress {
+  background: rgba(234, 179, 8, 0.12);
+  color: #facc15;
+  border: 1px solid rgba(234, 179, 8, 0.25);
+}
+
+/* Production Stepper */
+.order-stepper-pro {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  position: relative;
+}
+
+.stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.stepper-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  border: 2px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.stepper-step.done .stepper-dot {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #000;
+}
+
+.stepper-step.current .stepper-dot {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--text-inverse);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+}
+
+.stepper-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.stepper-step.done .stepper-title,
+.stepper-step.current .stepper-title {
+  color: var(--text-primary);
+}
+
+/* Order Item Rows */
+.order-items-pane {
+  padding: 1.25rem 1.5rem;
+}
+
+.order-item-pro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 0;
+  border-bottom: 1px dashed var(--border-color);
+  gap: 1rem;
+}
+
+.order-item-pro:last-child {
+  border-bottom: none;
+}
+
+.order-item-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.order-item-thumb-pro {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  object-fit: cover;
+}
+
+.order-item-desc h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.order-item-price-pro {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: right;
+}
+
+/* Order Card Bottom Footer */
+.order-card-bottom-pro {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-surface-elevated);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.order-total-block {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.order-total-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.order-total-amount {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.order-actions-pro {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.btn-order-action {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-order-action.secondary {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-order-action.secondary:hover {
+  border-color: var(--border-focus);
+}
+
+.btn-order-action.primary {
+  background: var(--text-primary);
+  border: 1px solid var(--text-primary);
+  color: var(--text-inverse);
+}
+
+.btn-order-action.primary:hover {
+  opacity: 0.9;
+}
+
+/* Empty State */
+.orders-empty-state {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.orders-empty-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  color: var(--text-muted);
+}
+
+.orders-empty-state h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.orders-empty-state p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  max-width: 360px;
+  margin: 0 auto 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .auth-grid {
+    grid-template-columns: 1fr;
+  }
+  .auth-brand-pane {
+    padding: 2rem 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .auth-form-pane {
+    padding: 2rem 1.5rem;
+  }
+  .order-stepper-pro {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+
 

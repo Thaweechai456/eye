@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ประวัติคำสั่งซื้อและบัญชีของฉัน - XCOCO Eyewear</title>
+  <meta name="description" content="ตรวจสอบสถานะการเจียระไนเลนส์ ติดตามพัสดุ และดูประวัติคำสั่งซื้อแว่นตา XCOCO Eyewear">
+  
+  <!-- Google Fonts: Prompt & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="orders-page">
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <a href="index.html" class="brand-logo" title="กลับสู่หน้าแรก XCOCO">
+          <div class="brand-symbol">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="12" r="4"></circle>
+              <circle cx="18" cy="12" r="4"></circle>
+              <line x1="10" y1="12" x2="14" y2="12"></line>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">XCOCO Eyewear</span>
+            <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="nav-links">
+        <a href="index.html#products" class="nav-link">สินค้าทั้งหมด</a>
+        <a href="index.html#recommendations" class="nav-link">แนะนำสำหรับคุณ</a>
+        <a href="index.html#face-match" class="nav-link">เช็คทรงหน้า</a>
+        <a href="orders.html" class="nav-link active">ประวัติคำสั่งซื้อ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="สลับโหมดสว่าง/มืด" aria-label="Toggle Theme">
+          <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <!-- Cart Button -->
+        <a href="index.html" class="cart-btn" title="ไปที่ตะกร้าสินค้า">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-count" id="cartCountBadge">0</span>
+        </a>
+
+        <!-- Logout button -->
+        <button onclick="handleLogout()" class="btn-demo-quick" style="width: auto; padding: 0.45rem 0.9rem; margin-top: 0;" title="ออกจากระบบ">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span>ออกจากระบบ</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Not Logged In View -->
+  <div id="notLoggedInView" style="display: none; padding: 6rem 1.5rem; text-align: center;">
+    <div style="max-width: 480px; margin: 0 auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 3rem 2rem; box-shadow: var(--card-shadow);">
+      <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--text-secondary);">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">กรุณาเข้าสู่ระบบ</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6;">
+        เข้าสู่ระบบสมาชิกเพื่อตรวจสอบสถานะการประกอบเลนส์ ติดตามพัสดุ และพิมพ์ใบเสร็จคำสั่งซื้อของคุณ
+      </p>
+      <a href="auth.html?redirect=orders.html" class="btn-auth-primary" style="text-decoration: none;">
+        <span>เข้าสู่ระบบหรือสมัครสมาชิก</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Authenticated Container -->
+  <div id="loggedInView">
+    
+    <!-- Hero Header Profile Banner -->
+    <section class="orders-hero">
+      <div class="orders-hero-container">
+        
+        <div class="account-profile-card">
+          <div class="account-user-info">
+            <div class="account-avatar" id="userAvatarText">U</div>
+            <div class="account-name-block">
+              <h2 id="profileFullName">คุณลูกค้า XCOCO</h2>
+              <div class="account-meta-line">
+                <span id="profileEmail">user@example.com</span>
+                <span>•</span>
+                <span id="profilePhone">081-234-5678</span>
+                <span>•</span>
+                <span class="badge-tag-modern" id="profileTierBadge">Classic Member</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="account-hero-stats">
+            <div class="hero-stat-card">
+              <div class="hero-stat-label">คำสั่งซื้อทั้งหมด</div>
+              <div class="hero-stat-value" id="statOrdersCount">0 รายการ</div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-label">ยอดสั่งซื้อสะสม</div>
+              <div class="hero-stat-value" id="statTotalSpent">฿0</div>
+            </div>
+            <div class="hero-stat-card">
+              <div class="hero-stat-label">ค่าสายตาที่บันทึก (R/L)</div>
+              <div class="hero-stat-value" id="statRxSummary">-1.50 / -1.50</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tier Progress Banner -->
+        <div class="orders-tier-banner">
+          <div class="orders-tier-header">
+            <div>
+              <span style="font-size: 0.82rem; color: var(--text-secondary);">ระดับสมาชิกปัจจุบัน:</span>
+              <strong id="tierNameText" style="color: var(--text-primary); margin-left: 0.4rem;">Classic Member</strong>
+            </div>
+            <span style="font-size: 0.8rem; color: var(--text-muted);" id="tierNextTargetText">
+              สั่งซื้ออีก ฿3,000 เพื่อเลื่อนขั้นสู่ Silver Member
+            </span>
+          </div>
+          <div class="tier-bar-pro">
+            <div class="tier-fill-pro" id="tierProgressBar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="orders-nav-tabs">
+          <button type="button" class="orders-nav-tab active" id="navTabOrders" onclick="switchDashboardTab('orders')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span>ประวัติคำสั่งซื้อ (<span id="tabOrdersBadge">0</span>)</span>
+          </button>
+          
+          <button type="button" class="orders-nav-tab" id="navTabProfile" onclick="switchDashboardTab('profile')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>ข้อมูลส่วนตัว & ค่าสายตาประจำตัว</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="orders-main-content">
+      
+      <!-- ================= Tab 1: Orders List ================= -->
+      <section id="ordersPane">
+        
+        <div class="order-filter-toolbar">
+          <div class="filter-pills-wrap">
+            <button class="filter-pill active" onclick="filterOrdersByStatus('all', this)">คำสั่งซื้อทั้งหมด</button>
+            <button class="filter-pill" onclick="filterOrdersByStatus('in-progress', this)">กำลังประกอบเลนส์ (QC)</button>
+            <button class="filter-pill" onclick="filterOrdersByStatus('completed', this)">จัดส่งสำเร็จแล้ว</button>
+          </div>
+          
+          <div style="font-size: 0.82rem; color: var(--text-muted);">
+            แสดงผลตามเวลาการสั่งซื้อล่าสุด
+          </div>
+        </div>
+
+        <!-- Orders Container -->
+        <div id="ordersListWrapper">
+          <!-- Dynamically populated -->
+        </div>
+
+      </section>
+
+      <!-- ================= Tab 2: Profile & Prescription Settings ================= -->
+      <section id="profilePane" style="display: none;">
+        
+        <div style="max-width: 720px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem;">
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.35rem;">แก้ไขข้อมูลส่วนตัวและค่าสายตา</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+            ข้อมูลเหล่านี้จะถูกดึงไปใช้ประกอบการสั่งตัดเลนส์และจัดส่งพัสดุอัตโนมัติ
+          </p>
+
+          <div id="profileSaveAlert" class="auth-alert success" style="margin-bottom: 1.5rem;">
+            บันทึกการเปลี่ยนแปลงข้อมูลเรียบร้อยแล้ว
+          </div>
+
+          <form onsubmit="saveProfileSettings(event)">
+            <div class="auth-row-2col">
+              <div class="auth-form-group">
+                <label for="editName">ชื่อ-นามสกุล</label>
+                <div class="input-with-icon">
+                  <span class="input-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </span>
+                  <input type="text" id="editName" required>
+                </div>
+              </div>
+
+              <div class="auth-form-group">
+                <label for="editPhone">เบอร์โทรศัพท์ติดต่อ</label>
+                <div class="input-with-icon">
+                  <span class="input-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                  </span>
+                  <input type="tel" id="editPhone" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="auth-form-group">
+              <label for="editEmail">อีเมล (ไม่สามารถเปลี่ยนได้)</label>
+              <div class="input-with-icon">
+                <span class="input-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </span>
+                <input type="email" id="editEmail" readonly style="opacity: 0.7; cursor: not-allowed;">
+              </div>
+            </div>
+
+            <div class="auth-form-group">
+              <label for="editAddress">ที่อยู่จัดส่งพัสดุเริ่มต้น</label>
+              <div class="input-with-icon">
+                <span class="input-icon" style="top: 1rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </span>
+                <textarea id="editAddress" rows="2" placeholder="กรอกชื่อ-เบอร์โทร และที่อยู่จัดส่งพัสดุ"></textarea>
+              </div>
+            </div>
+
+            <!-- Prescription Box -->
+            <div class="auth-rx-box">
+              <div class="auth-rx-header">
+                <span>ค่าสายตาประจำตัว (Digital Prescription)</span>
+                <span class="badge-tag-modern">สำหรับตัดเลนส์ด่วน</span>
+              </div>
+              
+              <div class="auth-row-2col">
+                <div>
+                  <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ตาขวา (Right SPH)</label>
+                  <input type="text" id="editRightSph" style="padding: 0.55rem 0.75rem; font-size: 0.85rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ตาซ้าย (Left SPH)</label>
+                  <input type="text" id="editLeftSph" style="padding: 0.55rem 0.75rem; font-size: 0.85rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
+                </div>
+              </div>
+              
+              <div style="margin-top: 0.75rem;">
+                <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ระยะห่างรูม่านตา (PD mm)</label>
+                <input type="number" id="editPd" min="50" max="75" style="padding: 0.55rem 0.75rem; font-size: 0.85rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-auth-primary" style="width: auto; padding: 0.75rem 2rem;">
+              <span>บันทึกการเปลี่ยนแปลง</span>
+            </button>
+          </form>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Digital Receipt Modal -->
+  <div class="modal-backdrop" id="receiptModal">
+    <div class="modal-container receipt-modal" style="text-align: left; max-width: 580px;">
+      <button class="modal-close" onclick="closeReceiptModal()">&times;</button>
+      
+      <div style="border-bottom: 2px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; letter-spacing: -0.01em;">XCOCO EYEWEAR</h3>
+          <span style="font-size: 0.75rem; color: var(--text-secondary);">ใบเสร็จรับเงินดิจิทัล / สรุปคำสั่งซื้อ</span>
+        </div>
+        <div style="text-align: right;">
+          <span id="modalReceiptId" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.95rem;">-</span>
+          <div id="modalReceiptDate" style="font-size: 0.75rem; color: var(--text-muted);">-</div>
+        </div>
+      </div>
+
+      <div style="background: var(--bg-subtle); padding: 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.82rem;">
+        <div><strong>ผู้สั่งซื้อ:</strong> <span id="modalCustomerName">-</span></div>
+        <div><strong>ที่อยู่จัดส่ง:</strong> <span id="modalDeliveryAddress">-</span></div>
+      </div>
+
+      <div id="modalItemsList" style="margin-bottom: 1.25rem;">
+        <!-- Items -->
+      </div>
+
+      <div style="border-top: 1px dashed var(--border-color); padding-top: 0.85rem; display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-weight: 700;">ยอดชำระสุทธิ (รวมภาษีมูลค่าเพิ่ม)</span>
+        <span id="modalGrandTotal" style="font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; font-weight: 800; color: var(--text-primary);">฿0</span>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+        <button class="btn btn-secondary btn-sm" onclick="window.print()" style="flex: 1;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span>พิมพ์เอกสารใบเสร็จ</span>
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="closeReceiptModal()" style="flex: 1;">
+          <span>ปิดหน้าต่าง</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let currentUser = null;
+    let orderHistory = [];
+    let currentFilter = 'all';
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem("xcoco_theme") || localStorage.getItem("theme") || "dark";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      updateThemeIcons(savedTheme);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("xcoco_theme", next);
+      localStorage.setItem("theme", next);
+      updateThemeIcons(next);
+    }
+
+    function updateThemeIcons(theme) {
+      const sun = document.getElementById("themeIconSun");
+      const moon = document.getElementById("themeIconMoon");
+      if (sun && moon) {
+        if (theme === "light") {
+          sun.style.display = "none";
+          moon.style.display = "block";
+        } else {
+          sun.style.display = "block";
+          moon.style.display = "none";
+        }
+      }
+    }
+
+    initTheme();
+
+    // Check Authentication
+    function initDashboard() {
+      const savedUser = localStorage.getItem("xcoco_current_user");
+      if (!savedUser) {
+        document.getElementById("notLoggedInView").style.display = "block";
+        document.getElementById("loggedInView").style.display = "none";
+        return;
+      }
+
+      try {
+        currentUser = JSON.parse(savedUser);
+      } catch(e) {
+        currentUser = null;
+      }
+
+      if (!currentUser || !currentUser.email) {
+        document.getElementById("notLoggedInView").style.display = "block";
+        document.getElementById("loggedInView").style.display = "none";
+        return;
+      }
+
+      document.getElementById("notLoggedInView").style.display = "none";
+      document.getElementById("loggedInView").style.display = "block";
+
+      // Load Orders
+      loadOrders();
+
+      // Render Profile Details
+      renderProfileUI();
+
+      // Update Cart Badge
+      const cart = JSON.parse(localStorage.getItem("xcoco_cart") || "[]");
+      const totalQty = cart.reduce((sum, i) => sum + (i.quantity || 1), 0);
+      document.getElementById("cartCountBadge").innerText = totalQty;
+
+      // Check hash
+      if (window.location.hash.includes("profile")) {
+        switchDashboardTab("profile");
+      }
+    }
+
+    function loadOrders() {
+      const savedOrders = localStorage.getItem("xcoco_orders");
+      if (savedOrders) {
+        try {
+          orderHistory = JSON.parse(savedOrders);
+        } catch(e) {
+          orderHistory = [];
+        }
+      } else {
+        // Mock sample orders for user experience if demo
+        if (currentUser.email === "demo@xcoco.com" || orderHistory.length === 0) {
+          orderHistory = [
+            {
+              orderId: "XC-98241",
+              date: "15 ก.ย. 2569 14:30 น.",
+              status: "in-progress",
+              step: 3,
+              customerName: currentUser.name,
+              deliveryAddress: currentUser.address || "123/45 ถ.สุขุมวิท กทม. 10110",
+              items: [
+                {
+                  productId: "frame_minimal_01",
+                  name: "Minimalist Round Matte",
+                  unitPrice: 890,
+                  quantity: 1,
+                  rxSummary: "R: -1.50 (CYL 0.00 AXIS -) | L: -1.50 (CYL 0.00 AXIS -) | PD 62mm | เลนส์ใสมาตรฐาน",
+                  image: "assets/images/glasses_minimal_round_1787761859075.jpg"
+                },
+                {
+                  productId: "frame_vintage_02",
+                  name: "Classic Aviator Pilot",
+                  unitPrice: 1540,
+                  quantity: 1,
+                  rxSummary: "R: -1.50 (CYL 0.00 AXIS -) | L: -1.50 (CYL 0.00 AXIS -) | PD 62mm | เลนส์ Blue Block (+฿350)",
+                  image: "assets/images/glasses_classic_aviator_1787761881857.jpg"
+                }
+              ],
+              total: 2430
+            }
+          ];
+          localStorage.setItem("xcoco_orders", JSON.stringify(orderHistory));
+        }
+      }
+
+      renderOrdersList();
+    }
+
+    function renderProfileUI() {
+      if (!currentUser) return;
+
+      document.getElementById("profileFullName").innerText = currentUser.name || "สมาชิก";
+      document.getElementById("profileEmail").innerText = currentUser.email || "-";
+      document.getElementById("profilePhone").innerText = currentUser.phone || "-";
+      document.getElementById("userAvatarText").innerText = (currentUser.name || "U").charAt(0).toUpperCase();
+
+      // Stats
+      const totalSpent = orderHistory.reduce((sum, o) => sum + (o.total || 0), 0);
+      document.getElementById("statOrdersCount").innerText = `${orderHistory.length} รายการ`;
+      document.getElementById("statTotalSpent").innerText = `฿${totalSpent.toLocaleString()}`;
+
+      const rx = currentUser.rx || { rSph: currentUser.right_sph || "-1.50", lSph: currentUser.left_sph || "-1.50", pd: currentUser.pd || 62 };
+      document.getElementById("statRxSummary").innerText = `${rx.rSph} / ${rx.lSph} (PD ${rx.pd})`;
+
+      // Tier Calculation
+      let tier = "Classic Member";
+      let tierProgress = 0;
+      let nextTarget = "สั่งซื้ออีก ฿3,000 เพื่อสู่ Silver Member";
+
+      if (totalSpent >= 15000) {
+        tier = "Platinum Elite";
+        tierProgress = 100;
+        nextTarget = "ระดับสมาชิกสูงสุด (รับส่วนลด 20% ทุกคำสั่งซื้อ)";
+      } else if (totalSpent >= 8000) {
+        tier = "Gold VIP";
+        tierProgress = Math.min(100, Math.round(((totalSpent - 8000) / 7000) * 100));
+        nextTarget = `สั่งซื้ออีก ฿${(15000 - totalSpent).toLocaleString()} เพื่อสู่ Platinum Elite`;
+      } else if (totalSpent >= 3000) {
+        tier = "Silver Member";
+        tierProgress = Math.min(100, Math.round(((totalSpent - 3000) / 5000) * 100));
+        nextTarget = `สั่งซื้ออีก ฿${(8000 - totalSpent).toLocaleString()} เพื่อสู่ Gold VIP`;
+      } else {
+        tierProgress = Math.min(100, Math.round((totalSpent / 3000) * 100));
+        nextTarget = `สั่งซื้ออีก ฿${(3000 - totalSpent).toLocaleString()} เพื่อสู่ Silver Member`;
+      }
+
+      document.getElementById("profileTierBadge").innerText = tier;
+      document.getElementById("tierNameText").innerText = tier;
+      document.getElementById("tierNextTargetText").innerText = nextTarget;
+      document.getElementById("tierProgressBar").style.width = `${tierProgress}%`;
+
+      // Fill Settings Form
+      document.getElementById("editName").value = currentUser.name || "";
+      document.getElementById("editPhone").value = currentUser.phone || "";
+      document.getElementById("editEmail").value = currentUser.email || "";
+      document.getElementById("editAddress").value = currentUser.address || "";
+      document.getElementById("editRightSph").value = rx.rSph || "-1.50";
+      document.getElementById("editLeftSph").value = rx.lSph || "-1.50";
+      document.getElementById("editPd").value = rx.pd || 62;
+
+      document.getElementById("tabOrdersBadge").innerText = orderHistory.length;
+    }
+
+    function switchDashboardTab(tab) {
+      const tabOrders = document.getElementById("navTabOrders");
+      const tabProfile = document.getElementById("navTabProfile");
+      const paneOrders = document.getElementById("ordersPane");
+      const paneProfile = document.getElementById("profilePane");
+
+      if (tab === "profile") {
+        tabProfile.classList.add("active");
+        tabOrders.classList.remove("active");
+        paneProfile.style.display = "block";
+        paneOrders.style.display = "none";
+        window.location.hash = "profile";
+      } else {
+        tabOrders.classList.add("active");
+        tabProfile.classList.remove("active");
+        paneOrders.style.display = "block";
+        paneProfile.style.display = "none";
+        window.location.hash = "orders";
+      }
+    }
+
+    function filterOrdersByStatus(status, btn) {
+      currentFilter = status;
+      document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      renderOrdersList();
+    }
+
+    function renderOrdersList() {
+      const wrapper = document.getElementById("ordersListWrapper");
+      if (!wrapper) return;
+
+      let filtered = orderHistory;
+      if (currentFilter === "in-progress") {
+        filtered = orderHistory.filter(o => o.status !== "completed");
+      } else if (currentFilter === "completed") {
+        filtered = orderHistory.filter(o => o.status === "completed");
+      }
+
+      if (filtered.length === 0) {
+        wrapper.innerHTML = `
+          <div class="orders-empty-state">
+            <div class="orders-empty-icon">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <h3>ไม่พบรายการคำสั่งซื้อ</h3>
+            <p>คุณยังไม่มีประวัติคำสั่งซื้อในหมวดหมู่นี้ เริ่มต้นเลือกกรอบแว่นตาคู่โปรดของคุณได้เลย</p>
+            <a href="index.html#products" class="btn-auth-primary" style="text-decoration: none; width: auto; display: inline-flex; padding: 0.75rem 1.75rem;">
+              <span>สำรวจคอลเลกชันแว่นตา</span>
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      wrapper.innerHTML = filtered.map(order => {
+        const isCompleted = order.status === "completed";
+        const currentStep = order.step || (isCompleted ? 4 : 2);
+
+        return `
+          <div class="order-card-pro">
+            <div class="order-card-header-pro">
+              <div class="order-meta-group">
+                <span class="order-id-badge">${order.orderId}</span>
+                <span class="order-date-text">สั่งซื้อเมื่อ: ${order.date}</span>
+                <span class="badge-tag-modern">ชำระเงินสำเร็จ</span>
+              </div>
+              <span class="order-status-pill ${isCompleted ? 'completed' : 'in-progress'}">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: ${isCompleted ? '#22c55e' : '#eab308'}; display: inline-block;"></span>
+                <span>${isCompleted ? 'จัดส่งสำเร็จเรียบร้อย' : 'กำลังประกอบเลนส์ (QC)'}</span>
+              </span>
+            </div>
+
+            <!-- 4-Step Stepper -->
+            <div class="order-stepper-pro">
+              <div class="stepper-step done">
+                <div class="stepper-dot">✓</div>
+                <span class="stepper-title">1. ได้รับคำสั่งซื้อ</span>
+              </div>
+              <div class="stepper-step ${currentStep >= 2 ? 'done' : 'current'}">
+                <div class="stepper-dot">${currentStep >= 2 ? '✓' : '2'}</div>
+                <span class="stepper-title">2. เจียระไนเลนส์</span>
+              </div>
+              <div class="stepper-step ${currentStep >= 3 ? 'done' : (currentStep === 2 ? 'current' : '')}">
+                <div class="stepper-dot">${currentStep >= 3 ? '✓' : '3'}</div>
+                <span class="stepper-title">3. ตรวจสอบคุณภาพ QC</span>
+              </div>
+              <div class="stepper-step ${currentStep >= 4 ? 'done' : (currentStep === 3 ? 'current' : '')}">
+                <div class="stepper-dot">${currentStep >= 4 ? '✓' : '4'}</div>
+                <span class="stepper-title">4. จัดส่งพัสดุด่วน EMS</span>
+              </div>
+            </div>
+
+            <!-- Items -->
+            <div class="order-items-pane">
+              ${order.items.map(item => `
+                <div class="order-item-pro">
+                  <div class="order-item-left">
+                    <img src="${item.image || 'assets/images/glasses_classic_aviator_1787761881857.jpg'}" alt="${item.name}" class="order-item-thumb-pro" onerror="this.src='assets/images/glasses_classic_aviator_1787761881857.jpg'">
+                    <div class="order-item-desc">
+                      <h4>${item.name} <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">x ${item.quantity}</span></h4>
+                      <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                        ${item.rxSummary || 'เลนส์สายตามาตรฐาน'}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="order-item-price-pro">
+                    ฿${((item.unitPrice || 0) * (item.quantity || 1)).toLocaleString()}
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+
+            <!-- Footer -->
+            <div class="order-card-bottom-pro">
+              <div class="order-total-block">
+                <span class="order-total-label">ยอดชำระสุทธิ:</span>
+                <span class="order-total-amount">฿${(order.total || 0).toLocaleString()}</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); margin-left: 0.25rem;">(รวม VAT & ค่าจัดส่งฟรี)</span>
+              </div>
+
+              <div class="order-actions-pro">
+                <button type="button" class="btn-order-action secondary" onclick="viewReceipt('${order.orderId}')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect x="6" y="14" width="12" height="8"></rect>
+                  </svg>
+                  <span>ดูใบเสร็จดิจิทัล</span>
+                </button>
+                <button type="button" class="btn-order-action primary" onclick="reorderOrder('${order.orderId}')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                  </svg>
+                  <span>สั่งซื้ออีกครั้ง</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Receipt View
+    function viewReceipt(orderId) {
+      const order = orderHistory.find(o => o.orderId === orderId);
+      if (!order) return;
+
+      document.getElementById("modalReceiptId").innerText = order.orderId;
+      document.getElementById("modalReceiptDate").innerText = order.date;
+      document.getElementById("modalCustomerName").innerText = order.customerName || currentUser.name || "สมาชิก";
+      document.getElementById("modalDeliveryAddress").innerText = order.deliveryAddress || currentUser.address || "-";
+      document.getElementById("modalGrandTotal").innerText = `฿${(order.total || 0).toLocaleString()}`;
+
+      const itemsList = document.getElementById("modalItemsList");
+      itemsList.innerHTML = order.items.map(item => `
+        <div style="display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px dashed var(--border-color); font-size: 0.85rem;">
+          <div>
+            <strong>${item.name}</strong> x ${item.quantity}
+            <div style="font-size: 0.75rem; color: var(--text-secondary);">${item.rxSummary || 'เลนส์มาตรฐาน'}</div>
+          </div>
+          <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700;">
+            ฿${((item.unitPrice || 0) * (item.quantity || 1)).toLocaleString()}
+          </div>
+        </div>
+      `).join("");
+
+      document.getElementById("receiptModal").classList.add("active");
+    }
+
+    function closeReceiptModal() {
+      document.getElementById("receiptModal").classList.remove("active");
+    }
+
+    // Reorder
+    function reorderOrder(orderId) {
+      const order = orderHistory.find(o => o.orderId === orderId);
+      if (!order) return;
+
+      const cart = JSON.parse(localStorage.getItem("xcoco_cart") || "[]");
+      order.items.forEach(item => {
+        cart.push({
+          cartId: "item_" + Date.now() + Math.floor(Math.random() * 1000),
+          productId: item.productId || "frame_minimal_01",
+          name: item.name,
+          categoryLabel: item.categoryLabel || "แว่นตาสั่งตัด",
+          unitPrice: item.unitPrice,
+          quantity: item.quantity,
+          image: item.image,
+          rxSummary: item.rxSummary,
+          options: item.options || {}
+        });
+      });
+
+      localStorage.setItem("xcoco_cart", JSON.stringify(cart));
+      alert(`เพิ่มรายการจากคำสั่งซื้อ ${orderId} ลงในตะกร้าเรียบร้อยแล้ว กำลังนำท่านไปยังหน้าร้าน...`);
+      window.location.href = "index.html";
+    }
+
+    // Save Profile Settings
+    function saveProfileSettings(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+
+      const name = document.getElementById("editName").value.trim();
+      const phone = document.getElementById("editPhone").value.trim();
+      const address = document.getElementById("editAddress").value.trim();
+      const rSph = document.getElementById("editRightSph").value.trim();
+      const lSph = document.getElementById("editLeftSph").value.trim();
+      const pd = parseInt(document.getElementById("editPd").value, 10) || 62;
+
+      currentUser.name = name;
+      currentUser.phone = phone;
+      currentUser.address = address;
+      currentUser.rx = { rSph, lSph, pd };
+
+      localStorage.setItem("xcoco_current_user", JSON.stringify(currentUser));
+
+      // Update in registered users list
+      const users = JSON.parse(localStorage.getItem("xcoco_users") || "[]");
+      const idx = users.findIndex(u => u.email.toLowerCase() === currentUser.email.toLowerCase());
+      if (idx !== -1) {
+        users[idx] = { ...users[idx], ...currentUser };
+        localStorage.setItem("xcoco_users", JSON.stringify(users));
+      }
+
+      renderProfileUI();
+
+      const alertEl = document.getElementById("profileSaveAlert");
+      alertEl.style.display = "flex";
+      setTimeout(() => {
+        alertEl.style.display = "none";
+      }, 3000);
+    }
+
+    // Logout
+    function handleLogout() {
+      localStorage.removeItem("xcoco_current_user");
+      window.location.href = "index.html";
+    }
+
+    // Start
+    initDashboard();
+  </script>
+</body>
+</html>
