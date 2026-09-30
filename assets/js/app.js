@@ -923,6 +923,12 @@ function initHeroCarousel() {
 }
 
 function updateSlide() {
+  const wrap3D = document.getElementById("hero3DWrap");
+  if (wrap3D && wrap3D.style.display !== "none") {
+    // 3D studio is active, don't interrupt user interaction
+    return;
+  }
+
   const slide = HERO_SLIDES[currentSlideIndex];
   if (!slide) return;
 
@@ -1289,14 +1295,14 @@ function autofillRxFromProfile() {
 
   // Helper to normalize and select matching option (e.g. -2 or 100 -> -2.00 or -1.00)
   const setSelectValue = (selectEl, rawVal) => {
-    if (!selectEl) return;
+    if (!selectEl) return false;
     let target = rawVal.toString().trim();
     
     // Check direct match
     for (let opt of selectEl.options) {
       if (opt.value === target) {
         selectEl.value = opt.value;
-        return;
+        return true;
       }
     }
 
@@ -1310,17 +1316,78 @@ function autofillRxFromProfile() {
       for (let opt of selectEl.options) {
         if (opt.value === formatted || parseFloat(opt.value) === num) {
           selectEl.value = opt.value;
-          return;
+          return true;
         }
       }
     }
+    return false;
   };
 
-  setSelectValue(rightSphSelect, rSph);
-  setSelectValue(leftSphSelect, lSph);
+  const rMatch = setSelectValue(rightSphSelect, rSph);
+  const lMatch = setSelectValue(leftSphSelect, lSph);
+  if (!rMatch || !lMatch) {
+    switchCartRxInputMode('manual');
+    const rMan = document.getElementById("rightSphManual");
+    const lMan = document.getElementById("leftSphManual");
+    if (rMan) rMan.value = rSph;
+    if (lMan) lMan.value = lSph;
+  }
   if (pdInput && pd) pdInput.value = pd;
 
-  alert(`⚡ ดึงค่าสายตาของคุณ ${currentUser.name} เรียบร้อยแล้ว (R: ${rightSphSelect ? rightSphSelect.value : rSph}, L: ${leftSphSelect ? leftSphSelect.value : lSph}, PD: ${pd || 62}mm)`);
+  alert(`⚡ ดึงค่าสายตาของคุณ ${currentUser.name} เรียบร้อยแล้ว (R: ${rSph}, L: ${lSph}, PD: ${pd || 62}mm)`);
+}
+
+function switchCartRxInputMode(mode) {
+  const btnSelect = document.getElementById("cartRxModeSelect");
+  const btnManual = document.getElementById("cartRxModeManual");
+  const rSphSelect = document.getElementById("rightSph");
+  const lSphSelect = document.getElementById("leftSph");
+  const rSphManual = document.getElementById("rightSphManual");
+  const lSphManual = document.getElementById("leftSphManual");
+
+  if (!btnSelect || !btnManual) return;
+
+  if (mode === "manual") {
+    btnSelect.classList.remove("active");
+    btnManual.classList.add("active");
+    if (rSphSelect) rSphSelect.style.display = "none";
+    if (lSphSelect) lSphSelect.style.display = "none";
+    if (rSphManual) {
+      rSphManual.style.display = "block";
+      rSphManual.value = rSphSelect ? rSphSelect.value : "-1.50";
+    }
+    if (lSphManual) {
+      lSphManual.style.display = "block";
+      lSphManual.value = lSphSelect ? lSphSelect.value : "-1.50";
+    }
+  } else {
+    btnSelect.classList.add("active");
+    btnManual.classList.remove("active");
+    if (rSphManual) rSphManual.style.display = "none";
+    if (lSphManual) lSphManual.style.display = "none";
+    if (rSphSelect) {
+      rSphSelect.style.display = "block";
+      if (rSphManual && rSphManual.value) {
+        for (let opt of rSphSelect.options) {
+          if (opt.value === rSphManual.value.trim()) {
+            rSphSelect.value = opt.value;
+            break;
+          }
+        }
+      }
+    }
+    if (lSphSelect) {
+      lSphSelect.style.display = "block";
+      if (lSphManual && lSphManual.value) {
+        for (let opt of lSphSelect.options) {
+          if (opt.value === lSphManual.value.trim()) {
+            lSphSelect.value = opt.value;
+            break;
+          }
+        }
+      }
+    }
+  }
 }
 
 // ==========================================
@@ -1685,10 +1752,15 @@ function confirmAddToCart() {
     if (isUploadMode && uploadedSlipData) {
       rxSummaryText = `📄 รูปใบวัด: ${uploadedSlipData} | ${upgradeName}`;
     } else {
-      const rSph = document.getElementById("rightSph").value;
+      const isManualRx = document.getElementById("cartRxModeManual") && document.getElementById("cartRxModeManual").classList.contains("active");
+      const rSph = (isManualRx && document.getElementById("rightSphManual") && document.getElementById("rightSphManual").value.trim())
+        ? document.getElementById("rightSphManual").value.trim()
+        : document.getElementById("rightSph").value;
       const rCyl = document.getElementById("rightCyl").value;
       const rAxis = document.getElementById("rightAxis").value || "-";
-      const lSph = document.getElementById("leftSph").value;
+      const lSph = (isManualRx && document.getElementById("leftSphManual") && document.getElementById("leftSphManual").value.trim())
+        ? document.getElementById("leftSphManual").value.trim()
+        : document.getElementById("leftSph").value;
       const lCyl = document.getElementById("leftCyl").value;
       const lAxis = document.getElementById("leftAxis").value || "-";
       const pd = document.getElementById("inputPd").value || "62";

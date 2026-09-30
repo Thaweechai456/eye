@@ -373,23 +373,72 @@
             <div class="auth-rx-box">
               <div class="auth-rx-header">
                 <span>บันทึกค่าสายตาประจำตัว (ระบุหรือไม่ระบุก็ได้)</span>
-                <span class="badge-tag-modern">อุปกรณ์/ใบวัดสายตา</span>
+                <span class="badge-tag-modern">สำหรับตัดเลนส์ด่วน</span>
               </div>
-              
-              <div class="auth-row-2col">
+
+              <!-- Input Mode Toggle -->
+              <div class="rx-mode-toggle">
+                <button type="button" class="rx-mode-btn active" id="rxRegModeSelect" onclick="switchRegRxInputMode('select')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <span>เลือกจากรายการ</span>
+                </button>
+                <button type="button" class="rx-mode-btn" id="rxRegModeManual" onclick="switchRegRxInputMode('manual')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                  <span>พิมพ์ค่าเอง</span>
+                </button>
+              </div>
+
+              <!-- Mode A: Select Dropdowns -->
+              <div id="rxRegSelectMode" class="auth-row-2col">
                 <div>
-                  <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ตาขวา (Right SPH)</label>
-                  <input type="text" id="regRightSph" value="-1.50" style="padding: 0.45rem 0.75rem; font-size: 0.82rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
+                  <label class="rx-field-label">ตาขวา (Right SPH)</label>
+                  <div class="rx-hybrid-wrap">
+                    <select id="regRightSphSelect" class="rx-hybrid-select" onchange="syncRegRxValue('regRightSph', this.value)"></select>
+                  </div>
                 </div>
                 <div>
-                  <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ตาซ้าย (Left SPH)</label>
-                  <input type="text" id="regLeftSph" value="-1.50" style="padding: 0.45rem 0.75rem; font-size: 0.82rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
+                  <label class="rx-field-label">ตาซ้าย (Left SPH)</label>
+                  <div class="rx-hybrid-wrap">
+                    <select id="regLeftSphSelect" class="rx-hybrid-select" onchange="syncRegRxValue('regLeftSph', this.value)"></select>
+                  </div>
                 </div>
               </div>
+
+              <!-- Mode B: Manual Text Inputs -->
+              <div id="rxRegManualMode" class="auth-row-2col" style="display: none;">
+                <div>
+                  <label class="rx-field-label">ตาขวา (Right SPH)</label>
+                  <div class="rx-hybrid-wrap">
+                    <input type="text" id="regRightSphManual" class="rx-hybrid-input" placeholder="เช่น -1.50, +2.00" onchange="syncRegRxValue('regRightSph', this.value)">
+                    <span class="rx-input-hint">กรอกค่า เช่น -2.75</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="rx-field-label">ตาซ้าย (Left SPH)</label>
+                  <div class="rx-hybrid-wrap">
+                    <input type="text" id="regLeftSphManual" class="rx-hybrid-input" placeholder="เช่น -1.50, +2.00" onchange="syncRegRxValue('regLeftSph', this.value)">
+                    <span class="rx-input-hint">กรอกค่า เช่น -2.75</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hidden inputs that store the final values for form submission -->
+              <input type="hidden" id="regRightSph" value="-1.50">
+              <input type="hidden" id="regLeftSph" value="-1.50">
               
-              <div style="margin-top: 0.65rem;">
-                <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ระยะห่างรูม่านตา (PD mm)</label>
-                <input type="number" id="regPd" value="62" min="50" max="75" style="padding: 0.45rem 0.75rem; font-size: 0.82rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
+              <!-- PD Slider + Number combo -->
+              <div class="rx-pd-combo">
+                <label class="rx-field-label">ระยะห่างรูม่านตา (PD mm)</label>
+                <div class="rx-pd-flex">
+                  <input type="range" id="regPdSlider" min="50" max="75" value="62" class="rx-pd-slider" oninput="document.getElementById('regPd').value=this.value; updateRegPdDisplay()">
+                  <input type="number" id="regPd" min="50" max="75" value="62" class="rx-pd-number" oninput="document.getElementById('regPdSlider').value=this.value; updateRegPdDisplay()">
+                  <span class="rx-pd-unit">mm</span>
+                </div>
+                <div class="rx-pd-labels">
+                  <span>50</span>
+                  <span class="rx-pd-current" id="regPdDisplayValue">62 mm</span>
+                  <span>75</span>
+                </div>
               </div>
             </div>
 
@@ -719,7 +768,74 @@
       }, 1000);
     }
 
+    // Rx Input System
+    function populateAuthRxSelects() {
+      const selects = [
+        document.getElementById("regRightSphSelect"),
+        document.getElementById("regLeftSphSelect")
+      ];
+      
+      let sphHtml = '<option value="0.00">0.00 (ปกติ)</option>';
+      sphHtml += '<optgroup label="สายตาสั้น (-)">';
+      for (let i = -0.25; i >= -10.00; i -= 0.25) {
+        const val = i.toFixed(2);
+        sphHtml += `<option value="${val}" ${val === "-1.50" ? "selected" : ""}>${val}</option>`;
+      }
+      sphHtml += '</optgroup>';
+      sphHtml += '<optgroup label="สายตายาว (+)">';
+      for (let i = 0.25; i <= 4.00; i += 0.25) {
+        const val = `+${i.toFixed(2)}`;
+        sphHtml += `<option value="${val}">${val}</option>`;
+      }
+      sphHtml += '</optgroup>';
+      
+      selects.forEach(s => { if (s) s.innerHTML = sphHtml; });
+    }
+
+    function switchRegRxInputMode(mode) {
+      const selectMode = document.getElementById("rxRegSelectMode");
+      const manualMode = document.getElementById("rxRegManualMode");
+      const btnSelect = document.getElementById("rxRegModeSelect");
+      const btnManual = document.getElementById("rxRegModeManual");
+
+      if (mode === "manual") {
+        selectMode.style.display = "none";
+        manualMode.style.display = "grid";
+        btnSelect.classList.remove("active");
+        btnManual.classList.add("active");
+        // Sync current values to manual inputs
+        document.getElementById("regRightSphManual").value = document.getElementById("regRightSph").value;
+        document.getElementById("regLeftSphManual").value = document.getElementById("regLeftSph").value;
+      } else {
+        selectMode.style.display = "grid";
+        manualMode.style.display = "none";
+        btnSelect.classList.add("active");
+        btnManual.classList.remove("active");
+        // Sync current values to select
+        const rVal = document.getElementById("regRightSph").value;
+        const lVal = document.getElementById("regLeftSph").value;
+        const rSel = document.getElementById("regRightSphSelect");
+        const lSel = document.getElementById("regLeftSphSelect");
+        if (rSel) rSel.value = rVal;
+        if (lSel) lSel.value = lVal;
+      }
+    }
+
+    function syncRegRxValue(hiddenId, value) {
+      const hid = document.getElementById(hiddenId);
+      if (hid) hid.value = value;
+    }
+
+    function updateRegPdDisplay() {
+      const pd = document.getElementById("regPd");
+      const display = document.getElementById("regPdDisplayValue");
+      if (pd && display) {
+        display.textContent = pd.value + " mm";
+      }
+    }
+
     // On Load
+    populateAuthRxSelects();
     checkCurrentSession();
     checkUrlMode();
   </script>

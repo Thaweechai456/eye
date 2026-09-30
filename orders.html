@@ -466,21 +466,70 @@
                 <span>ค่าสายตาประจำตัว (Digital Prescription)</span>
                 <span class="badge-tag-modern">สำหรับตัดเลนส์ด่วน</span>
               </div>
-              
-              <div class="auth-row-2col">
-                <div>
-                  <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ตาขวา (Right SPH)</label>
-                  <input type="text" id="editRightSph" style="padding: 0.55rem 0.75rem; font-size: 0.85rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
-                </div>
-                <div>
-                  <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ตาซ้าย (Left SPH)</label>
-                  <input type="text" id="editLeftSph" style="padding: 0.55rem 0.75rem; font-size: 0.85rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
-                </div>
+
+              <!-- Input Mode Toggle -->
+              <div class="rx-mode-toggle">
+                <button type="button" class="rx-mode-btn active" id="rxModeSelect" onclick="switchRxInputMode('select')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  <span>เลือกจากรายการ</span>
+                </button>
+                <button type="button" class="rx-mode-btn" id="rxModeManual" onclick="switchRxInputMode('manual')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                  <span>พิมพ์ค่าเอง</span>
+                </button>
               </div>
               
-              <div style="margin-top: 0.75rem;">
-                <label style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 2px;">ระยะห่างรูม่านตา (PD mm)</label>
-                <input type="number" id="editPd" min="50" max="75" style="padding: 0.55rem 0.75rem; font-size: 0.85rem; width: 100%; border-radius: var(--radius-sm); background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-primary);">
+              <!-- Mode A: Select Dropdowns -->
+              <div id="rxSelectMode" class="auth-row-2col">
+                <div>
+                  <label class="rx-field-label">ตาขวา (Right SPH)</label>
+                  <div class="rx-hybrid-wrap">
+                    <select id="editRightSphSelect" class="rx-hybrid-select" onchange="syncRxValue('editRightSph', this.value)"></select>
+                  </div>
+                </div>
+                <div>
+                  <label class="rx-field-label">ตาซ้าย (Left SPH)</label>
+                  <div class="rx-hybrid-wrap">
+                    <select id="editLeftSphSelect" class="rx-hybrid-select" onchange="syncRxValue('editLeftSph', this.value)"></select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mode B: Manual Text Inputs -->
+              <div id="rxManualMode" class="auth-row-2col" style="display: none;">
+                <div>
+                  <label class="rx-field-label">ตาขวา (Right SPH)</label>
+                  <div class="rx-hybrid-wrap">
+                    <input type="text" id="editRightSphManual" class="rx-hybrid-input" placeholder="เช่น -1.50, +2.00" onchange="syncRxValue('editRightSph', this.value)">
+                    <span class="rx-input-hint">กรอกค่า เช่น -2.75</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="rx-field-label">ตาซ้าย (Left SPH)</label>
+                  <div class="rx-hybrid-wrap">
+                    <input type="text" id="editLeftSphManual" class="rx-hybrid-input" placeholder="เช่น -1.50, +2.00" onchange="syncRxValue('editLeftSph', this.value)">
+                    <span class="rx-input-hint">กรอกค่า เช่น -2.75</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hidden fields to store the actual values -->
+              <input type="hidden" id="editRightSph" value="-1.50">
+              <input type="hidden" id="editLeftSph" value="-1.50">
+              
+              <!-- PD with Slider + Number Input -->
+              <div class="rx-pd-combo">
+                <label class="rx-field-label">ระยะห่างรูม่านตา (PD mm)</label>
+                <div class="rx-pd-flex">
+                  <input type="range" id="editPdSlider" min="50" max="75" value="62" class="rx-pd-slider" oninput="document.getElementById('editPd').value=this.value; updatePdDisplay()">
+                  <input type="number" id="editPd" min="50" max="75" value="62" class="rx-pd-number" oninput="document.getElementById('editPdSlider').value=this.value; updatePdDisplay()">
+                  <span class="rx-pd-unit">mm</span>
+                </div>
+                <div class="rx-pd-labels">
+                  <span>50</span>
+                  <span class="rx-pd-current" id="pdDisplayValue">62 mm</span>
+                  <span>75</span>
+                </div>
               </div>
             </div>
 
@@ -767,9 +816,42 @@
       document.getElementById("editPhone").value = currentUser.phone || "";
       document.getElementById("editEmail").value = currentUser.email || "";
       document.getElementById("editAddress").value = currentUser.address || "";
-      document.getElementById("editRightSph").value = rx.rSph || "-1.50";
-      document.getElementById("editLeftSph").value = rx.lSph || "-1.50";
-      document.getElementById("editPd").value = rx.pd || 62;
+      
+      // Set hidden fields
+      const rSphVal = rx.rSph || "-1.50";
+      const lSphVal = rx.lSph || "-1.50";
+      const pdVal = rx.pd || 62;
+      document.getElementById("editRightSph").value = rSphVal;
+      document.getElementById("editLeftSph").value = lSphVal;
+      document.getElementById("editPd").value = pdVal;
+      
+      // Sync select dropdowns
+      const rSelect = document.getElementById("editRightSphSelect");
+      const lSelect = document.getElementById("editLeftSphSelect");
+      let needManual = false;
+      if (rSelect) {
+        rSelect.value = rSphVal;
+        if (rSelect.value !== rSphVal) needManual = true;
+      }
+      if (lSelect) {
+        lSelect.value = lSphVal;
+        if (lSelect.value !== lSphVal) needManual = true;
+      }
+      
+      // Sync manual inputs
+      const rManual = document.getElementById("editRightSphManual");
+      const lManual = document.getElementById("editLeftSphManual");
+      if (rManual) rManual.value = rSphVal;
+      if (lManual) lManual.value = lSphVal;
+
+      if (needManual) {
+        switchRxInputMode("manual");
+      }
+      
+      // Sync PD slider
+      const pdSlider = document.getElementById("editPdSlider");
+      if (pdSlider) pdSlider.value = pdVal;
+      updatePdDisplay();
 
       document.getElementById("tabOrdersBadge").innerText = orderHistory.length;
 
@@ -1102,6 +1184,76 @@
         menu.style.display = "none";
       }
     });
+
+    // ==========================================
+    // Hybrid Prescription Input Functions
+    // ==========================================
+    function populateOrdersRxSelects() {
+      const selects = [
+        document.getElementById("editRightSphSelect"),
+        document.getElementById("editLeftSphSelect")
+      ];
+      
+      let sphHtml = '<option value="0.00">0.00 (ปกติ)</option>';
+      sphHtml += '<optgroup label="สายตาสั้น (-)">';
+      for (let i = -0.25; i >= -10.00; i -= 0.25) {
+        const val = i.toFixed(2);
+        sphHtml += `<option value="${val}" ${val === "-1.50" ? "selected" : ""}>${val}</option>`;
+      }
+      sphHtml += '</optgroup>';
+      sphHtml += '<optgroup label="สายตายาว (+)">';
+      for (let i = 0.25; i <= 4.00; i += 0.25) {
+        const val = `+${i.toFixed(2)}`;
+        sphHtml += `<option value="${val}">${val}</option>`;
+      }
+      sphHtml += '</optgroup>';
+      
+      selects.forEach(s => { if (s) s.innerHTML = sphHtml; });
+    }
+    
+    function switchRxInputMode(mode) {
+      const selectMode = document.getElementById("rxSelectMode");
+      const manualMode = document.getElementById("rxManualMode");
+      const btnSelect = document.getElementById("rxModeSelect");
+      const btnManual = document.getElementById("rxModeManual");
+      
+      if (mode === "manual") {
+        selectMode.style.display = "none";
+        manualMode.style.display = "grid";
+        btnSelect.classList.remove("active");
+        btnManual.classList.add("active");
+        // Sync current values to manual inputs
+        document.getElementById("editRightSphManual").value = document.getElementById("editRightSph").value;
+        document.getElementById("editLeftSphManual").value = document.getElementById("editLeftSph").value;
+      } else {
+        selectMode.style.display = "grid";
+        manualMode.style.display = "none";
+        btnSelect.classList.add("active");
+        btnManual.classList.remove("active");
+        // Sync current values to select
+        const rVal = document.getElementById("editRightSph").value;
+        const lVal = document.getElementById("editLeftSph").value;
+        const rSel = document.getElementById("editRightSphSelect");
+        const lSel = document.getElementById("editLeftSphSelect");
+        if (rSel) rSel.value = rVal;
+        if (lSel) lSel.value = lVal;
+      }
+    }
+    
+    function syncRxValue(hiddenId, value) {
+      document.getElementById(hiddenId).value = value;
+    }
+    
+    function updatePdDisplay() {
+      const pd = document.getElementById("editPd");
+      const display = document.getElementById("pdDisplayValue");
+      if (pd && display) {
+        display.textContent = pd.value + " mm";
+      }
+    }
+    
+    // Populate selects on load
+    populateOrdersRxSelects();
 
     // Start
     initDashboard();
