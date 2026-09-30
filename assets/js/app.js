@@ -1127,11 +1127,66 @@ function initAuthUI() {
     userProfileDropdown.style.display = "none";
     if (btnAutofill) btnAutofill.style.display = "none";
   }
+
+  updateMobileUserCard();
 }
 
 function toggleUserMenu() {
   const menu = document.getElementById("userMenuContent");
-  menu.style.display = menu.style.display === "none" ? "block" : "none";
+  if (menu) menu.style.display = menu.style.display === "none" ? "block" : "none";
+}
+
+function toggleMobileNav() {
+  const drawer = document.getElementById("mobileNavDrawer");
+  if (!drawer) return;
+  drawer.classList.toggle("active");
+  document.body.style.overflow = drawer.classList.contains("active") ? "hidden" : "";
+  updateMobileUserCard();
+}
+
+function closeMobileNav() {
+  const drawer = document.getElementById("mobileNavDrawer");
+  if (!drawer) return;
+  drawer.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+function updateMobileUserCard() {
+  const card = document.getElementById("mobileUserCard");
+  if (!card) return;
+  const orders = JSON.parse(localStorage.getItem("xcoco_orders") || localStorage.getItem("xcoco_order_history") || "[]");
+  const badge = document.getElementById("mobileOrdersCountBadge");
+  if (badge) badge.innerText = orders.length;
+
+  if (currentUser) {
+    const tier = currentUser.member_tier || "Classic Member";
+    card.innerHTML = `
+      <div class="mobile-user-profile">
+        <div class="account-avatar" style="width: 44px; height: 44px; font-size: 1.1rem;">
+          ${(currentUser.name || 'U').charAt(0).toUpperCase()}
+        </div>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary);">${currentUser.name}</div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${currentUser.email}</div>
+          <div style="margin-top: 0.25rem;">
+            <span class="user-tier-badge tier-classic">${tier}</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="logoutUser()" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center; font-size: 0.78rem; margin-top: 0.75rem; padding: 0.45rem;">
+        <span>ออกจากระบบ</span>
+      </button>
+    `;
+  } else {
+    card.innerHTML = `
+      <div style="text-align: center; padding: 0.5rem 0;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">เข้าสู่ระบบสมาชิกเพื่อดูคำสั่งซื้อและค่าสายตา</p>
+        <a href="auth.html" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center; text-decoration: none;">
+          <span>เข้าสู่ระบบ / สมัครสมาชิก</span>
+        </a>
+      </div>
+    `;
+  }
 }
 
 function openAuthModal(mode = "login") {

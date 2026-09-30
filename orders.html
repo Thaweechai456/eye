@@ -17,34 +17,91 @@
 <body class="orders-page">
 
   <!-- Navbar -->
+  <!-- Navbar -->
   <header class="navbar">
     <div class="nav-container">
-      <div class="nav-brand">
-        <a href="index.html" class="brand-logo" title="กลับสู่หน้าแรก XCOCO">
-          <div class="brand-symbol">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="6" cy="12" r="4"></circle>
-              <circle cx="18" cy="12" r="4"></circle>
-              <line x1="10" y1="12" x2="14" y2="12"></line>
-            </svg>
-          </div>
-          <div class="brand-text">
-            <span class="brand-name">XCOCO Eyewear</span>
-            <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
-          </div>
-        </a>
-      </div>
+      <a href="index.html" class="brand" title="กลับสู่หน้าแรก XCOCO" style="text-decoration: none;">
+        <img src="assets/images/Logo.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <span class="brand-name">XCOCO Eyewear</span>
+          <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
+        </div>
+      </a>
 
       <nav class="nav-links">
         <a href="index.html#products" class="nav-link">สินค้าทั้งหมด</a>
         <a href="index.html#recommendations" class="nav-link">แนะนำสำหรับคุณ</a>
         <a href="index.html#face-match" class="nav-link">เช็คทรงหน้า</a>
         <a href="orders.html" class="nav-link active">ประวัติคำสั่งซื้อ</a>
+        <a href="index.html#guarantee" class="nav-link">การรับประกัน</a>
+        <a href="index.html#faq" class="nav-link">คำถามที่พบบ่อย</a>
       </nav>
 
       <div class="nav-actions">
+        <!-- Auth / User Profile Button -->
+        <div id="authNavSection">
+          <a id="authBtn" href="auth.html" class="nav-auth-btn" style="text-decoration: none; display: none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>เข้าสู่ระบบ / สมาชิก</span>
+          </a>
+          <div id="userProfileDropdown" class="user-dropdown">
+            <button class="user-avatar-btn" onclick="toggleUserMenu()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span id="navUserName" class="user-name-text">สมาชิก</span>
+              <span id="navUserTierBadge" class="user-tier-badge tier-classic">Classic</span>
+              <span class="dropdown-arrow">▾</span>
+            </button>
+            <div id="userMenuContent" class="user-menu-box" style="display: none;">
+              <div class="user-menu-header">
+                <div class="user-menu-top">
+                  <strong id="menuUserFullName">ผู้ใช้งาน</strong>
+                  <span id="menuUserTierBadge" class="user-tier-badge tier-classic">Classic</span>
+                </div>
+                <small id="menuUserEmail">user@example.com</small>
+              </div>
+              <a href="orders.html" class="user-menu-item" style="text-decoration: none;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>ประวัติคำสั่งซื้อของฉัน</span>
+              </a>
+              <a href="orders.html#profile" class="user-menu-item" style="text-decoration: none;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                <span>แก้ไขข้อมูล & ค่าสายตา</span>
+              </a>
+              <div class="user-menu-divider"></div>
+              <div class="user-menu-item logout-btn" onclick="handleLogout()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>ออกจากระบบ</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wishlist Button -->
+        <a href="index.html#wishlist" class="icon-btn" title="สินค้าที่ถูกใจ" aria-label="สินค้าที่ถูกใจ" style="text-decoration: none;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </a>
+
         <!-- Theme Toggle Button -->
-        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="สลับโหมดสว่าง/มืด" aria-label="Toggle Theme">
+        <button class="theme-toggle-btn icon-btn" id="themeToggleBtn" onclick="toggleTheme()" title="สลับโหมดสว่าง/มืด" aria-label="Toggle Theme">
           <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -62,7 +119,7 @@
         </button>
 
         <!-- Cart Button -->
-        <a href="index.html" class="cart-btn" title="ไปที่ตะกร้าสินค้า">
+        <a href="index.html#cart" class="cart-btn" id="cartNavBtn" title="ไปที่ตะกร้าสินค้า">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -71,18 +128,101 @@
           <span class="cart-count" id="cartCountBadge">0</span>
         </a>
 
-        <!-- Logout button -->
-        <button onclick="handleLogout()" class="btn-demo-quick" style="width: auto; padding: 0.45rem 0.9rem; margin-top: 0;" title="ออกจากระบบ">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
+        <!-- Mobile Navigation Toggle Button -->
+        <button class="mobile-nav-toggle" id="mobileNavToggle" onclick="toggleMobileNav()" aria-label="เปิดเมนู" title="เมนูหลัก">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
-          <span>ออกจากระบบ</span>
         </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-nav-backdrop" onclick="closeMobileNav()"></div>
+    <div class="mobile-nav-panel">
+      <div class="mobile-nav-header">
+        <div class="brand">
+          <img src="assets/images/Logo.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
+          <div class="brand-text">
+            <span class="brand-name">XCOCO Eyewear</span>
+            <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
+          </div>
+        </div>
+        <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="ปิดเมนู">&times;</button>
+      </div>
+
+      <div class="mobile-user-card" id="mobileUserCard"></div>
+
+      <nav class="mobile-nav-list">
+        <a href="index.html#products" class="mobile-nav-item" onclick="closeMobileNav()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="12" r="4"></circle>
+            <circle cx="18" cy="12" r="4"></circle>
+            <line x1="10" y1="12" x2="14" y2="12"></line>
+          </svg>
+          <span>สินค้าทั้งหมด</span>
+        </a>
+        <a href="index.html#recommendations" class="mobile-nav-item" onclick="closeMobileNav()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <span>แนะนำสำหรับคุณ (AI Match)</span>
+        </a>
+        <a href="index.html#face-match" class="mobile-nav-item" onclick="closeMobileNav()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+          </svg>
+          <span>เช็คทรงหน้าให้เข้ากับแว่น</span>
+        </a>
+        <a href="orders.html" class="mobile-nav-item active" onclick="closeMobileNav()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span>ประวัติคำสั่งซื้อของฉัน</span>
+          <span class="badge-tag-modern" style="margin-left: auto; font-size: 0.7rem;" id="mobileOrdersCountBadge">0</span>
+        </a>
+        <a href="orders.html#profile" class="mobile-nav-item" onclick="closeMobileNav()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <span>แก้ไขข้อมูลส่วนตัว & ค่าสายตา</span>
+        </a>
+        <a href="index.html#guarantee" class="mobile-nav-item" onclick="closeMobileNav()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>การรับประกันสินค้า</span>
+        </a>
+        <a href="index.html#faq" class="mobile-nav-item" onclick="closeMobileNav()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span>คำถามที่พบบ่อย (FAQ)</span>
+        </a>
+      </nav>
+
+      <div class="mobile-nav-footer">
+        <button class="btn btn-secondary btn-sm" onclick="toggleTheme();" style="width: 100%; justify-content: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+          </svg>
+          <span>สลับโหมดสว่าง / โหมดมืด</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Not Logged In View -->
   <div id="notLoggedInView" style="display: none; padding: 6rem 1.5rem; text-align: center;">
@@ -624,6 +764,18 @@
       document.getElementById("editPd").value = rx.pd || 62;
 
       document.getElementById("tabOrdersBadge").innerText = orderHistory.length;
+
+      // Update Navbar User Info
+      const navName = document.getElementById("navUserName");
+      if (navName) navName.innerText = (currentUser.name || "สมาชิก").split(" ")[0];
+      const navTier = document.getElementById("navUserTierBadge");
+      if (navTier) navTier.innerText = tier.replace(" Member", "");
+      const menuFullName = document.getElementById("menuUserFullName");
+      if (menuFullName) menuFullName.innerText = currentUser.name || "ผู้ใช้งาน";
+      const menuEmail = document.getElementById("menuUserEmail");
+      if (menuEmail) menuEmail.innerText = currentUser.email || "";
+      const menuTier = document.getElementById("menuUserTierBadge");
+      if (menuTier) menuTier.innerText = tier.replace(" Member", "");
     }
 
     function switchDashboardTab(tab) {
@@ -878,6 +1030,70 @@
       localStorage.removeItem("xcoco_current_user");
       window.location.href = "index.html";
     }
+
+    // User Menu & Mobile Navigation
+    function toggleUserMenu() {
+      const menu = document.getElementById("userMenuContent");
+      if (menu) menu.style.display = menu.style.display === "none" ? "block" : "none";
+    }
+
+    function toggleMobileNav() {
+      const drawer = document.getElementById("mobileNavDrawer");
+      if (!drawer) return;
+      drawer.classList.toggle("active");
+      document.body.style.overflow = drawer.classList.contains("active") ? "hidden" : "";
+      updateMobileUserCard();
+    }
+
+    function closeMobileNav() {
+      const drawer = document.getElementById("mobileNavDrawer");
+      if (!drawer) return;
+      drawer.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+
+    function updateMobileUserCard() {
+      const card = document.getElementById("mobileUserCard");
+      if (!card) return;
+      if (currentUser) {
+        const tier = currentUser.member_tier || "Classic Member";
+        card.innerHTML = `
+          <div class="mobile-user-profile">
+            <div class="account-avatar" style="width: 44px; height: 44px; font-size: 1.1rem;">
+              ${(currentUser.name || 'U').charAt(0).toUpperCase()}
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary);">${currentUser.name}</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${currentUser.email}</div>
+              <div style="margin-top: 0.25rem;">
+                <span class="user-tier-badge tier-classic">${tier}</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="handleLogout()" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center; font-size: 0.78rem; margin-top: 0.75rem; padding: 0.45rem;">
+            <span>ออกจากระบบ</span>
+          </button>
+        `;
+      } else {
+        card.innerHTML = `
+          <div style="text-align: center; padding: 0.5rem 0;">
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">เข้าสู่ระบบสมาชิกเพื่อดูคำสั่งซื้อและค่าสายตา</p>
+            <a href="auth.html" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center; text-decoration: none;">
+              <span>เข้าสู่ระบบ / สมัครสมาชิก</span>
+            </a>
+          </div>
+        `;
+      }
+    }
+
+    // Close user menu on outside click
+    document.addEventListener("click", function(e) {
+      const dropdown = document.getElementById("userProfileDropdown");
+      const menu = document.getElementById("userMenuContent");
+      if (dropdown && menu && !dropdown.contains(e.target)) {
+        menu.style.display = "none";
+      }
+    });
 
     // Start
     initDashboard();
