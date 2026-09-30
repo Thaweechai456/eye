@@ -904,15 +904,28 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("themeToggleBtn").addEventListener("click", toggleTheme);
   document.getElementById("cartBtn").addEventListener("click", openCartDrawer);
 
-  // Close user dropdown when clicking outside
-  document.addEventListener("click", (e) => {
-    const dropdown = document.getElementById("userProfileDropdown");
-    const menu = document.getElementById("userMenuContent");
-    if (dropdown && !dropdown.contains(e.target) && menu) {
-      menu.style.display = "none";
-    }
+    // Close user dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      const dropdown = document.getElementById("userProfileDropdown");
+      const menu = document.getElementById("userMenuContent");
+      if (dropdown && !dropdown.contains(e.target) && menu) {
+        menu.style.display = "none";
+      }
+    });
+
+    // Auto-apply promo code from URL (e.g. ?coupon=SURVEY5 or ?code=SURVEY5 from LINE campaign)
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const promoCode = urlParams.get("coupon") || urlParams.get("code") || urlParams.get("promo");
+      if (promoCode) {
+        const couponInput = document.getElementById("couponInput");
+        if (couponInput) {
+          couponInput.value = promoCode.trim().toUpperCase();
+          applyCoupon();
+        }
+      }
+    } catch (err) {}
   });
-});
 
 // ==========================================
 // 4. Hero Carousel Slider Showcase
@@ -2046,6 +2059,10 @@ function applyCoupon() {
     appliedDiscount = 30;
     msgEl.className = "coupon-msg success";
     msgEl.innerText = "🔥 โค้ดลับมินิเกมสำเร็จ! ลด 30% ทันที";
+  } else if (code === "SURVEY5") {
+    appliedDiscount = 5;
+    msgEl.className = "coupon-msg success";
+    msgEl.innerText = "🎁 โค้ดแบบสอบถาม LINE สำเร็จ! รับส่วนลด 5% ทันที";
   } else if (code === "") {
     appliedDiscount = 0;
     msgEl.innerText = "";
