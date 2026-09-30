@@ -272,29 +272,55 @@ let registeredUsers = JSON.parse(localStorage.getItem("xcoco_users")) || [
 // Wishlist, Recently Viewed, Order History & AI Recommendation State
 let wishlist = JSON.parse(localStorage.getItem("xcoco_wishlist")) || [];
 let recentlyViewed = JSON.parse(localStorage.getItem("xcoco_recently_viewed")) || ["frame_minimal_01", "frame_vintage_02", "frame_titanium_06"];
-let orderHistory = JSON.parse(localStorage.getItem("xcoco_order_history")) || [
-  {
-    orderId: "#XC-84291",
-    date: "8 ก.ย. 2026",
-    items: [
-      {
-        productId: "frame_minimal_01",
-        name: "Minimalist Round Matte",
-        unitPrice: 890,
-        quantity: 1,
-        image: "assets/images/glasses_minimal_round_1787761859075.jpg",
-        rxSummary: "เลนส์สายตา (R: -1.50, L: -1.50, PD: 62mm)"
-      }
-    ],
-    subtotal: 890,
-    discountAmount: 0,
-    total: 890,
-    deliveryAddress: "คุณสมชาย สายตาดี - 123/45 หมู่ 6 ถ.สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110",
-    status: "processing",
-    statusText: "กำลังเจียระไนเลนส์",
-    step: 2
+function loadInitialOrderHistory() {
+  try {
+    const o1 = JSON.parse(localStorage.getItem("xcoco_orders") || "[]");
+    const o2 = JSON.parse(localStorage.getItem("xcoco_order_history") || "[]");
+    const combined = Array.isArray(o1) ? [...o1] : [];
+    if (Array.isArray(o2)) {
+      o2.forEach(item => {
+        if (item && item.orderId && !combined.some(c => c.orderId === item.orderId)) {
+          combined.push(item);
+        }
+      });
+    }
+    const isDemo = Boolean(currentUser && currentUser.email && currentUser.email.toLowerCase() === "demo@xcoco.com");
+    if (!isDemo && currentUser) {
+      return combined.filter(o => o && o.orderId !== "#XC-84291" && o.orderId !== "XC-98241");
+    }
+    if (combined.length > 0) return combined;
+    if (isDemo) {
+      return [
+        {
+          orderId: "#XC-84291",
+          userEmail: "demo@xcoco.com",
+          date: "8 ก.ย. 2026",
+          items: [
+            {
+              productId: "frame_minimal_01",
+              name: "Minimalist Round Matte",
+              unitPrice: 890,
+              quantity: 1,
+              image: "assets/images/glasses_minimal_round_1787761859075.jpg",
+              rxSummary: "เลนส์สายตา (R: -1.50, L: -1.50, PD: 62mm)"
+            }
+          ],
+          subtotal: 890,
+          discountAmount: 0,
+          total: 890,
+          deliveryAddress: "คุณสมชาย สายตาดี - 123/45 หมู่ 6 ถ.สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110",
+          status: "processing",
+          statusText: "กำลังเจียระไนเลนส์",
+          step: 2
+        }
+      ];
+    }
+    return [];
+  } catch(e) {
+    return [];
   }
-];
+}
+let orderHistory = loadInitialOrderHistory();
 let activeRecomFilter = "all";
 let currentFaceShape = "oval";
 let pendingOrderData = null;
@@ -2172,19 +2198,24 @@ function finishOrderAndClear() {
 
   // 2. Save Order to Order History (Requirement: Order History & AI Data)
   if (pendingOrderData) {
-    orderHistory.unshift({
+    const newOrder = {
       orderId: pendingOrderData.orderId,
+      userEmail: (currentUser && currentUser.email) ? currentUser.email : (pendingOrderData.email || ""),
+      customerName: (currentUser && currentUser.name) ? currentUser.name : (pendingOrderData.customerName || "คุณลูกค้า"),
       date: pendingOrderData.date,
       items: [...pendingOrderData.items],
       subtotal: pendingOrderData.subtotal,
       discountAmount: pendingOrderData.discountAmount,
       total: pendingOrderData.grandTotal,
       deliveryAddress: pendingOrderData.deliveryAddress,
-      status: "processing",
-      statusText: "กำลังเจียระไนเลนส์",
+      status: "in-progress",
+      statusText: "กำลังเจียระไนเลนส์ (QC)",
       step: 2
-    });
+    };
+
+    orderHistory.unshift(newOrder);
     localStorage.setItem("xcoco_order_history", JSON.stringify(orderHistory));
+    localStorage.setItem("xcoco_orders", JSON.stringify(orderHistory));
     renderOrderHistory();
     renderSmartRecommendations();
   }

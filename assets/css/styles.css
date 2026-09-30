@@ -4358,6 +4358,67 @@ button, input, select {
   color: var(--text-primary);
 }
 
+/* Quick Edit Profile Pill Button */
+.btn-edit-profile-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-edit-profile-pill:hover {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: #3b82f6;
+  color: #93c5fd;
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .btn-edit-profile-pill {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #1d4ed8;
+}
+
+[data-theme="light"] .btn-edit-profile-pill:hover {
+  background: rgba(37, 99, 235, 0.16);
+  border-color: #2563eb;
+  color: #1e40af;
+}
+
+/* Interactive Stat Card for Prescription */
+.hero-stat-card.stat-card-interactive {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hero-stat-card.stat-card-interactive:hover {
+  border-color: #3b82f6;
+  background: var(--bg-surface);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.15);
+}
+
+.stat-edit-link {
+  font-size: 0.7rem;
+  color: #3b82f6;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.hero-stat-card.stat-card-interactive:hover .stat-edit-link {
+  opacity: 1;
+  text-decoration: underline;
+}
+
 /* Tier Progress in Orders */
 .orders-tier-banner {
   background: var(--bg-surface-elevated);
@@ -4465,11 +4526,79 @@ button, input, select {
   background: var(--text-primary);
 }
 
+.tab-highlight-pill {
+  font-size: 0.68rem;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 0.12rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="light"] .tab-highlight-pill {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
 /* Orders List Layout */
 .orders-main-content {
   max-width: 1180px;
   margin: 2.5rem auto;
   padding: 0 1.5rem;
+}
+
+/* Profile / Rx Edit Hint Banner in Orders Pane */
+.orders-profile-hint-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s ease;
+}
+
+.orders-profile-hint-banner:hover {
+  border-color: #3b82f6;
+}
+
+.hint-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.hint-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hint-banner-left strong {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.hint-banner-left p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
 }
 
 .order-filter-toolbar {
