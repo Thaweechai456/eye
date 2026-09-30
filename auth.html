@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html lang="th" data-theme="dark">
+<html lang="th" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>เข้าสู่ระบบและสมัครสมาชิก - XCOCO Eyewear</title>
   <meta name="description" content="เข้าสู่ระบบสมาชิก XCOCO Eyewear เพื่อบันทึกค่าสายตา ตรวจสอบสถานะการสั่งตัดเลนส์ และรับสิทธิพิเศษมากมาย">
   
+  <!-- Immediate Theme Init (Prevent FOUC) -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem("xcoco_theme") || localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    })();
+  </script>
+
   <!-- Google Fonts: Prompt & Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -416,13 +424,13 @@
   <script>
     // Theme Management
     function initTheme() {
-      const savedTheme = localStorage.getItem("xcoco_theme") || localStorage.getItem("theme") || "dark";
+      const savedTheme = localStorage.getItem("xcoco_theme") || localStorage.getItem("theme") || "light";
       document.documentElement.setAttribute("data-theme", savedTheme);
       updateThemeIcons(savedTheme);
     }
 
     function toggleTheme() {
-      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      const current = document.documentElement.getAttribute("data-theme") || localStorage.getItem("xcoco_theme") || "light";
       const next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
       localStorage.setItem("xcoco_theme", next);

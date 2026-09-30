@@ -1013,6 +1013,7 @@ function switchModelBg(index, btnEl) {
 // 5. Theme Toggle (Black & White / Dark & Light)
 // ==========================================
 function initTheme() {
+  currentTheme = localStorage.getItem("xcoco_theme") || localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", currentTheme);
 }
 
