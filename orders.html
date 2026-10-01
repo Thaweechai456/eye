@@ -282,7 +282,7 @@
                 <span>•</span>
                 <span id="profilePhone">081-234-5678</span>
                 <span>•</span>
-                <span class="badge-tag-modern" id="profileTierBadge">Classic Member</span>
+                <span class="user-tier-badge tier-classic" id="profileTierBadge">Classic Member</span>
               </div>
             </div>
           </div>
@@ -757,6 +757,42 @@
       renderOrdersList();
     }
 
+    function calculateMemberTier(spent = 0) {
+      spent = Number(spent) || 0;
+      if (spent >= 3500) {
+        return {
+          tier: "vip",
+          name: "VIP Member",
+          badgeText: "👑 VIP",
+          badgeClass: "tier-vip",
+          nextTierText: "ระดับสูงสุด VIP แล้ว ✨",
+          progressPercent: 100
+        };
+      } else if (spent >= 1500) {
+        const needed = 3500 - spent;
+        const pct = Math.min(100, Math.max(10, Math.round(((spent - 1500) / 2000) * 100)));
+        return {
+          tier: "silver",
+          name: "Silver Member",
+          badgeText: "🥈 Silver",
+          badgeClass: "tier-silver",
+          nextTierText: `สั่งซื้ออีก ฿${needed.toLocaleString()} สู่ VIP 👑`,
+          progressPercent: pct
+        };
+      } else {
+        const needed = 1500 - spent;
+        const pct = Math.min(100, Math.max(0, Math.round((spent / 1500) * 100)));
+        return {
+          tier: "classic",
+          name: "Classic Member",
+          badgeText: "🥉 Classic",
+          badgeClass: "tier-classic",
+          nextTierText: `สั่งซื้ออีก ฿${needed.toLocaleString()} สู่ Silver`,
+          progressPercent: pct
+        };
+      }
+    }
+
     function renderProfileUI() {
       if (!currentUser) return;
 
@@ -770,6 +806,10 @@
       document.getElementById("statOrdersCount").innerText = `${orderHistory.length} รายการ`;
       document.getElementById("statTotalSpent").innerText = `฿${totalSpent.toLocaleString()}`;
 
+      // Tier Calculation (100% harmonized with main website)
+      const tierInfo = calculateMemberTier(totalSpent);
+      currentUser.member_tier = tierInfo.name;
+
       // Synchronize totalSpent to currentUser so tiers and all storage are consistent
       if (currentUser.totalSpent !== totalSpent) {
         currentUser.totalSpent = totalSpent;
@@ -778,39 +818,34 @@
         const idx = users.findIndex(u => u.email && u.email.toLowerCase() === currentUser.email.toLowerCase());
         if (idx !== -1) {
           users[idx].totalSpent = totalSpent;
+          users[idx].member_tier = tierInfo.name;
           localStorage.setItem("xcoco_users", JSON.stringify(users));
         }
+      } else {
+        localStorage.setItem("xcoco_current_user", JSON.stringify(currentUser));
       }
 
       const rx = currentUser.rx || { rSph: currentUser.right_sph || "-1.50", lSph: currentUser.left_sph || "-1.50", pd: currentUser.pd || 62 };
       document.getElementById("statRxSummary").innerText = `${rx.rSph} / ${rx.lSph} (PD ${rx.pd})`;
 
-      // Tier Calculation
-      let tier = "Classic Member";
-      let tierProgress = 0;
-      let nextTarget = "สั่งซื้ออีก ฿3,000 เพื่อสู่ Silver Member";
-
-      if (totalSpent >= 15000) {
-        tier = "Platinum Elite";
-        tierProgress = 100;
-        nextTarget = "ระดับสมาชิกสูงสุด (รับส่วนลด 20% ทุกคำสั่งซื้อ)";
-      } else if (totalSpent >= 8000) {
-        tier = "Gold VIP";
-        tierProgress = Math.min(100, Math.round(((totalSpent - 8000) / 7000) * 100));
-        nextTarget = `สั่งซื้ออีก ฿${(15000 - totalSpent).toLocaleString()} เพื่อสู่ Platinum Elite`;
-      } else if (totalSpent >= 3000) {
-        tier = "Silver Member";
-        tierProgress = Math.min(100, Math.round(((totalSpent - 3000) / 5000) * 100));
-        nextTarget = `สั่งซื้ออีก ฿${(8000 - totalSpent).toLocaleString()} เพื่อสู่ Gold VIP`;
-      } else {
-        tierProgress = Math.min(100, Math.round((totalSpent / 3000) * 100));
-        nextTarget = `สั่งซื้ออีก ฿${(3000 - totalSpent).toLocaleString()} เพื่อสู่ Silver Member`;
+      // Profile Tier Display
+      const profileBadge = document.getElementById("profileTierBadge");
+      if (profileBadge) {
+        profileBadge.className = `user-tier-badge ${tierInfo.badgeClass}`;
+        profileBadge.innerText = `${tierInfo.badgeText} Member`;
       }
 
-      document.getElementById("profileTierBadge").innerText = tier;
-      document.getElementById("tierNameText").innerText = tier;
-      document.getElementById("tierNextTargetText").innerText = nextTarget;
-      document.getElementById("tierProgressBar").style.width = `${tierProgress}%`;
+      document.getElementById("tierNameText").innerText = tierInfo.name;
+      document.getElementById("tierNextTargetText").innerText = tierInfo.nextTierText;
+      const progressBar = document.getElementById("tierProgressBar");
+      if (progressBar) {
+        progressBar.style.width = `${tierInfo.progressPercent}%`;
+        if (tierInfo.tier === "vip") {
+          progressBar.style.background = "linear-gradient(90deg, #ffd700 0%, #d4af37 50%, #f59e0b 100%)";
+        } else {
+          progressBar.style.background = "linear-gradient(90deg, #3b82f6, #8b5cf6)";
+        }
+      }
 
       // Fill Settings Form
       document.getElementById("editName").value = currentUser.name || "";
@@ -860,13 +895,19 @@
       const navName = document.getElementById("navUserName");
       if (navName) navName.innerText = (currentUser.name || "สมาชิก").split(" ")[0];
       const navTier = document.getElementById("navUserTierBadge");
-      if (navTier) navTier.innerText = tier.replace(" Member", "");
+      if (navTier) {
+        navTier.className = `user-tier-badge ${tierInfo.badgeClass}`;
+        navTier.innerText = tierInfo.badgeText;
+      }
       const menuFullName = document.getElementById("menuUserFullName");
       if (menuFullName) menuFullName.innerText = currentUser.name || "ผู้ใช้งาน";
       const menuEmail = document.getElementById("menuUserEmail");
       if (menuEmail) menuEmail.innerText = currentUser.email || "";
       const menuTier = document.getElementById("menuUserTierBadge");
-      if (menuTier) menuTier.innerText = tier.replace(" Member", "");
+      if (menuTier) {
+        menuTier.className = `user-tier-badge ${tierInfo.badgeClass}`;
+        menuTier.innerText = tierInfo.badgeText;
+      }
     }
 
     function switchDashboardTab(tab) {
