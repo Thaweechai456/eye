@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>คู่มือและฐานข้อมูล AI Chatbot สำหรับ LINE Business - XCOCO Eyewear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm 14mm 16mm 14mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Prompt', sans-serif;
+        font-size: 8pt;
+        color: #888;
+      }
+    }
+    
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      font-size: 9.5pt;
+      line-height: 1.55;
+      color: #1e293b;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Cover / Header */
+    .header-hero {
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .brand-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin: 0 0 2px 0;
+    }
+
+    .brand-subtitle {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #475569;
+      margin: 0;
+    }
+
+    .doc-meta {
+      text-align: right;
+      font-size: 8pt;
+      color: #64748b;
+    }
+
+    .doc-badge {
+      display: inline-block;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    /* Section Styling */
+    .section-block {
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+    }
+
+    .section-title {
+      font-size: 11.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-left: 4px solid #2563eb;
+      padding-left: 8px;
+      margin: 14px 0 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8fafc;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .section-subtitle {
+      font-size: 9.5pt;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 8px 0 4px 0;
+    }
+
+    p, ul, ol {
+      margin: 0 0 6px 0;
+    }
+
+    ul, ol {
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 3px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6px 0 10px 0;
+      font-size: 8.5pt;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 5px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    tr:nth-child(even) td {
+      background: #fafafa;
+    }
+
+    /* Cards & Callouts */
+    .callout-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin: 8px 0;
+      font-size: 9pt;
+    }
+
+    .callout-info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #2563eb;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin: 8px 0;
+      font-size: 9pt;
+    }
+
+    .rule-card {
+      background: #fdf4ff;
+      border: 1px solid #f0abfc;
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin-bottom: 6px;
+      font-size: 8.8pt;
+    }
+
+    .rule-card strong {
+      color: #86198f;
+    }
+
+    .code-tag {
+      font-family: 'Space Grotesk', monospace;
+      font-weight: 700;
+      background: #e2e8f0;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 8.5pt;
+      color: #0f172a;
+    }
+
+    .faq-item {
+      margin-bottom: 7px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .faq-q {
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      gap: 5px;
+    }
+
+    .faq-q span {
+      color: #2563eb;
+    }
+
+    .faq-a {
+      color: #334155;
+      padding-left: 18px;
+      margin-top: 2px;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header-hero">
+    <div>
+      <div class="brand-title">XCOCO Eyewear</div>
+      <div class="brand-subtitle">ชุดข้อมูลองค์ความรู้ AI Chatbot (LINE Official Account Knowledge Base)</div>
+    </div>
+    <div class="doc-meta">
+      <span class="doc-badge">LINE BUSINESS AI CHATBOT READY</span><br>
+      LINE OA Account: <strong>@743jngnt</strong><br>
+      อัปเดตล่าสุด: ปี 2026 | เวอร์ชัน 2.0
+    </div>
+  </div>
+
+  <!-- หมวด 1: ข้อมูลทั่วไปของร้าน/ธุรกิจ -->
+  <div class="section-block">
+    <div class="section-title">1. ข้อมูลทั่วไปของร้าน/ธุรกิจ (General Business Information)</div>
+    <table>
+      <tr>
+        <th style="width: 25%;">หัวข้อ</th>
+        <th>รายละเอียดข้อมูลสำหรับ AI ตอบกลับลูกค้า</th>
+      </tr>
+      <tr>
+        <td><strong>ชื่อร้านค้า</strong></td>
+        <td><strong>XCOCO Eyewear (เอ็กซ์โคโค่ อายแวร์)</strong> — สโลแกน: "เห็นชัด ในแบบของคุณ"</td>
+      </tr>
+      <tr>
+        <td><strong>ประเภทธุรกิจ</strong></td>
+        <td>ร้านแว่นตาแฟชั่นออนไลน์ และบริการสั่งตัดประกอบเลนส์สายตา เลนส์กรองแสงดิจิทัล เลนส์กันแดด ระดับพรีเมียมครบวงจร</td>
+      </tr>
+      <tr>
+        <td><strong>จุดเด่นของร้าน (USP)</strong></td>
+        <td>
+          1. <strong>กรอกค่าสายตาง่าย</strong>: มีระบบช่วยคำนวณและเลือกสเต็ปค่าสายตา หรือแนบรูปใบวัดสายตาจากคลินิกได้ทันที<br>
+          2. <strong>สตูดิโอ 3D 360°</strong>: หมุนดูมิติแว่นและลองสลับวัสดุได้แบบเรียลไทม์บนหน้าเว็บ<br>
+          3. <strong>เบาและสบายตา</strong>: คัดสรรกรอบแว่นน้ำหนักเบาพิเศษ (เริ่มต้นเพียง 12 กรัม) ขาแว่นไม่บีบขมับ แป้นจมูกไม่ทิ้งรอย<br>
+          4. <strong>ส่งฟรีทุกรายการ + รับประกันปรับค่าสายตา 30 วัน</strong>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>เวลาเปิด-ปิด</strong></td>
+        <td>
+          • <strong>หน้าร้านออนไลน์และเว็บไซต์</strong>: สั่งซื้อได้ตลอด 24 ชั่วโมง ทุกวัน<br>
+          • <strong>ทีมแอดมินและช่างแว่นตาให้คำปรึกษา</strong>: จันทร์ – อาทิตย์ เวลา 09:00 – 21:00 น.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>ที่อยู่สถานประกอบการ</strong></td>
+        <td>สำนักงาน XCOCO Eyewear เลขที่ 123/45 ถนนนวมินทร์ แขวงคลองกุ่ม เขตบึงกุ่ม กรุงเทพมหานคร 10240</td>
+      </tr>
+      <tr>
+        <td><strong>ช่องทางติดต่อ</strong></td>
+        <td>
+          • <strong>LINE Official Account</strong>: <span class="code-tag">@743jngnt</span><br>
+          • <strong>เบอร์โทรศัพท์ฝ่ายบริการลูกค้า</strong>: 061-013-0511<br>
+          • <strong>อีเมลฝ่ายบริการลูกค้า</strong>: support@xcoco-eyewear.com
+        </td>
+      </tr>
+      <tr>
+        <td><strong>ช่องทางสั่งซื้อ</strong></td>
+        <td>
+          1. สั่งซื้อผ่านเว็บไซต์หลัก: <span class="code-tag">https://thaweechai456.github.io/eye/</span><br>
+          2. สั่งซื้อโดยตรงผ่านแชท LINE OA กับแอดมินหรือ AI Chatbot
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- หมวด 2: ข้อมูลสินค้าและบริการ -->
+  <div class="section-block">
+    <div class="section-title">2. ข้อมูลสินค้าและบริการ (Products & Services Catalog)</div>
+    <p>XCOCO Eyewear มีจำหน่ายทั้งกรอบเปล่า และบริการประกอบเลนส์สายตาสั่งตัดพิเศษ:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>ชื่อรุ่น / รหัสสินค้า</th>
+          <th>หมวดหมู่</th>
+          <th>ราคาเริ่มต้น</th>
+          <th>คุณสมบัติเด่น & วัสดุ</th>
+          <th>ตัวเลือกสี / ไซส์</th>
+          <th>สถานะ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cyber Square Gamer Shield</strong><br><small>(frame_cyber_04)</small></td>
+          <td>เกมมิ่ง & กรองแสง</td>
+          <td>฿990</td>
+          <td>กรอบทรงสี่เหลี่ยมโมเดิร์น ขาแว่นแบนพิเศษใส่ครอบหูฟังเกมมิ่งแล้วไม่เจ็บขมับ ตัดแสงสะท้อนจอ</td>
+          <td>Matte Black (ดำด้าน) / Crystal Grey (เทาใส)<br>ขนาด 53-17-142 มม.</td>
+          <td>พร้อมส่ง</td>
+        </tr>
+        <tr>
+          <td><strong>Minimalist Round Matte</strong><br><small>(frame_minimal_01)</small></td>
+          <td>สไตล์มินิมอล</td>
+          <td>฿890</td>
+          <td>กรอบกลมทรงเกาหลี น้ำหนักเบาเพียง 12 กรัม ใส่ทำงานและอ่านหนังสือได้สบายตลอดวัน</td>
+          <td>Matte Black, Rose Gold, Silver<br>ขนาด 50-19-140 มม.</td>
+          <td>พร้อมส่ง</td>
+        </tr>
+        <tr>
+          <td><strong>Classic Aviator Pilot</strong><br><small>(frame_aviator_02)</small></td>
+          <td>วินเทจ/คลาสสิก</td>
+          <td>฿1,190</td>
+          <td>ทรงนักบินสะพานคู่ โครงสร้างสแตนเลสสตีล แข็งแกร่ง ลุคเท่เหนือกาลเวลา</td>
+          <td>Gold Frame, Gunmetal, Silver<br>ขนาด 56-15-145 มม.</td>
+          <td>พร้อมส่ง</td>
+        </tr>
+        <tr>
+          <td><strong>Titanium Hexagon Ultra-Light</strong><br><small>(frame_titanium_05)</small></td>
+          <td>ไทเทเนียมพรีเมียม</td>
+          <td>฿1,390</td>
+          <td>กรอบหกเหลี่ยมไทเทเนียมแท้ น้ำหนักเบาเพียง 9.5 กรัม ทนทาน ไม่เป็นสนิม ไม่ระคายเคืองผิว</td>
+          <td>Titanium Silver, Champagne Gold, Deep Black<br>ขนาด 51-18-142 มม.</td>
+          <td>พร้อมส่ง</td>
+        </tr>
+        <tr>
+          <td><strong>Luxury Cat-Eye Glamour</strong><br><small>(frame_cateye_03)</small></td>
+          <td>สายแฟชั่น</td>
+          <td>฿1,290</td>
+          <td>กรอบทรงตาแมว ปลายเฉียงยกกระชับรูปหน้า เสริมบุคลิกภาพให้ดูเฉี่ยวทันสมัย</td>
+          <td>Glossy Black, Tortoise Amber, Champagne<br>ขนาด 52-16-140 มม.</td>
+          <td>พร้อมส่ง</td>
+        </tr>
+        <tr>
+          <td><strong>Titanium Rimless Ultra-Float</strong><br><small>(frame_titanium_06)</small></td>
+          <td>ไทเทเนียมพรีเมียม</td>
+          <td>฿1,590</td>
+          <td>แว่นไร้กรอบไทเทเนียม เบาเหมือนลอยได้ ลุคผู้บริหาร สุภาพ เรียบหรูขั้นสุด</td>
+          <td>Silver Chrome, Platinum Gold<br>ขนาด Custom (ปรับตามเลนส์)</td>
+          <td>พร้อมส่ง</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-subtitle">บริการอัปเกรดเลนส์สั่งตัด (Lens Upgrades)</div>
+    <ul>
+      <li><strong>เลนส์ใสมาตรฐาน (Clear Multi-Coat)</strong>: ฟรี รวมในราคาตัวแว่นแล้ว เคลือบกันรอยขีดข่วนและตัดแสงสะท้อน</li>
+      <li><strong>เลนส์ BlueBlock (ตัดแสงสีฟ้าดิจิทัล)</strong>: เพิ่ม <span class="code-tag">+฿390</span> กรองแสงสีฟ้าจากจอมือถือ/คอมพิวเตอร์ 95% ถนอมจอประสาทตา</li>
+      <li><strong>เลนส์ BlueBlock Auto Photochromic (เปลี่ยนสีออกแดด)</strong>: เพิ่ม <span class="code-tag">+฿690</span> อยู่ในร่มเป็นเลนส์ใสตัดแสงฟ้า ออกแดดปรับเป็นเลนส์กันแดดสีเทาเข้มอัตโนมัติ 2-in-1</li>
+      <li><strong>เลนส์ย่อบาง Ultra Thin Index 1.67</strong>: เพิ่ม <span class="code-tag">+฿890</span> สำหรับสายตาสั้นมากกว่า -4.00 ขึ้นไป เพื่อให้เลนส์บางเบา ไม่ล้นขอบกรอบ</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- หมวด 3: หมวดหมู่สินค้า/บริการ -->
+  <div class="section-block">
+    <div class="section-title">3. หมวดหมู่สินค้าและบริการ (Product Categories)</div>
+    <ul>
+      <li><strong>สินค้าใหม่ (New Arrivals 2026)</strong>: Cyber Square Gamer Shield, Titanium Alpha Ultra-Light</li>
+      <li><strong>สินค้าขายดีอันดับ 1 (Best Sellers)</strong>: Minimalist Round Matte (฿890), Cyber Square (฿990)</li>
+      <li><strong>สินค้าแนะนำตามการใช้งาน (Recommended Series)</strong>:
+        <ul>
+          <li><em>ซีรีส์ทำงาน/เล่นเกม (Gaming & Screen Care)</em>: แนะนำ Cyber Square คู่กับเลนส์ BlueBlock</li>
+          <li><em>ซีรีส์เบาสบายสูงสุด (Ultra-Lightweight Daily)</em>: แนะนำ Titanium Hexagon / Titanium Rimless</li>
+          <li><em>ซีรีส์แฟชั่นเสริมลุค (Luxury & Fashion Statement)</em>: Classic Aviator, Luxury Cat-Eye</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- หมวด 4: การเลือกสินค้าให้เหมาะกับลูกค้า -->
+  <div class="section-block">
+    <div class="section-title">4. การเลือกสินค้าให้เหมาะกับลูกค้า (Face Shape & Lifestyle Recommendation)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>รูปทรงใบหน้า</th>
+          <th>ทรงแว่นที่แนะนำ</th>
+          <th>รุ่นที่แนะนำ</th>
+          <th>เหตุผลทางสรีระใบหน้า</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ใบหน้ากลม (Round Face)</strong></td>
+          <td>ทรงเหลี่ยม, ทรงเรขาคณิต</td>
+          <td>Cyber Square, Nordic Matte Rectangle</td>
+          <td>สันมุมของกรอบเหลี่ยมช่วยตัดทอนความกลม ทำให้รูปหน้าดูเรียว ยาว และมีมิติขึ้น</td>
+        </tr>
+        <tr>
+          <td><strong>ใบหน้าเหลี่ยม (Square Face)</strong></td>
+          <td>ทรงกลม, ทรงหยดน้ำ, ทรงรี</td>
+          <td>Minimalist Round Matte, Tortoiseshell Heritage</td>
+          <td>ความโค้งมนของกรอบช่วยลดความคมของแนวกราม ทำให้ใบหน้าดูนุ่มนวลและอ่อนหวานลง</td>
+        </tr>
+        <tr>
+          <td><strong>ใบหน้ารูปไข่ (Oval Face)</strong></td>
+          <td>ใส่ได้ทุกทรง (Universal)</td>
+          <td>Classic Aviator, Titanium Hexagon</td>
+          <td>สัดส่วนใบหน้าสมดุล สามารถเลือกได้ตามบุคลิกภาพและความชอบได้อิสระ</td>
+        </tr>
+        <tr>
+          <td><strong>ใบหน้ารูปหัวใจ (Heart Face)</strong></td>
+          <td>ทรง Cat-Eye, ทรงไร้กรอบ</td>
+          <td>Luxury Cat-Eye, Titanium Rimless</td>
+          <td>ช่วยดึงสายตาออกจากความกว้างของหน้าผาก และปรับสมดุลช่วงคางที่เรียวแหลม</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- หมวด 5: ข้อมูลเปรียบเทียบสินค้า -->
+  <div class="section-block">
+    <div class="section-title">5. ข้อมูลเปรียบเทียบสินค้า (Product Comparison Table)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>รุ่นแว่นตา</th>
+          <th>ราคา</th>
+          <th>วัสดุหลัก</th>
+          <th>น้ำหนัก</th>
+          <th>จุดเด่นเฉพาะตัว</th>
+          <th>กลุ่มผู้ใช้งานที่เหมาะสมที่สุด</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Minimalist Round</strong></td>
+          <td>฿890</td>
+          <td>อัลลอยด์เคลือบด้าน</td>
+          <td>12.0 กรัม</td>
+          <td>ราคาจับต้องได้ง่าย แมตช์กับเสื้อผ้าง่าย</td>
+          <td>นักเรียน นักศึกษา คนชอบแต่งตัวมินิมอลเกาหลี</td>
+        </tr>
+        <tr>
+          <td><strong>Cyber Square Gamer</strong></td>
+          <td>฿990</td>
+          <td>TR90 + สแตนเลสยืดหยุ่น</td>
+          <td>13.5 กรัม</td>
+          <td>ขาแว่นแบนบาง ใส่ครอบหูฟังไม่เจ็บหู</td>
+          <td>เกมเมอร์ โปรแกรมเมอร์ คนทำงานหน้าจอเกินวันละ 6 ชม.</td>
+        </tr>
+        <tr>
+          <td><strong>Classic Aviator</strong></td>
+          <td>฿1,190</td>
+          <td>สแตนเลสสตีลเกรดพรีเมียม</td>
+          <td>16.5 กรัม</td>
+          <td>สะพานคู่สไตล์นักบิน เสริมความมั่นใจ</td>
+          <td>คนชอบความเท่ ลุคคลาสสิก ผู้ขับขี่รถยนต์</td>
+        </tr>
+        <tr>
+          <td><strong>Titanium Hexagon</strong></td>
+          <td>฿1,390</td>
+          <td>Beta-Titanium 100%</td>
+          <td>9.5 กรัม</td>
+          <td>เบาที่สุด ไม่กดดั้ง ทนต่อการบิดงอและเหงื่อ</td>
+          <td>ผู้ที่ผิวแพ้ง่าย คนที่ใส่แว่นตลอดทั้งวัน 12+ ชม.</td>
+        </tr>
+        <tr>
+          <td><strong>Titanium Rimless</strong></td>
+          <td>฿1,590</td>
+          <td>Pure Titanium ไร้ขอบ</td>
+          <td>10.0 กรัม</td>
+          <td>วิสัยทัศน์กว้าง ไม่มีขอบแว่นบังตา ลุคหรูหรา</td>
+          <td>ผู้บริหาร แพทย์ นักธุรกิจ ลุคทางการ</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- หมวด 6: โปรโมชั่นและสิทธิพิเศษ -->
+  <div class="section-block">
+    <div class="section-title">6. โปรโมชั่นและสิทธิพิเศษ (Promotions & Coupons)</div>
+    <div class="callout-box">
+      <strong>🎟️ คูปองส่วนลดสำหรับช่องทาง LINE Official Account:</strong>
+      <ul>
+        <li><span class="code-tag">SURVEY5</span> : <strong>รับส่วนลดทันที 5%</strong> เมื่อกรอกโค้ดนี้ในตะกร้าสินค้า (คูปองสำหรับผู้ร่วมตอบแบบสอบถาม ใช้ได้ถึง 31 ธ.ค. 2569)</li>
+        <li><span class="code-tag">CLEAR20</span> : <strong>รับส่วนลด 20%</strong> ต้อนรับสมาชิกใหม่เมื่อลงทะเบียน</li>
+        <li><span class="code-tag">XCOCO30</span> : <strong>รับส่วนลดสูงสุด 30%</strong> เมื่อเล่นมินิเกมทดสอบสายตาบนหน้าเว็บสำเร็จ</li>
+      </ul>
+    </div>
+    <div class="section-subtitle">ระดับสมาชิก XCOCO Member Privileges:</div>
+    <ul>
+      <li><strong>Classic Member (ยอดสะสม ฿0 – ฿1,499)</strong>: สิทธิส่งฟรีทุกออร์เดอร์ + ผ้าเช็ดเลนส์และกล่องแว่นพรีเมียมฟรี</li>
+      <li><strong>Silver Member (ยอดสะสม ฿1,500 – ฿3,499)</strong>: รับส่วนลดพิเศษในเดือนเกิด + สิทธิส่งเคลมด่วน</li>
+      <li><strong>VIP Member 👑 (ยอดสะสม ฿3,500 ขึ้นไป)</strong>: บริการดูแลทำความสะอาดและดัดแว่นฟรีตลอดชีพ + ของสมนาคุณเซ็ตน้ำยาเช็ดเลนส์ขนาดพกพา</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- หมวด 7 & 8: ขั้นตอนการสั่งซื้อและการชำระเงิน -->
+  <div class="section-block">
+    <div class="section-title">7. ขั้นตอนการสั่งซื้อสินค้า (Ordering Process)</div>
+    <ol>
+      <li><strong>เลือกกรอบแว่น</strong>: เลือกรุ่นที่ชอบบนหน้าเว็บ หรือแคปรูปแจ้งแอดมินในแชท LINE</li>
+      <li><strong>เลือกประเภทเลนส์ & ระบุค่าสายตา</strong>:
+        <ul>
+          <li><em>เลือกจากรายการ</em>: เลือกค่าสายตาสั้น/ยาว (-10.00 ถึง +4.00) และระยะตาดำ (PD)</li>
+          <li><em>หรือพิมพ์ค่าเอง</em>: กรอกค่าละเอียดเฉพาะตัวได้อิสระ</li>
+          <li><em>หรือแนบรูปถ่ายใบวัดสายตา</em>: ถ่ายภาพใบวัดสายตาจากโรงพยาบาล/ร้านแว่น ส่งให้ทีมช่างตัดเลนส์ได้ทันที</li>
+        </ul>
+      </li>
+      <li><strong>ระบุที่อยู่จัดส่งและเบอร์โทรศัพท์</strong>: พร้อมกรอกโค้ดส่วนลด เช่น <span class="code-tag">SURVEY5</span></li>
+      <li><strong>ชำระเงินและรับใบเสร็จดิจิทัล</strong>: ระบบจะส่งใบยืนยันคำสั่งซื้อเข้าอีเมลทันที</li>
+    </ol>
+  </div>
+
+  <div class="section-block">
+    <div class="section-title">8. ช่องทางการชำระเงิน (Payment Methods)</div>
+    <table>
+      <tr>
+        <th style="width: 28%;">ช่องทางชำระเงิน</th>
+        <th>รายละเอียดและเงื่อนไข</th>
+      </tr>
+      <tr>
+        <td><strong>Thai QR Payment (พร้อมเพย์)</strong></td>
+        <td>สแกนจ่ายผ่าน Mobile Banking ได้ทุกธนาคาร ไม่มีค่าธรรมเนียม ยอดเงินเข้าระบบอัตโนมัติทันที</td>
+      </tr>
+      <tr>
+        <td><strong>โอนเงินผ่านบัญชีธนาคาร</strong></td>
+        <td>ธนาคารกสิกรไทย (KBANK) เลขที่บัญชี: 123-4-56789-0 ชื่อบัญชี: บจก. เอ็กซ์โคโค่ อายแวร์</td>
+      </tr>
+      <tr>
+        <td><strong>เก็บเงินปลายทาง (COD)</strong></td>
+        <td>รองรับเฉพาะการสั่งซื้อเฉพาะกรอบแว่นตา (สำหรับแว่นสั่งตัดเลนส์สายตาเฉพาะบุคคล รบกวนชำระเต็มจำนวนก่อนเริ่มตัดประกอบเลนส์)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- หมวด 9 & 10: การจัดส่งและการรับประกัน -->
+  <div class="section-block">
+    <div class="section-title">9. การจัดส่งสินค้า (Shipping & Delivery)</div>
+    <ul>
+      <li><strong>ค่าจัดส่ง</strong>: <strong style="color: #16a34a;">ฟรีทุกออร์เดอร์ทั่วประเทศ</strong> ไม่มีขั้นต่ำ</li>
+      <li><strong>ระยะเวลาจัดส่ง</strong>:
+        <ul>
+          <li><em>เฉพาะกรอบแว่นตา (ไม่มีเลนส์สายตา)</em>: จัดส่งใน 1-2 วันทำการ</li>
+          <li><em>แว่นสั่งตัดเลนส์สายตา</em>: ใช้เวลาเจียระไนและตรวจ QC 1-2 วัน + จัดส่ง 1-2 วัน (รวมได้รับใน 2-4 วัน)</li>
+        </ul>
+      </li>
+      <li><strong>บริษัทขนส่งพันธมิตร</strong>: Flash Express, Kerry Express, ไปรษณีย์ไทย (EMS)</li>
+      <li><strong>การติดตามพัสดุ</strong>: แจ้งเลข Tracking Number ผ่านอีเมลและสามารถตรวจสอบสถานะได้ตลอดเวลาในหน้า <span class="code-tag">orders.html</span></li>
+    </ul>
+  </div>
+
+  <div class="section-block">
+    <div class="section-title">10. นโยบายการรับประกันและการคืน/เคลมสินค้า (Warranty & Return Policy)</div>
+    <div class="callout-info">
+      <strong>🛡️ การรับประกันความพึงพอใจ 30 วัน (Comfort Guarantee):</strong>
+      <p>หากได้รับแว่นตาแล้วรู้สึกใส่ไม่สบายตา มึนศีรษะ หรือตัดค่าสายตาไม่ตรงตามใบแพทย์ สามารถติดต่อขอส่งแว่นกลับมาตรวจเช็กและ<strong>เปลี่ยนเลนส์ใหม่ได้ฟรีภายใน 30 วัน</strong></p>
+    </div>
+    <ul>
+      <li><strong>รับประกันโครงสร้างกรอบแว่น 1 ปีเต็ม</strong>: ครอบคลุมปัญหาน็อตหลุด บานพับชำรุด หรือสีลอกจากการใช้งานปกติ</li>
+      <li><strong>กรณีสินค้าชำรุดเสียหายจากการขนส่ง</strong>: ถ่ายรูป/วิดีโอแจ้งแอดมินใน LINE ภายใน 7 วันหลังรับของ ทางร้านส่งตัวใหม่ให้ทันทีโดยไม่มีค่าใช้จ่าย</li>
+    </ul>
+  </div>
+
+  <!-- หมวด 11: คำถามที่พบบ่อย (FAQ) -->
+  <div class="section-block">
+    <div class="section-title">11. คำถามที่พบบ่อยสำหรับ AI Chatbot (FAQ 15 ข้อ)</div>
+    
+    <div class="faq-item">
+      <div class="faq-q"><span>Q1:</span> สั่งตัดแว่นกับ XCOCO ใช้เวลากี่วันถึงจะได้ของ?</div>
+      <div class="faq-a">ตอบ: ใช้เวลาเพียง 2-4 วันทำการครับ (เจียระไนเลนส์และ QC คุณภาพ 1-2 วัน + ขนส่งด่วน 1-2 วัน) ฟรีค่าจัดส่งทั่วประเทศครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q2:</span> ไม่มีใบวัดสายตา สามารถสั่งตัดแว่นได้ไหม?</div>
+      <div class="faq-a">ตอบ: สั่งตัดได้ครับ หากทราบค่าสายตาเดิม สามารถกรอกค่า SPH (สั้น/ยาว) และค่า PD (ระยะตาดำ) ในระบบได้เลย หรือหากมีใบวัดเดิมสามารถถ่ายรูปส่งเข้ามาในแชทให้ช่างอ่านค่าให้ได้ครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q3:</span> ค่าสายตาเอียง (Cylinder) ตัดได้ไหม คิดราคาเพิ่มหรือไม่?</div>
+      <div class="faq-a">ตอบ: ตัดได้ครับ ระบบของเรารองรับค่าสายตาเอียงและองศาแกนเอียง (AXIS) อย่างแม่นยำ แจ้งค่าในแบบฟอร์มได้เลยครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q4:</span> ค่า PD (ระยะห่างตาดำ) คืออะไร จำเป็นต้องระบุไหม?</div>
+      <div class="faq-a">ตอบ: จำเป็นครับ PD (Pupillary Distance) คือระยะห่างระหว่างกึ่งกลางตาดำ เพื่อให้จุดโฟกัสของเลนส์ตรงกับดวงตาของคุณพอดี หากไม่ทราบ ระบบมีค่ามาตรฐาน 62 มม. ให้ หรือสามารถสอบถามวิธีวัดง่ายๆ ด้วยไม้บรรทัดกับแอดมินได้ครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q5:</span> โค้ดส่วนลด SURVEY5 ใช้งานอย่างไร?</div>
+      <div class="faq-a">ตอบ: นำโค้ด <strong>SURVEY5</strong> ไปกรอกในช่อง "ใส่โค้ดส่วนลด" ในหน้าตะกร้าสินค้า ระบบจะลดราคาทันที 5% ครับ (หรือคลิกลิงก์ที่มี ?coupon=SURVEY5 ระบบจะใส่โค้ดให้อัตโนมัติครับ)</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q6:</span> มีค่าจัดส่งสินค้าไหม?</div>
+      <div class="faq-a">ตอบ: ไม่มีค่าจัดส่งครับ XCOCO Eyewear จัดส่งฟรีทุกรายการ ทุกออร์เดอร์ ไม่มีขั้นต่ำครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q7:</span> สั่งเฉพาะกรอบแว่นตา ไม่เอาเลนส์ได้ไหม?</div>
+      <div class="faq-a">ตอบ: ได้ครับ สามารถเลือกตัวเลือก "เฉพาะกรอบแว่นตา (นำไปตัดเลนส์เอง)" เพื่อสั่งซื้อเฉพาะตัวกรอบได้ในราคาพิเศษครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q8:</span> เลนส์ BlueBlock แตกต่างจากเลนส์ปกติอย่างไร?</div>
+      <div class="faq-a">ตอบ: เลนส์ BlueBlock จะเคลือบสารพิเศษสำหรับกรองแสงสีฟ้าช่วงคลื่น 415-455 nm จากจอมือถือและคอมพิวเตอร์ ช่วยลดอาการตาล้า ตาแห้ง และปวดกระบอกตา เหมาะกับคนที่ทำงานหน้าจอนานๆ ครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q9:</span> เลนส์ออโต้เปลี่ยนสี (Photochromic) เปลี่ยนสีเร็วไหม?</div>
+      <div class="faq-a">ตอบ: เปลี่ยนสีเร็วภายใน 30-60 วินาทีเมื่อสัมผัสรังสี UV แสงแดด และจะกลับมาใสอย่างรวดเร็วเมื่อกลับเข้าที่ร่มครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q10:</span> ถ้าได้รับแว่นแล้วใส่แล้วมึนตา ต้องทำอย่างไร?</div>
+      <div class="faq-a">ตอบ: ทางร้านมีนโยบายรับประกันความสบายตา 30 วันครับ หากลองปรับตัว 3-5 วันแล้วยังไม่ดีขึ้น สามารถติดต่อแอดมินเพื่อส่งกลับมาปรับแก้หรือเปลี่ยนค่าเลนส์ใหม่ได้ฟรีครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q11:</span> มีบริการเก็บเงินปลายทางไหม?</div>
+      <div class="faq-a">ตอบ: มีบริการเก็บเงินปลายทางสำหรับสินค้าที่เป็น "กรอบแว่นเปล่า" ครับ ส่วนแว่นตัดเลนส์สายตาเฉพาะบุคคล รบกวนชำระเงินผ่านระบบโอน/สแกน QR Code ก่อนเริ่มตัดเลนส์ครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q12:</span> แว่นตาทรงไหนเหมาะกับคนหน้ากลม?</div>
+      <div class="faq-a">ตอบ: คนหน้ากลมแนะนำแว่นทรงเหลี่ยม เช่น รุ่น Cyber Square หรือ Nordic Matte Rectangle ครับ เพราะจะช่วยพรางความกลมและทำให้ใบหน้าดูเรียวยาวคมชัดขึ้นครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q13:</span> แว่นไทเทเนียมดีกว่าแว่นทั่วไปอย่างไร?</div>
+      <div class="faq-a">ตอบ: ไทเทเนียมมีน้ำหนักเบากว่าโลหะทั่วไปถึง 50% แข็งแรง ยืดหยุ่น ไม่หักง่าย ทนเหงื่อ ไม่ลอก และไม่ก่อให้เกิดอาการแพ้คันสำหรับคนผิวแพ้ง่ายครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q14:</span> สามารถตรวจสอบสถานะคำสั่งซื้อได้อย่างไร?</div>
+      <div class="faq-a">ตอบ: สามารถเข้าไปที่หน้า "ประวัติคำสั่งซื้อ" (orders.html) บนหน้าเว็บ เพื่อดูขั้นตอนการเจียระไนเลนส์และเลขพัสดุได้แบบ Real-time ครับ</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q15:</span> ต้องการติดต่อคุยกับพนักงานหรือช่างแว่นตาโดยตรง ต้องทำอย่างไร?</div>
+      <div class="faq-a">ตอบ: เพียงพิมพ์คำว่า "ติดต่อเจ้าหน้าที่" หรือ "คุยกับแอดมิน" ในแชทนี้ แอดมินและผู้เชี่ยวชาญจะเข้ามาตอบกลับอย่างรวดเร็วในช่วงเวลา 09:00 - 21:00 น. ครับ</div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- หมวด 12 & 13: คำถามและกฎสำหรับระบบแนะนำสินค้าของ AI Chatbot -->
+  <div class="section-block">
+    <div class="section-title">12. คำถามคัดกรองสำหรับระบบ AI แนะนำสินค้า (Recommendation Questions)</div>
+    <p>เมื่อลูกค้าทักเข้ามาสอบถามหรือไม่แน่ใจว่าจะเลือกรุ่นใด ให้ AI Chatbot ตั้งคำถาม 3-4 ข้อเพื่อประเมินความต้องการ:</p>
+    <div class="callout-info">
+      <strong>ชุดคำถามคัดกรอง 4 มิติ:</strong>
+      <ol>
+        <li><strong>ลักษณะการใช้งานหลัก</strong>: "เน้นใส่ทำงานหน้าจอคอมฯ / เล่นเกม / ใส่ขับรถออกแดด / หรือเน้นใส่เป็นแฟชั่นประจำวันครับ?"</li>
+        <li><strong>รูปทรงใบหน้า</strong>: "รูปหน้าของคุณเป็นทรงใดครับ (หน้ากลม / หน้าเหลี่ยม / หน้ารูปไข่ / หน้ารูปหัวใจ)?"</li>
+        <li><strong>งบประมาณที่วางไว้</strong>: "มีงบประมาณที่ตั้งใจไว้ประมาณเท่าไรครับ (ต่ำกว่า 1,000 / 1,000 - 1,500 / หรือรุ่นพรีเมียม 1,500+)?"</li>
+        <li><strong>ประเด็นที่กังวลเป็นพิเศษ</strong>: "มีปัญหาเรื่องแว่นบีบขมับ / แว่นหนักกดดั้ง / หรือปัญหาแพ้เหงื่อจากโลหะเป็นพิเศษไหมครับ?"</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-title">13. กฎและเงื่อนไขการแนะนำสินค้าของ AI Chatbot (AI Decision Rules)</div>
+    
+    <div class="rule-card">
+      <strong>กฎข้อที่ 1 (สายทำงานหน้าจอ/เกมเมอร์):</strong><br>
+      IF ลูกค้าบอกว่า "ทำงานคอมเยอะ", "เล่นเกม", "ปวดตาจากหน้าจอ", "ใส่หูฟัง"<br>
+      THEN ➜ แนะนำ <strong>Cyber Square Gamer Shield (฿990)</strong> คู่กับ <strong>เลนส์ BlueBlock (+฿390)</strong> โดยเน้นจุดขายว่าขาแว่นแบนบางพิเศษ ใส่ร่วมกับหูฟังได้ทั้งวันไม่เจ็บขมับ
+    </div>
+
+    <div class="rule-card">
+      <strong>กฎข้อที่ 2 (สายเบาสบาย/ไม่ชอบแว่นกดดั้ง/ผิวแพ้ง่าย):</strong><br>
+      IF ลูกค้าบอกว่า "ชอบแว่นเบาๆ", "ดั้งเป็นรอย", "แพ้เหงื่อ", "ใส่นานเกิน 10 ชม."<br>
+      THEN ➜ แนะนำ <strong>Titanium Hexagon Ultra-Light (฿1,390)</strong> หรือ <strong>Titanium Rimless (฿1,590)</strong> ชูจุดเด่นวัสดุ Pure Titanium น้ำหนักไม่ถึง 10 กรัม ทนทาน ไม่เป็นสนิม
+    </div>
+
+    <div class="rule-card">
+      <strong>กฎข้อที่ 3 (งบประหยัด สไตล์มินิมอล/เกาหลี):</strong><br>
+      IF ลูกค้าบอกว่า "งบไม่เกิน 1,000 บาท", "ชอบแนวมินิมอลเกาหลี", "ใส่เรียน"<br>
+      THEN ➜ แนะนำ <strong>Minimalist Round Matte (฿890)</strong> หรือ <strong>Nordic Matte Black (฿890)</strong> พร้อมแนะนำโค้ดลด <span class="code-tag">SURVEY5</span> เพื่อลดเหลือประมาณ ฿845
+    </div>
+
+    <div class="rule-card">
+      <strong>กฎข้อที่ 4 (ลูกค้าหน้ากลม/แก้มเยอะ):</strong><br>
+      IF ลูกค้าบอกว่า "หน้ากลม", "หน้าสั้น", "แก้มเยอะ"<br>
+      THEN ➜ แนะนำ <strong>Cyber Square</strong> หรือ <strong>Nordic Matte Rectangle</strong> เลี่ยงการแนะนำทรงกลม เพราะทรงเหลี่ยมจะช่วยให้ใบหน้าดูเพรียวเรียวยาวขึ้น
+    </div>
+
+    <div class="rule-card">
+      <strong>กฎข้อที่ 5 (สายตาสั้นเยอะเกิน -4.00):</strong><br>
+      IF ลูกค้าแจ้งค่าสายตาสั้นมากกว่า -4.00 (-4.25, -5.00, -6.00 ฯลฯ)<br>
+      THEN ➜ แนะนำให้เพิ่ม <strong>เลนส์ย่อบาง Ultra Thin 1.67 (+฿890)</strong> และแนะนำกรอบที่มีขอบหนาปานกลาง เช่น Cyber Square หรือ Tortoiseshell เพื่อซ่อนความหนาของขอบเลนส์
+    </div>
+
+    <div class="rule-card">
+      <strong>กฎข้อที่ 6 (กิจกรรมทั้งในร่มและกลางแจ้ง):</strong><br>
+      IF ลูกค้าบอกว่า "อยากได้แว่นตัวเดียวจบ ทั้งทำงานคอมและขับรถออกแดด"<br>
+      THEN ➜ แนะนำ <strong>เลนส์ BlueBlock Auto Photochromic (+฿690)</strong> เพราะตัดแสงสีฟ้าในห้อง และเปลี่ยนสีเป็นแว่นกันแดดอัตโนมัติเมื่อออกข้างนอก
+    </div>
+  </div>
+
+  <!-- หมวด 14: ข้อมูลติดต่อและบริการหลังการขาย -->
+  <div class="section-block">
+    <div class="section-title">14. ข้อมูลติดต่อและบริการหลังการขาย (Support & Human Handoff)</div>
+    <table>
+      <tr>
+        <th style="width: 25%;">ช่องทาง</th>
+        <th>รายละเอียดสำหรับแจ้งลูกค้าในแชท</th>
+      </tr>
+      <tr>
+        <td><strong>LINE Official Account</strong></td>
+        <td><strong>@743jngnt</strong> (มีเครื่องหมาย @ นำหน้า) ให้บริการแชทสอบถามและสั่งซื้อตลอดเวลา</td>
+      </tr>
+      <tr>
+        <td><strong>เบอร์โทรศัพท์ด่วน</strong></td>
+        <td><strong>061-013-0511</strong> (ฝ่ายบริการลูกค้าและช่างเทคนิคแว่นตา)</td>
+      </tr>
+      <tr>
+        <td><strong>เว็บไซต์หลัก</strong></td>
+        <td><a href="https://thaweechai456.github.io/eye/" target="_blank">https://thaweechai456.github.io/eye/</a> (ดูสินค้า 3D และสั่งตัดเลนส์ออนไลน์)</td>
+      </tr>
+      <tr>
+        <td><strong>เวลาติดต่อแอดมินคนจริง</strong></td>
+        <td>ทุกวันจันทร์ – อาทิตย์ เวลา <strong>09:00 – 21:00 น.</strong> (หากทักนอกเวลาทำการ AI Chatbot จะบันทึกเรื่องไว้และแอดมินจะติดต่อกลับในเช้าวันรุ่งขึ้น)</td>
+      </tr>
+      <tr>
+        <td><strong>คำสั่งเรียกแอดมิน (Human Handoff)</strong></td>
+        <td>เมื่อลูกค้าพิมพ์ <em>"ติดต่อเจ้าหน้าที่", "คุยกับคน", "ขอเบอร์โทร", "แจ้งปัญหาเคลม"</em> ให้ระบบ AI ส่งข้อความแจ้งเวลาทำการ พร้อมแจ้งเตือนไปยังทีมงานแอดมินทันที</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="callout-box" style="text-align: center; margin-top: 15px;">
+    <strong>XCOCO Eyewear — AI Chatbot Training Documentation</strong><br>
+    เอกสารฉบับสมบูรณ์สำหรับป้อนเป็น Knowledge Base ในระบบ LINE Official Account AI Chatbot
+  </div>
+
+</body>
+</html>
