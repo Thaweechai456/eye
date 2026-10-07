@@ -3582,9 +3582,7 @@ button.link-terms {
   .nav-links {
     display: none;
   }
-  .hero-title {
-    font-size: 2.2rem;
-  }
+  /* .hero-title size is fluid via clamp() in the Adapt block */
   .section-header {
     flex-direction: column;
     align-items: flex-start;
@@ -5868,15 +5866,13 @@ button.link-terms {
     padding: 2rem 1rem 3.5rem;
   }
 
+  .product-grid,
   .products-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
 
-  /* Hero Section on Mobile */
-  .hero-title {
-    font-size: 1.85rem !important;
-  }
+  /* Hero Section on Mobile (size governed by fluid clamp() in Adapt block) */
   
   .hero-buttons {
     flex-direction: column;
@@ -5893,7 +5889,7 @@ button.link-terms {
 
 
 /* ==========================================================================
-   UI Delights — Toast / Scroll Progress / Marquee / Reveal / Confetti / Bump
+   UI Delights - Toast / Scroll Progress / Marquee / Reveal / Confetti / Bump
    (shared by assets/js/ui.js)
    ========================================================================== */
 
@@ -6067,5 +6063,183 @@ main > section.reveal-armed.reveal-in {
   .toast-out {
     transform: none;
     transition: opacity 0.2s ease;
+  }
+}
+
+/* ==========================================================================
+   Adapt: Desktop -> Mobile / Tablet touch contexts (refinement, no redesign)
+   Single source for cross-device behavior. Brand tokens untouched.
+   ========================================================================== */
+
+/* --- Fluid hero type: replaces abrupt 3.1 / 2.2 / 1.85rem jumps --- */
+.hero-title {
+  font-size: clamp(1.85rem, 1.35rem + 2.5vw, 3.1rem);
+}
+
+/* --- Safe areas (notch, home indicator) --- */
+.navbar {
+  padding-top: env(safe-area-inset-top);
+}
+.mobile-nav-panel,
+.cart-drawer {
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+}
+.toast-container {
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  left: max(1rem, env(safe-area-inset-left));
+}
+
+/* --- Catalog grid: fix dead `.products-grid` selector, tighten mobile rhythm --- */
+@media (max-width: 640px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* Tablet: stable 2-col catalog (hybrid master view, portrait or landscape) */
+@media (min-width: 641px) and (max-width: 900px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* --- Prescription RX table: horizontal scroll instead of squished columns --- */
+.prescription-box {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.rx-table {
+  min-width: 520px;
+}
+.rx-table thead th:first-child,
+.rx-table tbody th {
+  position: sticky;
+  left: 0;
+  background: var(--bg-surface);
+  z-index: 1;
+}
+
+/* --- Touch targets: 44px minimum on coarse pointers --- */
+@media (pointer: coarse) {
+  .icon-btn,
+  .cart-btn,
+  .mobile-nav-toggle {
+    width: 44px;
+    height: 44px;
+  }
+  .mobile-nav-close,
+  .modal-close {
+    width: 44px;
+    height: 44px;
+  }
+  .tab-btn {
+    padding: 0.7rem 1.25rem;
+  }
+  .faq-question {
+    padding: 1.25rem;
+  }
+  .mobile-nav-item {
+    padding: 0.9rem;
+  }
+  .category-tabs,
+  .filter-pills-wrap {
+    scroll-padding: 1rem;
+  }
+}
+
+/* --- Hover belongs to mouse only: kill sticky hover lift on touch --- */
+@media (hover: none) {
+  .icon-btn:hover,
+  .mobile-nav-toggle:hover,
+  .product-card:hover,
+  .hero-stat-card.stat-card-interactive:hover {
+    transform: none;
+  }
+  .icon-btn:active,
+  .mobile-nav-toggle:active,
+  .tab-btn:active {
+    transform: scale(0.97);
+  }
+  .nav-link::after {
+    display: none;
+  }
+}
+
+/* --- Fine pointers keep the quiet 1px lift (explicit, no change in feel) --- */
+@media (pointer: fine) {
+  .icon-btn,
+  .cart-btn,
+  .mobile-nav-toggle {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* --- iOS zoom guard: inputs must be >=16px on small screens --- */
+@media (max-width: 640px) {
+  .input-select,
+  .input-text,
+  .search-input,
+  .newsletter-input,
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  .announcement-bar {
+    font-size: 0.75rem;
+  }
+  .announcement-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* --- Modal bottom-sheet feel on phones: full-bleed, dvh-aware --- */
+@media (max-width: 640px) {
+  .modal-backdrop {
+    padding: 0.5rem;
+  }
+  .modal-container {
+    max-height: 92vh;
+    max-height: 92dvh;
+    border-radius: var(--radius-lg);
+  }
+  .modal-body {
+    padding: 1.25rem;
+  }
+}
+
+/* --- Landscape phones / short viewports: keep hero stats usable --- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-stats {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .modal-container {
+    max-height: 94vh;
+    max-height: 94dvh;
+  }
+}
+
+/* --- Very small screens (320px): protect nav + hero buttons --- */
+@media (max-width: 360px) {
+  .nav-container {
+    padding: 0.55rem 0.7rem;
+  }
+  .brand-name {
+    font-size: 0.95rem;
+  }
+  .hero-buttons {
+    gap: 0.6rem;
   }
 }
