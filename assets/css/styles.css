@@ -5915,6 +5915,24 @@ button.link-terms {
    (shared by assets/js/ui.js)
    ========================================================================== */
 
+/* --- Button inline SVG icons (emoji replacements, currentColor => theme-aware) --- */
+.btn svg.btn-ico,
+.profile-tab-btn svg.btn-ico {
+  width: 1.05em;
+  height: 1.05em;
+  flex-shrink: 0;
+  vertical-align: -0.15em;
+}
+
+.btn svg.btn-ico:first-child,
+.profile-tab-btn svg.btn-ico:first-child {
+  margin-right: 0.45em;
+}
+
+.btn svg.btn-ico:last-child {
+  margin-left: 0.45em;
+}
+
 /* --- Toast notifications --- */
 .toast-container {
   position: fixed;
