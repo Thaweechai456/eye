@@ -5916,20 +5916,21 @@ button.link-terms {
    ========================================================================== */
 
 /* --- Button inline SVG icons (emoji replacements, currentColor => theme-aware) --- */
-.btn svg.btn-ico,
-.profile-tab-btn svg.btn-ico {
+button svg.btn-ico,
+a.btn svg.btn-ico {
   width: 1.05em;
   height: 1.05em;
   flex-shrink: 0;
   vertical-align: -0.15em;
 }
 
-.btn svg.btn-ico:first-child,
-.profile-tab-btn svg.btn-ico:first-child {
+button svg.btn-ico:first-child,
+a.btn svg.btn-ico:first-child {
   margin-right: 0.45em;
 }
 
-.btn svg.btn-ico:last-child {
+button svg.btn-ico:last-child,
+a.btn svg.btn-ico:last-child {
   margin-left: 0.45em;
 }
 
