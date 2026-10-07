@@ -23,6 +23,7 @@ cp backend/mail_config.example.php backend/mail_config.php
 
 - **`index.html`** — single-page app, all sections/modals/drawers inline (~1000 lines)
 - **`assets/js/app.js`** — all JS logic (~2370 lines): product catalog, cart, auth, quiz, recommendations, wishlist, theme toggle, nav. All state in LocalStorage.
+- **`assets/js/ui.js`** — shared UI delight layer loaded by index/auth/orders: `showToast()` (branded toast notifications, replaces native `alert()`), `fireConfetti()` (canvas confetti), scroll progress bar, announcement marquee, section scroll-reveal, hero stat count-up.
 - **`assets/css/styles.css`** — single stylesheet with CSS variables for light/dark theme
 - **`backend/*.php`** — PHP API endpoints (register, login, subscribe, order email, personalized email). All use PHPMailer via `backend/mailer.php`.
 - **`backend/db.php`** — MySQL PDO connection to `xcoco_db`. Auto-creates tables on connect.

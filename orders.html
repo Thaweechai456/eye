@@ -21,7 +21,7 @@
   
   <!-- Stylesheet & Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo-icon-32.png" sizes="32x32">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4.0">
 </head>
 <body class="orders-page">
 
@@ -591,6 +591,7 @@
     </div>
   </div>
 
+  <script src="assets/js/ui.js?v=1.0"></script>
   <script>
     // State
     let currentUser = null;
@@ -1117,7 +1118,7 @@
       });
 
       localStorage.setItem("xcoco_cart", JSON.stringify(cart));
-      alert(`เพิ่มรายการจากคำสั่งซื้อ ${orderId} ลงในตะกร้าเรียบร้อยแล้ว กำลังนำท่านไปยังหน้าร้าน...`);
+      showToast(`เพิ่มรายการจากคำสั่งซื้อ ${orderId} ลงในตะกร้าเรียบร้อยแล้ว กำลังนำท่านไปยังหน้าร้าน...`, "cart");
       window.location.href = "index.html";
     }
 

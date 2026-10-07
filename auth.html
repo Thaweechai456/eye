@@ -21,7 +21,7 @@
   
   <!-- Stylesheet & Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo-icon-32.png" sizes="32x32">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4.0">
 </head>
 <body class="auth-body">
 
@@ -465,6 +465,7 @@
     </div>
   </main>
 
+  <script src="assets/js/ui.js?v=1.0"></script>
   <script>
     // Theme Management
     function initTheme() {
@@ -605,7 +606,7 @@
     }
 
     function forgotPasswordAlert() {
-      alert("🔒 ระบบกู้คืนรหัสผ่าน:\nกรุณาติดต่อเจ้าหน้าที่แอดมินทาง LINE: @xcoco เพื่อขอรับลิงก์รีเซ็ตรหัสผ่านความปลอดภัยสูงครับ");
+      showToast("🔒 ระบบกู้คืนรหัสผ่าน:\nกรุณาติดต่อเจ้าหน้าที่แอดมินทาง LINE: @xcoco เพื่อขอรับลิงก์รีเซ็ตรหัสผ่านความปลอดภัยสูงครับ", "info");
     }
 
     // Submit Login

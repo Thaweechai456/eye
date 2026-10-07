@@ -5891,3 +5891,181 @@ button.link-terms {
 
 
 
+
+/* ==========================================================================
+   UI Delights — Toast / Scroll Progress / Marquee / Reveal / Confetti / Bump
+   (shared by assets/js/ui.js)
+   ========================================================================== */
+
+/* --- Toast notifications --- */
+.toast-container {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 100001;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: min(360px, calc(100vw - 2rem));
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid #6EA8D7;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translateX(-115%);
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast-out {
+  opacity: 0;
+  transform: translateX(-115%);
+}
+
+.toast-icon {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.toast-msg {
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+.toast-success { border-left-color: var(--success-ink, #10b981); }
+.toast-error   { border-left-color: #e5484d; }
+.toast-warning { border-left-color: var(--warning-ink, #facc15); }
+.toast-info    { border-left-color: #6EA8D7; }
+.toast-cart    { border-left-color: #6EA8D7; }
+.toast-reward  { border-left-color: #f5b942; }
+
+/* --- Scroll progress bar --- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 99998;
+  background: linear-gradient(90deg, #6EA8D7, #AFCBE8 45%, #2E3A4A);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* --- Announcement bar marquee --- */
+.announcement-bar {
+  overflow: hidden;
+  padding: 0.4rem 0;
+}
+
+.announcement-content {
+  white-space: nowrap;
+}
+
+.announcement-content.marquee-active {
+  display: flex;
+  width: max-content;
+  animation: announcement-marquee 30s linear infinite;
+}
+
+.announcement-content.marquee-active > span {
+  flex: 0 0 auto;
+  padding-right: 3rem;
+}
+
+.announcement-bar:hover .announcement-content.marquee-active {
+  animation-play-state: paused;
+}
+
+@keyframes announcement-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* --- Section scroll-reveal --- */
+main > section.reveal-armed {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+main > section.reveal-armed.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Cart badge bump / cart button nudge --- */
+@keyframes cart-bump {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.45); }
+  60%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.cart-badge.bump {
+  animation: cart-bump 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cart-nudge {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-9deg); }
+  50%      { transform: rotate(8deg); }
+  75%      { transform: rotate(-4deg); }
+}
+
+.cart-btn.nudge {
+  animation: cart-nudge 0.5s ease;
+}
+
+/* --- Confetti canvas --- */
+.confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100000;
+  pointer-events: none;
+}
+
+/* --- Respect reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  main > section.reveal-armed {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none;
+  }
+
+  .announcement-content.marquee-active {
+    animation: none;
+  }
+
+  .cart-badge.bump,
+  .cart-btn.nudge {
+    animation: none;
+  }
+
+  .toast,
+  .toast-in,
+  .toast-out {
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
+}

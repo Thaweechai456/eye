@@ -379,7 +379,7 @@ async function handleRegisterSubmit(event) {
     });
     const data = await res.json();
     if (data && data.success) {
-      alert(`🎉 สมัครสมาชิกสำเร็จ!\n\nยินดีต้อนรับคุณ ${name} สู่ครอบครัว XCOCO\n📧 ระบบได้จัดส่งอีเมลสรุปข้อมูลสมาชิกและโค้ดลับ 20% ไปยัง ${email} แล้วครับ`);
+      showToast(`🎉 สมัครสมาชิกสำเร็จ!\n\nยินดีต้อนรับคุณ ${name} สู่ครอบครัว XCOCO\n📧 ระบบได้จัดส่งอีเมลสรุปข้อมูลสมาชิกและโค้ดลับ 20% ไปยัง ${email} แล้วครับ`, "success");
       return;
     }
   } catch (err) {
@@ -387,7 +387,7 @@ async function handleRegisterSubmit(event) {
     console.log("PHP API Notice:", err);
   }
 
-  alert(`🎉 สมัครสมาชิกสำเร็จ! ยินดีต้อนรับคุณ ${name} สู่ครอบครัว XCOCO Eyewear\n(ระบบได้ส่งอีเมลยืนยันข้อมูลสมาชิกไปยัง ${email} เรียบร้อยแล้ว)`);
+  showToast(`🎉 สมัครสมาชิกสำเร็จ! ยินดีต้อนรับคุณ ${name} สู่ครอบครัว XCOCO Eyewear\n(ระบบได้ส่งอีเมลยืนยันข้อมูลสมาชิกไปยัง ${email} เรียบร้อยแล้ว)`, "success");
 }
 
 // Newsletter Subscription Handler
@@ -444,7 +444,7 @@ function logoutUser() {
   initAuthUI();
   const menu = document.getElementById("userMenuContent");
   if (menu) menu.style.display = "none";
-  alert("ออกจากระบบเรียบร้อยแล้ว");
+  showToast("ออกจากระบบเรียบร้อยแล้ว", "success");
 }
 
 function openProfileModal(initialTab = 'info') {
@@ -577,7 +577,7 @@ function reorderItems(orderId) {
   saveCart();
   closeProfileModal();
   openCartDrawer();
-  alert(`🛒 เพิ่มรายการจากคำสั่งซื้อ ${orderId} ลงในตะกร้าเรียบร้อยแล้วครับ!`);
+  showToast(`🛒 เพิ่มรายการจากคำสั่งซื้อ ${orderId} ลงในตะกร้าเรียบร้อยแล้วครับ!`, "cart");
 }
 
 function printReceiptForOrder(orderId) {
@@ -688,7 +688,7 @@ function saveProfileChanges() {
 
   // Refresh profile display
   openProfileModal();
-  alert("💾 บันทึกข้อมูลและค่าสายตาใหม่เรียบร้อยแล้ว!");
+  showToast("💾 บันทึกข้อมูลและค่าสายตาใหม่เรียบร้อยแล้ว!", "success");
 }
 
 // ==========================================
@@ -1271,7 +1271,7 @@ async function handleLoginSubmit(event) {
       localStorage.setItem("xcoco_current_user", JSON.stringify(currentUser));
       initAuthUI();
       closeAuthModal();
-      alert(`🎉 ยินดีต้อนรับคุณ ${currentUser.name}! เข้าสู่ระบบเรียบร้อยแล้ว`);
+      showToast(`🎉 ยินดีต้อนรับคุณ ${currentUser.name}! เข้าสู่ระบบเรียบร้อยแล้ว`, "success");
       return;
     } else if (data && !data.success) {
       errorMsg.innerText = "❌ " + (data.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
@@ -1288,7 +1288,7 @@ async function handleLoginSubmit(event) {
     localStorage.setItem("xcoco_current_user", JSON.stringify(currentUser));
     initAuthUI();
     closeAuthModal();
-    alert(`🎉 ยินดีต้อนรับคุณ ${user.name}! เข้าสู่ระบบเรียบร้อยแล้ว`);
+    showToast(`🎉 ยินดีต้อนรับคุณ ${user.name}! เข้าสู่ระบบเรียบร้อยแล้ว`, "success");
   } else {
     errorMsg.innerText = "❌ อีเมลหรือรหัสผ่านไม่ถูกต้อง (ลอง demo@xcoco.com / 1234)";
   }
@@ -1296,7 +1296,7 @@ async function handleLoginSubmit(event) {
 
 function autofillRxFromProfile() {
   if (!currentUser || !currentUser.rx) {
-    alert("ยังไม่มีค่าสายตาบันทึกไว้ในโปรไฟล์");
+    showToast("ยังไม่มีค่าสายตาบันทึกไว้ในโปรไฟล์", "warning");
     return;
   }
 
@@ -1347,7 +1347,7 @@ function autofillRxFromProfile() {
   }
   if (pdInput && pd) pdInput.value = pd;
 
-  alert(`⚡ ดึงค่าสายตาของคุณ ${currentUser.name} เรียบร้อยแล้ว (R: ${rSph}, L: ${lSph}, PD: ${pd || 62}mm)`);
+  showToast(`⚡ ดึงค่าสายตาของคุณ ${currentUser.name} เรียบร้อยแล้ว (R: ${rSph}, L: ${lSph}, PD: ${pd || 62}mm)`, "success");
 }
 
 function switchCartRxInputMode(mode) {
@@ -1805,6 +1805,7 @@ function confirmAddToCart() {
   saveCart();
   closeCustomizerModal();
   openCartDrawer();
+  showToast(`เพิ่ม "${cartItem.name}" ลงตะกร้าแล้ว`, "cart");
 }
 
 function formatCartRxBadges(rxSummary) {
@@ -1909,6 +1910,8 @@ function saveCart() {
   updateCartUI();
 }
 
+let lastCartCount = null;
+
 function updateCartUI() {
   const countBadge = document.getElementById("cartCount");
   const drawerCount = document.getElementById("cartDrawerCount");
@@ -1922,6 +1925,23 @@ function updateCartUI() {
   // รูปแบบต้องคงคำว่า "ตะกร้า N" ติดกัน เพราะ axe ตรวจว่าข้อความ visible ทั้งก้อนอยู่ใน label
   const cartBtn = document.getElementById("cartBtn");
   if (cartBtn) cartBtn.setAttribute("aria-label", `ตะกร้า ${totalQty} รายการ`);
+
+  // Bump animations when the item count increases (UI delight)
+  if (lastCartCount !== null && totalQty > lastCartCount) {
+    countBadge.classList.remove("bump");
+    void countBadge.offsetWidth; // restart the animation
+    countBadge.classList.add("bump");
+    if (cartBtn) {
+      cartBtn.classList.remove("nudge");
+      void cartBtn.offsetWidth;
+      cartBtn.classList.add("nudge");
+      setTimeout(function () {
+        countBadge.classList.remove("bump");
+        cartBtn.classList.remove("nudge");
+      }, 650);
+    }
+  }
+  lastCartCount = totalQty;
 
   if (cart.length === 0) {
     container.innerHTML = `
@@ -2081,7 +2101,7 @@ function applyCoupon() {
 
 function copyPromo(code) {
   navigator.clipboard.writeText(code);
-  alert(`คัดลอกโค้ด "${code}" เรียบร้อยแล้ว! สามารถนำไปวางในตะกร้าสินค้าได้เลย`);
+  showToast(`คัดลอกโค้ด "${code}" เรียบร้อยแล้ว! สามารถนำไปวางในตะกร้าสินค้าได้เลย`, "success");
 }
 
 function copyAndApplyPromo(code) {
@@ -2184,6 +2204,7 @@ function endEyeGame(instantWin = false) {
     resultTitle.innerText = "สุดยอด! สายตาของคุณเฉียบคมมาก";
     resultDesc.innerText = `คุณทำคะแนนได้ ${gameScore} คะแนน ผ่านเกณฑ์รับรางวัลพิเศษ!`;
     rewardBox.style.display = "flex";
+    fireConfetti();
   } else {
     resultIcon.innerText = "💪";
     resultTitle.innerText = "เกือบผ่านแล้ว! พยายามอีกนิดนะ";
@@ -2203,7 +2224,7 @@ let pendingOrderTotal = 0;
 
 function openCheckoutModal() {
   if (cart.length === 0) {
-    alert("กรุณาเลือกสินค้าใส่ตะกร้าก่อนดำเนินการสั่งซื้อครับ 🕶️");
+    showToast("กรุณาเลือกสินค้าใส่ตะกร้าก่อนดำเนินการสั่งซื้อครับ 🕶️", "warning");
     return;
   }
 
@@ -2338,9 +2359,10 @@ function finishOrderAndClear() {
     if (oldTier !== newTierInfo.tier) {
       setTimeout(() => {
         if (newTierInfo.tier === "vip") {
-          alert(`👑 ว้าววว! ยินดีด้วยครับคุณ ${currentUser.name}!\n\nยอดสั่งซื้อสะสมของคุณถึง ฿${currentUser.totalSpent.toLocaleString()} แล้ว\nคุณได้รับการเลื่อนขั้นเป็น ⭐ VIP Member เรียบร้อยแล้วครับ!\n\n✨ รับสิทธิประโยชน์ส่งฟรีตลอดชีพ และบริการตัดเลนส์ระดับพรีเมียม`);
+          showToast(`👑 ว้าววว! ยินดีด้วยครับคุณ ${currentUser.name}!\n\nยอดสั่งซื้อสะสมของคุณถึง ฿${currentUser.totalSpent.toLocaleString()} แล้ว\nคุณได้รับการเลื่อนขั้นเป็น ⭐ VIP Member เรียบร้อยแล้วครับ!\n\n✨ รับสิทธิประโยชน์ส่งฟรีตลอดชีพ และบริการตัดเลนส์ระดับพรีเมียม`, "reward");
+          fireConfetti();
         } else if (newTierInfo.tier === "silver") {
-          alert(`🥈 ยินดีด้วยครับคุณ ${currentUser.name}!\n\nยอดสั่งซื้อสะสมของคุณถึง ฿${currentUser.totalSpent.toLocaleString()} แล้ว\nคุณได้รับการเลื่อนขั้นเป็น Silver Member เรียบร้อยแล้วครับ! 🎉`);
+          showToast(`🥈 ยินดีด้วยครับคุณ ${currentUser.name}!\n\nยอดสั่งซื้อสะสมของคุณถึง ฿${currentUser.totalSpent.toLocaleString()} แล้ว\nคุณได้รับการเลื่อนขั้นเป็น Silver Member เรียบร้อยแล้วครับ! 🎉`, "success");
         }
       }, 500);
     }
@@ -2498,7 +2520,7 @@ async function handleSendFaceEmailSubmit(event) {
     });
     const data = await res.json();
     if (data.success) {
-      alert(`🎉 ส่งผลวิเคราะห์รูปหน้าและแว่นตาแนะนำไปยัง ${email} สำเร็จเรียบร้อยแล้วครับ! ตรวจสอบ Inbox ได้เลย`);
+      showToast(`🎉 ส่งผลวิเคราะห์รูปหน้าและแว่นตาแนะนำไปยัง ${email} สำเร็จเรียบร้อยแล้วครับ! ตรวจสอบ Inbox ได้เลย`, "success");
       closeFaceEmailModal();
     } else {
       statusMsg.style.display = "block";
@@ -2522,12 +2544,12 @@ async function sendFaceMatchEmailDirect(email, name, shape) {
     });
     const data = await res.json();
     if (data.success) {
-      alert(`🎉 ส่งผลวิเคราะห์รูปหน้าและแว่นตาแนะนำไปยังอีเมล (${email}) เรียบร้อยแล้วครับ!`);
+      showToast(`🎉 ส่งผลวิเคราะห์รูปหน้าและแว่นตาแนะนำไปยังอีเมล (${email}) เรียบร้อยแล้วครับ!`, "success");
     } else {
-      alert("⚠️ " + (data.message || "ไม่สามารถส่งอีเมลได้"));
+      showToast("⚠️ " + (data.message || "ไม่สามารถส่งอีเมลได้"), "error");
     }
   } catch (err) {
-    alert("⚠️ เกิดข้อผิดพลาดในการส่งอีเมล: " + err.message);
+    showToast("⚠️ เกิดข้อผิดพลาดในการส่งอีเมล: " + err.message, "error");
   }
 }
 
