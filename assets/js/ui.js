@@ -16,13 +16,16 @@
   /* ----------------------------------------------------------
    * Toast notifications
    * ---------------------------------------------------------- */
+  /* Inline SVG stroke icons (Feather-style, currentColor => theme-aware).
+     Message text still uses textContent below, so user input stays safe. */
+  var TOAST_SVG_OPEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">';
   var TOAST_ICONS = {
-    success: "\u2705",
-    error: "\u274C",
-    warning: "\u26A0\uFE0F",
-    info: "\u2139\uFE0F",
-    cart: "\u1F6D2",
-    reward: "\u1F389"
+    success: TOAST_SVG_OPEN + '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+    error: TOAST_SVG_OPEN + '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+    warning: TOAST_SVG_OPEN + '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    info: TOAST_SVG_OPEN + '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+    cart: TOAST_SVG_OPEN + '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>',
+    reward: TOAST_SVG_OPEN + '<polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>'
   };
 
   function getToastContainer() {
@@ -51,7 +54,7 @@
       var icon = document.createElement("span");
       icon.className = "toast-icon";
       icon.setAttribute("aria-hidden", "true");
-      icon.textContent = TOAST_ICONS[t];
+      icon.innerHTML = TOAST_ICONS[t]; // static trusted markup only; message below still uses textContent
 
       var msg = document.createElement("span");
       msg.className = "toast-msg";
