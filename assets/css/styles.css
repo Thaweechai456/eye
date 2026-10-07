@@ -1,29 +1,43 @@
 /* ==========================================================================
-   CSS Variables: Black & White / Light & Dark Theme Design System
+   CSS Variables: XCOCO Eyewear Design System & Brand Color Palette
+   Reference Theme:
+   - Primary Sky Blue:   #6EA8D7
+   - Soft Accent Blue:   #AFCBE8
+   - Background Light:   #F5F8FB
+   - Soft Divider/Border:#E6ECF3
+   - Deep Navy / Text:   #2E3A4A
    ========================================================================== */
 :root {
-  /* Dark Mode */
-  --bg-primary: #0a0a0c;
-  --bg-surface: #141417;
-  --bg-surface-elevated: #1e1e24;
-  --bg-subtle: #27272f;
-  --border-color: rgba(255, 255, 255, 0.12);
-  --border-focus: rgba(255, 255, 255, 0.4);
+  /* Brand Specific Color Tokens */
+  --brand-navy: #2E3A4A;
+  --brand-sky-blue: #6EA8D7;
+  --brand-soft-blue: #AFCBE8;
+  --brand-ice-bg: #F5F8FB;
+  --brand-border: #E6ECF3;
+
+  /* Dark Theme */
+  --bg-primary: #151b23;
+  --bg-surface: #1e2633;
+  --bg-surface-elevated: #263242;
+  --bg-subtle: #2d3b4e;
+  --border-color: rgba(230, 236, 243, 0.12);
+  --border-focus: #6EA8D7;
   
-  --text-primary: #f5f5f7;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
-  --text-inverse: #09090b;
+  --text-primary: #F5F8FB;
+  --text-secondary: #AFCBE8;
+  --text-muted: #7d90a6;
+  --text-inverse: #151b23;
 
-  --accent-primary: #ffffff;
-  --accent-hover: #e4e4e7;
-  --accent-subtle: rgba(255, 255, 255, 0.08);
+  --accent-primary: #6EA8D7;
+  --accent-hover: #89bced;
+  --accent-subtle: rgba(110, 168, 215, 0.15);
 
-  --badge-bg: #27272a;
-  --badge-text: #fafafa;
+  --badge-bg: rgba(110, 168, 215, 0.2);
+  --badge-text: #AFCBE8;
   --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-  --modal-backdrop: rgba(0, 0, 0, 0.85);
+  --modal-backdrop: rgba(15, 23, 42, 0.85);
 
+  --nav-bg: rgba(21, 27, 35, 0.88);
   --transition-speed: 0.25s;
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -32,27 +46,29 @@
 }
 
 [data-theme="light"] {
-  /* Light Mode */
-  --bg-primary: #f8f9fa;
-  --bg-surface: #ffffff;
-  --bg-surface-elevated: #f1f3f5;
-  --bg-subtle: #e9ecef;
-  --border-color: rgba(0, 0, 0, 0.1);
-  --border-focus: rgba(0, 0, 0, 0.4);
+  /* Light Theme (Matching Exact Brand Reference Image Palette) */
+  --bg-primary: #F5F8FB;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #F8FAFD;
+  --bg-subtle: #EBF2F8;
+  --border-color: #E6ECF3;
+  --border-focus: #6EA8D7;
 
-  --text-primary: #18181b;
-  --text-secondary: #52525b;
-  --text-muted: #a1a1aa;
-  --text-inverse: #ffffff;
+  --text-primary: #2E3A4A;
+  --text-secondary: #5C6B7E;
+  --text-muted: #8898AA;
+  --text-inverse: #FFFFFF;
 
-  --accent-primary: #18181b;
-  --accent-hover: #27272a;
-  --accent-subtle: rgba(0, 0, 0, 0.05);
+  --accent-primary: #2E3A4A;
+  --accent-hover: #1E2632;
+  --accent-subtle: rgba(110, 168, 215, 0.12);
 
-  --badge-bg: #e4e4e7;
-  --badge-text: #18181b;
-  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-  --modal-backdrop: rgba(0, 0, 0, 0.6);
+  --badge-bg: #E8F2FA;
+  --badge-text: #2E3A4A;
+  --card-shadow: 0 6px 20px rgba(46, 58, 74, 0.05);
+  --modal-backdrop: rgba(46, 58, 74, 0.55);
+
+  --nav-bg: rgba(255, 255, 255, 0.92);
 }
 
 /* ==========================================================================
@@ -69,7 +85,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Prompt', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
@@ -80,6 +96,7 @@ body {
   flex-direction: column;
   overflow-x: hidden;
   line-height: 1.6;
+  background-color: var(--bg-primary);
 }
 
 a {
@@ -92,33 +109,17 @@ button, input, select {
 }
 
 /* ==========================================================================
-   Navbar & User Dropdown
-   ========================================================================== */
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background-color: rgba(248, 249, 250, 0.85);
-  border-bottom: 1px solid var(--border-color);
-}
-
-[data-theme="dark"] .navbar {
-  background-color: rgba(10, 10, 12, 0.8);
-}
-
-/* ==========================================================================
-   Header / Navbar (Refined & Modern Balance)
+   Header / Navbar (Glassmorphism & Clean Brand Style)
    ========================================================================== */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 200;
   background-color: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 12px rgba(46, 58, 74, 0.03);
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -667,13 +668,17 @@ button, input, select {
 .hero-badge {
   display: inline-block;
   padding: 0.35rem 1rem;
-  background-color: var(--accent-subtle);
+  background-color: var(--badge-bg);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-primary);
+  font-weight: 600;
+  color: var(--brand-navy);
   margin-bottom: 1.25rem;
+}
+
+[data-theme="dark"] .hero-badge {
+  color: var(--brand-sky-blue);
 }
 
 .hero-title {
@@ -682,12 +687,12 @@ button, input, select {
   letter-spacing: -1px;
   line-height: 1.2;
   margin-bottom: 1.2rem;
+  color: var(--text-primary);
 }
 
 .hero-title .highlight {
-  text-decoration: underline;
-  text-decoration-color: var(--text-muted);
-  text-underline-offset: 6px;
+  color: var(--brand-sky-blue);
+  text-decoration: none;
 }
 
 .hero-desc {
@@ -1266,21 +1271,21 @@ button, input, select {
   position: absolute;
   top: 14px;
   left: 14px;
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.25rem 0.65rem;
   border-radius: var(--radius-full);
   z-index: 2;
   border: 1px solid var(--border-color);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 6px rgba(46, 58, 74, 0.05);
 }
 
 .product-img-wrap {
   width: 100%;
   aspect-ratio: 16 / 11;
-  background-color: var(--bg-subtle);
+  background-color: var(--bg-surface-elevated);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1351,10 +1356,15 @@ button, input, select {
 }
 
 .product-price {
-  font-family: 'Space Grotesk', 'Prompt', sans-serif;
+  font-family: 'Montserrat', 'Space Grotesk', 'Prompt', sans-serif;
   font-size: 1.28rem;
   font-weight: 700;
   line-height: 1.1;
+  color: var(--brand-navy);
+}
+
+[data-theme="dark"] .product-price {
+  color: var(--text-primary);
 }
 
 .product-price .old-price {
