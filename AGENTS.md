@@ -82,3 +82,11 @@ There is no package.json, no test suite, no linter, no CI. The project has no au
 - Email HTML templates use inline CSS (required for email clients). See `emailContent.php` and `backend/email_templates.php` for the pattern.
 - The PHPMailer library is vendored at `PHPMailer/` — do not run `composer install` in the project root.
 
+## Working Agreements (standing user instructions — apply in every session)
+
+- Never modify files before approval — always propose options and wait for confirmation first.
+- When a task is done, ask the user before `commit + push` to GitHub (do not push automatically).
+- Communicate in Thai.
+- For UI/design work, invoke the `impeccable` skill (via subagent) before making changes.
+- Keep the `.codex` Stop hook ("Design deep pass") disabled — the skill must not auto-edit files at session end. Report findings and wait for approval instead.
+
