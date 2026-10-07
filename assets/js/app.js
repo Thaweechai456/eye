@@ -1565,6 +1565,7 @@ function openCustomizerModal(productId) {
   // Set product image
   const thumbWrap = document.getElementById("modalProductImg");
   thumbWrap.src = currentSelectingProduct.image;
+  thumbWrap.alt = currentSelectingProduct.name;
 
   // Reset lens tint simulator
   simulateLensTint("clear");
