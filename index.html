@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>XCOCO Eyewear - เห็นชัด ในแบบของคุณ | ร้านแว่นตาออนไลน์</title>
+  <meta name="description" content="XCOCO Eyewear ร้านแว่นตาออนไลน์ เห็นชัด ในแบบของคุณ เลือกกรอบแว่น เลนส์ตามค่าสายตา จัดส่งฟรี รับประกัน 30 วัน พร้อมโค้ดส่วนลดสมาชิกใหม่">
   
   <!-- Immediate Theme Init (Prevent FOUC) -->
   <script>
@@ -16,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="assets/images/Logo.png">
+  <link rel="icon" type="image/png" href="assets/images/logo-icon-32.png" sizes="32x32">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
@@ -31,7 +32,7 @@
   <header class="navbar">
     <div class="nav-container">
       <div class="brand">
-        <img src="assets/images/Logo.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
+        <img src="assets/images/Logo-128.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
         <div class="brand-text">
           <span class="brand-name">XCOCO Eyewear</span>
           <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
@@ -140,7 +141,7 @@
         </button>
 
         <!-- Cart Button -->
-        <button id="cartBtn" class="cart-btn" aria-label="ตะกร้าสินค้า">
+        <button id="cartBtn" class="cart-btn" aria-label="ตะกร้า 0 รายการ">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -168,7 +169,7 @@
     <div class="mobile-nav-panel">
       <div class="mobile-nav-header">
         <div class="brand">
-          <img src="assets/images/Logo.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
+          <img src="assets/images/Logo-128.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
           <div class="brand-text">
             <span class="brand-name">XCOCO Eyewear</span>
             <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
@@ -247,6 +248,7 @@
   </div>
 
   <!-- Hero Section with Interactive Eyewear Slider Showcase -->
+  <main id="main-content">
   <section class="hero-section">
     <div class="hero-layout">
       <!-- Left: Brand Story & CTA -->
@@ -338,7 +340,7 @@
             </div>
           </div>
           <div class="carousel-info">
-            <h3 id="slideTitle">Minimalist Round Matte</h3>
+            <h2 id="slideTitle">Minimalist Round Matte</h2>
             <p id="slideDesc">กรอบกลมทรงเกาหลี น้ำหนักเบาเพียง 12 กรัม ใส่สบาย</p>
             <div class="carousel-footer">
               <span class="carousel-price" id="slidePrice">฿890</span>
@@ -557,22 +559,22 @@
       <div class="faceshape-cards">
         <div class="face-card active" onclick="selectFaceShape('oval')">
           <div class="face-icon">🥚</div>
-          <h4>หน้ารูปไข่ (Oval)</h4>
+          <h3>หน้ารูปไข่ (Oval)</h3>
           <p>เข้าได้กับแว่นทุกทรง แนะนำทรงเหลี่ยม หรือ ทรงนักบิน เพื่อเพิ่มมิติ</p>
         </div>
         <div class="face-card" onclick="selectFaceShape('round')">
           <div class="face-icon">🌕</div>
-          <h4>หน้ากลม (Round)</h4>
+          <h3>หน้ากลม (Round)</h3>
           <p>แนะนำแว่นทรงเหลี่ยม หรือ ทรง Cat-Eye ช่วยให้ใบหน้าดูเรียวยาวขึ้น</p>
         </div>
         <div class="face-card" onclick="selectFaceShape('square')">
           <div class="face-icon">⏹️</div>
-          <h4>หน้าเหลี่ยม (Square)</h4>
+          <h3>หน้าเหลี่ยม (Square)</h3>
           <p>แนะนำแว่นทรงกลมมน หรือ วงรี ช่วยปรับเส้นโครงหน้าให้ดูนุ่มนวล</p>
         </div>
         <div class="face-card" onclick="selectFaceShape('heart')">
           <div class="face-icon">💖</div>
-          <h4>หน้ารูปหัวใจ (Heart)</h4>
+          <h3>หน้ารูปหัวใจ (Heart)</h3>
           <p>แนะนำแว่นทรง Browline หรือ แว่นไร้กรอบ ช่วยสร้างความสมดุล</p>
         </div>
       </div>
@@ -729,6 +731,7 @@
       </div>
     </div>
   </section>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
@@ -743,7 +746,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-heading">ช้อปปิ้ง</h4>
+          <h3 class="footer-heading">ช้อปปิ้ง</h3>
           <a href="#products" class="footer-link">แว่นตาทั้งหมด</a>
           <a href="#recommendations" class="footer-link">แนะนำสำหรับคุณ</a>
           <a href="#face-match" class="footer-link">เช็คทรงหน้า</a>
@@ -751,7 +754,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-heading">ช่วยเหลือ</h4>
+          <h3 class="footer-heading">ช่วยเหลือ</h3>
           <a href="#faq" class="footer-link">คำถามที่พบบ่อย</a>
           <a href="#guarantee" class="footer-link">การรับประกัน</a>
           <a href="#how-to-order" class="footer-link">วิธีสั่งตัดแว่น</a>
@@ -759,7 +762,7 @@
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-heading">สมาชิก</h4>
+          <h3 class="footer-heading">สมาชิก</h3>
           <a href="auth.html" class="footer-link">เข้าสู่ระบบ / สมัครสมาชิก</a>
           <a href="orders.html#profile" class="footer-link">ค่าสายตา & ข้อมูลสมาชิก</a>
           <a href="#newsletter" class="footer-link">รับข่าวสาร & โค้ดส่วนลด</a>
@@ -1260,7 +1263,7 @@
         <div class="terms-agreement-box">
           <label class="checkbox-label" for="regAgreeTerms">
             <input type="checkbox" id="regAgreeTerms" required>
-            <span>ฉันได้อ่านและยินยอมตาม <a href="javascript:void(0)" onclick="toggleTermsDetail()" class="link-terms">ข้อตกลงและเงื่อนไขการให้บริการ</a> รวมถึงนโยบายความเป็นส่วนตัว (PDPA) ของ XCOCO Eyewear *</span>
+            <span>ฉันได้อ่านและยินยอมตาม <button type="button" onclick="toggleTermsDetail()" class="link-terms">ข้อตกลงและเงื่อนไขการให้บริการ</button> รวมถึงนโยบายความเป็นส่วนตัว (PDPA) ของ XCOCO Eyewear *</span>
           </label>
           <div id="termsDetailBox" class="terms-detail-box" style="display: none;">
             <div class="terms-content">

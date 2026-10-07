@@ -1918,6 +1918,11 @@ function updateCartUI() {
   countBadge.innerText = totalQty;
   if (drawerCount) drawerCount.innerText = totalQty;
 
+  // อัปเดต aria-label ของปุ่มตะกร้าให้ตรงกับจำนวนที่แสดงเสมอ (a11y)
+  // รูปแบบต้องคงคำว่า "ตะกร้า N" ติดกัน เพราะ axe ตรวจว่าข้อความ visible ทั้งก้อนอยู่ใน label
+  const cartBtn = document.getElementById("cartBtn");
+  if (cartBtn) cartBtn.setAttribute("aria-label", `ตะกร้า ${totalQty} รายการ`);
+
   if (cart.length === 0) {
     container.innerHTML = `
       <div class="empty-cart-view">

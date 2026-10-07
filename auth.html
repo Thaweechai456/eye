@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
   
   <!-- Stylesheet & Favicon -->
-  <link rel="icon" type="image/png" href="assets/images/Logo.png">
+  <link rel="icon" type="image/png" href="assets/images/logo-icon-32.png" sizes="32x32">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body class="auth-body">
@@ -29,7 +29,7 @@
   <header class="auth-nav">
     <div class="auth-nav-left">
       <a href="index.html" class="auth-brand-link" title="กลับสู่หน้าแรก XCOCO">
-        <img src="assets/images/Logo.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
+        <img src="assets/images/Logo-128.png" alt="XCOCO Logo" class="brand-logo" onerror="this.style.display='none'">
         <div class="brand-text">
           <span class="brand-name">XCOCO Eyewear</span>
           <span class="brand-tagline">เห็นชัด ในแบบของคุณ</span>
@@ -159,7 +159,7 @@
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </div>
-          <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">คุณได้เข้าสู่ระบบแล้ว</h3>
+          <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">คุณได้เข้าสู่ระบบแล้ว</h2>
           <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
             ยินดีต้อนรับคุณ <strong id="loggedInUserName" style="color: var(--text-primary);">-</strong> เข้าสู่ระบบในบัญชี <span id="loggedInUserEmail">-</span>
           </p>
@@ -204,7 +204,7 @@
           <!-- ================= Form 1: Login ================= -->
           <form id="loginForm" onsubmit="submitLogin(event)">
             <div class="auth-form-heading">
-              <h3>ยินดีต้อนรับกลับสู่ XCOCO</h3>
+              <h2>ยินดีต้อนรับกลับสู่ XCOCO</h2>
               <p>กรอกข้อมูลอีเมลและรหัสผ่านเพื่อเข้าใช้งานบัญชีของคุณ</p>
             </div>
 
@@ -224,9 +224,9 @@
             <div class="auth-form-group">
               <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
                 <label for="loginPassword" style="margin-bottom: 0;">รหัสผ่าน (Password)</label>
-                <a href="javascript:void(0)" onclick="forgotPasswordAlert()" style="font-size: 0.78rem; color: var(--text-secondary); text-decoration: underline;">
+                <button type="button" onclick="forgotPasswordAlert()" style="background: none; border: none; padding: 0; font: inherit; font-size: 0.78rem; color: var(--text-secondary); text-decoration: underline; cursor: pointer;">
                   ลืมรหัสผ่าน?
-                </a>
+                </button>
               </div>
               <div class="input-with-icon">
                 <span class="input-icon">
@@ -262,16 +262,16 @@
 
             <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
               ยังไม่มีบัญชีสมาชิก? 
-              <a href="javascript:void(0)" onclick="switchAuthTab('register')" style="color: var(--text-primary); font-weight: 700; text-decoration: underline;">
+              <button type="button" onclick="switchAuthTab('register')" style="background: none; border: none; padding: 0; font: inherit; color: var(--text-primary); font-weight: 700; text-decoration: underline; cursor: pointer;">
                 สมัครสมาชิกที่นี่
-              </a>
+              </button>
             </div>
           </form>
 
           <!-- ================= Form 2: Register ================= -->
           <form id="registerForm" onsubmit="submitRegister(event)" style="display: none;">
             <div class="auth-form-heading">
-              <h3>สร้างบัญชีสมาชิก XCOCO</h3>
+              <h2>สร้างบัญชีสมาชิก XCOCO</h2>
               <p>สมัครวันนี้เพื่อบันทึกค่าสายตา และรับสิทธิพิเศษสำหรับลูกค้าใหม่</p>
             </div>
 
@@ -454,9 +454,9 @@
 
             <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
               มีบัญชีสมาชิกอยู่แล้ว? 
-              <a href="javascript:void(0)" onclick="switchAuthTab('login')" style="color: var(--text-primary); font-weight: 700; text-decoration: underline;">
+              <button type="button" onclick="switchAuthTab('login')" style="background: none; border: none; padding: 0; font: inherit; color: var(--text-primary); font-weight: 700; text-decoration: underline; cursor: pointer;">
                 เข้าสู่ระบบที่นี่
-              </a>
+              </button>
             </div>
           </form>
         </div>
