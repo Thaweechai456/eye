@@ -4215,34 +4215,19 @@ button, input, select {
   gap: 1rem;
 }
 
-/* Auth logo is a container <a>, not an <img> — neutralize the image sizing rules
-   that force it to 38px tall and squeeze the symbol + text into a vertical stack */
-.auth-nav-left .brand-logo {
+/* Auth nav logo link is a container — lay the real Logo.png image and text in a row */
+.auth-nav-left .auth-brand-link {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  height: auto;
-  width: auto;
-  object-fit: content;
+  gap: 0.75rem;
+  min-width: 0;
 }
 
-/* ∞ brand symbol badge (matches the header logo height on index.html) */
-.brand-symbol {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  border-radius: var(--radius-sm);
-  background: var(--bg-subtle);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+.auth-nav-left .brand-logo {
+  transition: transform 0.2s ease;
 }
 
-.auth-nav-left .brand-logo:hover .brand-symbol {
-  border-color: var(--border-focus);
+.auth-nav-left .brand-logo:hover {
   transform: translateY(-1px);
 }
 
