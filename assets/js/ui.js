@@ -2,7 +2,7 @@
  * XCOCO UI Delights — shared across index / auth / orders
  * - showToast()   : branded toast notifications (replaces native alert)
  * - fireConfetti(): dependency-free canvas confetti for celebrations
- * - scroll progress bar, announcement marquee, section scroll-reveal,
+ * - scroll progress bar, announcement rotator, section scroll-reveal,
  *   hero stat counters (auto-init on DOM ready)
  * Vanilla JS only — no libraries, no build step.
  * ============================================================ */
@@ -219,36 +219,35 @@
   }
 
   /* ----------------------------------------------------------
-   * Announcement bar marquee (JS clones content so it works at
-   * any viewport width; no-JS keeps the static centered bar)
+   * Announcement bar rotator — one message at a time, crossfade only.
+   * No scrolling (deliberately not a marquee). Static first message
+   * when JS is off, messages are few, or reduced motion is preferred.
    * ---------------------------------------------------------- */
-  function initAnnouncementMarquee() {
+  function initAnnouncementRotator() {
     var track = document.querySelector(".announcement-content");
-    if (!track || track.getAttribute("data-marquee")) return;
-    if (prefersReducedMotion()) return;
-    var base = track.querySelector("span");
-    if (!base) return;
+    if (!track) return;
+    var msgs = Array.prototype.slice.call(track.querySelectorAll(":scope > span"));
+    if (msgs.length < 2 || prefersReducedMotion()) return;
 
-    track.setAttribute("data-marquee", "1");
-    track.classList.add("marquee-active");
-
-    // Clone until the track covers 2 full viewports (seamless -50% loop)
-    var copies = 1;
-    while (track.scrollWidth < window.innerWidth * 2 && copies < 16) {
-      var clone = base.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      track.appendChild(clone);
-      copies++;
-    }
-    if (copies % 2 !== 0) {
-      // even copy count => -50% lands exactly on a copy boundary
-      var extra = base.cloneNode(true);
-      extra.setAttribute("aria-hidden", "true");
-      track.appendChild(extra);
+    // Safety: if markup lacks the active class, arm the first message
+    if (!track.querySelector(".rotator-active") && msgs[0]) {
+      msgs[0].classList.add("rotator-active");
     }
 
-    // Constant-ish speed (~90px/s) regardless of track length
-    track.style.animationDuration = Math.max(18, track.scrollWidth / 90) + "s";
+    var idx = 0;
+    var paused = false;
+    var bar = track.closest(".announcement-bar");
+    if (bar) {
+      bar.addEventListener("mouseenter", function () { paused = true; });
+      bar.addEventListener("mouseleave", function () { paused = false; });
+    }
+
+    setInterval(function () {
+      if (paused || document.hidden) return;
+      msgs[idx].classList.remove("rotator-active");
+      idx = (idx + 1) % msgs.length;
+      msgs[idx].classList.add("rotator-active");
+    }, 4000);
   }
 
   /* ----------------------------------------------------------
@@ -320,7 +319,7 @@
    * ---------------------------------------------------------- */
   function initUiDelights() {
     initScrollProgress();
-    initAnnouncementMarquee();
+    initAnnouncementRotator();
     initScrollReveal();
     initStatCounters();
   }

@@ -3097,7 +3097,7 @@ button.link-terms {
   font-size: 0.95rem;
   font-weight: 700;
   border-radius: var(--radius-md);
-  box-shadow: 0 4px 15px rgba(234, 179, 8, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3107,7 +3107,7 @@ button.link-terms {
 
 .checkout-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
 }
 
 .cart-trust-bar {
@@ -5047,7 +5047,7 @@ button.link-terms {
 .tier-fill-pro {
   height: 100%;
   border-radius: var(--radius-full);
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(90deg, var(--brand-sky-blue), var(--brand-soft-blue));
   transition: width 0.6s ease;
 }
 
@@ -5987,35 +5987,36 @@ button.link-terms {
   pointer-events: none;
 }
 
-/* --- Announcement bar marquee --- */
+/* --- Announcement bar message rotator (fade, no scroll) --- */
 .announcement-bar {
   overflow: hidden;
   padding: 0.4rem 0;
 }
 
 .announcement-content {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  min-height: 1.5em;
+}
+
+.announcement-content > span {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0 1rem;
+  pointer-events: none;
 }
 
-.announcement-content.marquee-active {
-  display: flex;
-  width: max-content;
-  animation: announcement-marquee 30s linear infinite;
-  animation-iteration-count: 3;
-}
-
-.announcement-content.marquee-active > span {
-  flex: 0 0 auto;
-  padding-right: 3rem;
-}
-
-.announcement-bar:hover .announcement-content.marquee-active {
-  animation-play-state: paused;
-}
-
-@keyframes announcement-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+.announcement-content > span.rotator-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 /* --- Section scroll-reveal --- */
@@ -6072,8 +6073,8 @@ main > section.reveal-armed.reveal-in {
     transition: none;
   }
 
-  .announcement-content.marquee-active {
-    animation: none;
+  .announcement-content > span {
+    transition: none;
   }
 
   .cart-badge.bump,
