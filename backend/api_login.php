@@ -46,13 +46,9 @@ if (isset($pdo) && $pdo !== null) {
                 'user' => $user
             ]);
             exit;
-        } else {
-            echo json_encode([
-                'success' => false,
-                'message' => 'อีเมลหรือรหัสผ่านไม่ถูกต้อง'
-            ]);
-            exit;
         }
+        // รหัสผ่านไม่ผ่าน / ไม่เจอ user → ไม่ exit ที่นี่
+        // เพื่อให้โค้ดตกไปทดสอบ Demo Fallback ด้านล่างก่อนเสมอ
     } catch (PDOException $e) {
         // กรณีเกิดข้อผิดพลาด ให้ลองตรวจสอบบัญชีเดโม่
     }

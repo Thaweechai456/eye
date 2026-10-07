@@ -620,6 +620,7 @@
       btn.innerHTML = `<span>กำลังตรวจสอบข้อมูล...</span>`;
 
       // 1. Try PHP API (MySQL)
+      let apiError = null;
       try {
         const res = await fetch("backend/api_login.php", {
           method: "POST",
@@ -644,10 +645,9 @@
           }, 600);
           return;
         } else if (data && !data.success) {
-          showAlert(data.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
-          btn.disabled = false;
-          btn.innerHTML = `<span>เข้าสู่ระบบสมาชิก</span>`;
-          return;
+          // จำข้อความไว้ก่อน แล้วตกไปทดสอบ LocalStorage fallback
+          // (ปุ่ม Demo ต้องใช้ได้แม้ API/MySQL จะมีปัญหา)
+          apiError = data.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
         }
       } catch (err) {
         console.log("PHP Login fallback:", err);
@@ -674,7 +674,7 @@
           window.location.href = getRedirectUrl();
         }, 600);
       } else {
-        showAlert("อีเมลหรือรหัสผ่านไม่ถูกต้อง (หากต้องการทดสอบ กดปุ่ม Demo ด้านล่าง)");
+        showAlert(apiError || "อีเมลหรือรหัสผ่านไม่ถูกต้อง (หากต้องการทดสอบ กดปุ่ม Demo ด้านล่าง)");
         btn.disabled = false;
         btn.innerHTML = `<span>เข้าสู่ระบบสมาชิก</span>`;
       }
