@@ -105,7 +105,9 @@ $userData = [
     'address'   => $address,
     'right_sph' => $rightSph,
     'left_sph'  => $leftSph,
-    'pd'        => $pd > 0 ? $pd : 62
+    'pd'        => $pd > 0 ? $pd : 62,
+    // New signups are always Classic Member (template previously fell back to 'VIP Member')
+    'member_tier' => 'Classic Member'
 ];
 
 $emailHtml = getRegisterEmailTemplate($userData, $baseUrl);

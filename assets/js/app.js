@@ -482,11 +482,24 @@ function switchProfileTab(tab) {
 
 function renderOrderHistory() {
   const container = document.getElementById("ordersListContainer");
+  // Show only the logged-in user's orders (demo mock orders stay demo-only).
+  // Orders tagged with another user's email must never leak across accounts
+  // sharing the same browser.
+  const isDemoUser = Boolean(currentUser && currentUser.email && currentUser.email.toLowerCase() === "demo@xcoco.com");
+  const visibleOrders = orderHistory.filter(o => {
+    if (!o) return false;
+    const isMockOrder = (o.orderId === "XC-98241" || o.orderId === "#XC-84291");
+    if (isMockOrder && !isDemoUser) return false;
+    if (o.userEmail && currentUser && currentUser.email) {
+      return o.userEmail.toLowerCase() === currentUser.email.toLowerCase();
+    }
+    return true;
+  });
   const ordersCountEl = document.getElementById("profileOrdersCount");
-  if (ordersCountEl) ordersCountEl.innerText = orderHistory.length;
+  if (ordersCountEl) ordersCountEl.innerText = visibleOrders.length;
   if (!container) return;
 
-  if (orderHistory.length === 0) {
+  if (visibleOrders.length === 0) {
     container.innerHTML = `
       <div class="empty-cart-view" style="padding: 2.5rem 1rem;">
         <span style="font-size: 3rem;">📦</span>
@@ -498,7 +511,7 @@ function renderOrderHistory() {
     return;
   }
 
-  container.innerHTML = orderHistory.map(order => `
+  container.innerHTML = visibleOrders.map(order => `
     <div class="order-card">
       <div class="order-card-header">
         <div>

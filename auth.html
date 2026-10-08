@@ -21,7 +21,7 @@
   
   <!-- Stylesheet & Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo-icon-32.png" sizes="32x32">
-  <link rel="stylesheet" href="assets/css/styles.css?v=4.0">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4.2">
 </head>
 <body class="auth-body">
 
@@ -452,6 +452,11 @@
               </svg>
             </button>
 
+            <div id="regProgressTip" class="reg-progress-tip" style="display: none;" aria-live="polite">
+              <span class="tip-bulb" aria-hidden="true">💡</span>
+              <span id="regProgressTipText">กำลังเตรียมข้อมูลสมาชิกของคุณ...</span>
+            </div>
+
             <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
               มีบัญชีสมาชิกอยู่แล้ว? 
               <button type="button" onclick="switchAuthTab('login')" style="background: none; border: none; padding: 0; font: inherit; color: var(--text-primary); font-weight: 700; text-decoration: underline; cursor: pointer;">
@@ -713,6 +718,40 @@
       btn.disabled = true;
       btn.innerHTML = `<span>กำลังบันทึกข้อมูลและส่งอีเมล...</span>`;
 
+      // Staged progress + rotating eyewear tips while waiting for the server (~9s).
+      // Purely presentational: the request below is genuinely in flight the whole time.
+      const regSteps = [
+        "กำลังบันทึกข้อมูลสมาชิก...",
+        "กำลังจัดเตรียมอีเมลต้อนรับ...",
+        "กำลังตรวจสอบสิทธิ์สมาชิกใหม่..."
+      ];
+      const regTips = [
+        "เลนส์ Blue Block ช่วยกรองแสงสีฟ้าจากหน้าจอ",
+        "ค่า PD คือระยะห่างระหว่างรูม่านตาทั้งสองข้าง",
+        "สมาชิกใหม่รับโค้ดส่วนลด XCOCO10 ทันที",
+        "เช็ดเลนส์ด้วยผ้าไมโครไฟเบอร์เท่านั้นนะ"
+      ];
+      const regTipBox = document.getElementById("regProgressTip");
+      const regTipText = document.getElementById("regProgressTipText");
+      let regTick = 0;
+      let regProgressTimer = null;
+      const stopRegProgress = () => {
+        if (regProgressTimer) clearInterval(regProgressTimer);
+        if (regTipBox) regTipBox.style.display = "none";
+      };
+      if (regTipBox) regTipBox.style.display = "flex";
+      regProgressTimer = setInterval(() => {
+        regTick++;
+        btn.innerHTML = `<span>${regSteps[regTick % regSteps.length]}</span>`;
+        if (regTipText) {
+          regTipText.style.opacity = "0";
+          setTimeout(() => {
+            regTipText.innerText = regTips[regTick % regTips.length];
+            regTipText.style.opacity = "1";
+          }, 200);
+        }
+      }, 2600);
+
       const newUser = {
         name,
         phone,
@@ -753,12 +792,14 @@
           localStorage.setItem("xcoco_users", JSON.stringify(localUsers));
 
           showAlert("สมัครสมาชิกสำเร็จ! ระบบได้จัดส่งอีเมลต้อนรับไปยัง " + email + " เรียบร้อยแล้ว กำลังนำท่านเข้าสู่ระบบ...", "success");
+          stopRegProgress();
           setTimeout(() => {
             window.location.href = getRedirectUrl();
           }, 1200);
           return;
         } else if (data && !data.success) {
           showAlert(data.message || "เกิดข้อผิดพลาดในการสมัครสมาชิก");
+          stopRegProgress();
           btn.disabled = false;
           btn.innerHTML = `<span>สร้างบัญชีและรับสิทธิพิเศษ</span>`;
           return;
@@ -775,6 +816,7 @@
       const localUsers = JSON.parse(localStorage.getItem("xcoco_users") || "[]");
       if (localUsers.some(u => u.email.toLowerCase() === email)) {
         showAlert("อีเมลนี้ถูกใช้งานแล้ว กรุณาเข้าสู่ระบบ หรือใช้อีเมลอื่น");
+        stopRegProgress();
         btn.disabled = false;
         btn.innerHTML = `<span>สร้างบัญชีและรับสิทธิพิเศษ</span>`;
         return;
@@ -785,6 +827,7 @@
       localStorage.setItem("xcoco_current_user", JSON.stringify(newUser));
 
       showAlert("สมัครสมาชิกสำเร็จ! ยินดีต้อนรับสู่ XCOCO Eyewear กำลังนำท่านเข้าสู่ระบบ...", "success");
+      stopRegProgress();
       setTimeout(() => {
         window.location.href = getRedirectUrl();
       }, 1000);

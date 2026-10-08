@@ -3619,19 +3619,28 @@ button.link-terms {
   transition: all 0.25s ease;
 }
 
-/* Classic Tier (Bronze / Neutral) */
+/* Classic Tier (Bronze / Neutral) — text darkened to pass WCAG 4.5:1 */
 .user-tier-badge.tier-classic {
   background: rgba(160, 140, 120, 0.15);
-  color: #a88d74;
+  color: #7c5f43;
   border: 1px solid rgba(168, 141, 116, 0.35);
 }
 
-/* Silver Tier (Sleek Silver Metal) */
+/* Silver Tier (Sleek Silver Metal) — text darkened to pass WCAG 4.5:1 */
 .user-tier-badge.tier-silver {
   background: linear-gradient(135deg, rgba(200, 205, 215, 0.25), rgba(160, 170, 185, 0.15));
-  color: #94a3b8;
+  color: #5b6b82;
   border: 1px solid rgba(148, 163, 184, 0.45);
   box-shadow: 0 0 10px rgba(148, 163, 184, 0.2);
+}
+
+/* Dark theme: lighten badge text (same hues, WCAG-safe on dark navy) */
+[data-theme="dark"] .user-tier-badge.tier-classic {
+  color: #d6b48c;
+}
+
+[data-theme="dark"] .user-tier-badge.tier-silver {
+  color: #cbd5e1;
 }
 
 /* VIP Tier (Golden Luxury Glow) */
@@ -5934,6 +5943,30 @@ a.btn svg.btn-ico:last-child {
   margin-left: 0.45em;
 }
 
+/* --- Register progress tip box (staged signup feedback) --- */
+.reg-progress-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 10px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  min-height: 3.2em;
+}
+
+.reg-progress-tip .tip-bulb {
+  flex-shrink: 0;
+}
+
+#regProgressTipText {
+  transition: opacity 0.2s ease;
+}
+
 /* --- Toast notifications --- */
 .toast-container {
   position: fixed;
@@ -6030,7 +6063,6 @@ a.btn svg.btn-ico:last-child {
   grid-area: 1 / 1;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -6043,6 +6075,14 @@ a.btn svg.btn-ico:last-child {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+  /* Motion is transform-only (no opacity fade): text contrast stays constant
+     so automated a11y checks never catch a mid-fade low-contrast frame. */
+  animation: announce-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes announce-rise {
+  from { transform: translateY(10px); }
+  to { transform: translateY(0); }
 }
 
 /* --- Section scroll-reveal --- */
@@ -6099,8 +6139,10 @@ main > section.reveal-armed.reveal-in {
     transition: none;
   }
 
-  .announcement-content > span {
+  .announcement-content > span,
+  .announcement-content > span.rotator-active {
     transition: none;
+    animation: none;
   }
 
   .cart-badge.bump,
