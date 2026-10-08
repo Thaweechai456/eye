@@ -621,13 +621,22 @@
       btn.innerHTML = `<span>กำลังตรวจสอบข้อมูล...</span>`;
 
       // 1. Try PHP API (MySQL)
+      // Abort after 20s so the UI never hangs forever (falls through to LocalStorage)
       let apiError = null;
       try {
-        const res = await fetch("backend/api_login.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password: pass })
-        });
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 20000);
+        let res;
+        try {
+          res = await fetch("backend/api_login.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password: pass }),
+            signal: ctrl.signal
+          });
+        } finally {
+          clearTimeout(timer);
+        }
         const data = await res.json();
         if (data && data.success && data.user) {
           const userObj = {
@@ -651,7 +660,11 @@
           apiError = data.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
         }
       } catch (err) {
-        console.log("PHP Login fallback:", err);
+        if (err && err.name === "AbortError") {
+          console.log("PHP Login timeout (20s), using offline fallback");
+        } else {
+          console.log("PHP Login fallback:", err);
+        }
       }
 
       // 2. Fallback to LocalStorage
@@ -716,12 +729,21 @@
       };
 
       // 1. Try PHP API (MySQL + PHPMailer)
+      // Abort after 25s so the UI never hangs forever (SMTP can be slow; falls through to LocalStorage)
       try {
-        const res = await fetch("backend/api_register.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newUser)
-        });
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 25000);
+        let res;
+        try {
+          res = await fetch("backend/api_register.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newUser),
+            signal: ctrl.signal
+          });
+        } finally {
+          clearTimeout(timer);
+        }
         const data = await res.json();
         if (data && data.success) {
           localStorage.setItem("xcoco_current_user", JSON.stringify(newUser));
@@ -742,7 +764,11 @@
           return;
         }
       } catch (err) {
-        console.log("PHP Register fallback:", err);
+        if (err && err.name === "AbortError") {
+          console.log("PHP Register timeout (25s), using offline fallback");
+        } else {
+          console.log("PHP Register fallback:", err);
+        }
       }
 
       // 2. Fallback to LocalStorage

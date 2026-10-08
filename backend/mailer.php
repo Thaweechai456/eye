@@ -42,6 +42,9 @@ function sendXcocoEmail($toEmail, $toName, $subject, $htmlBody, $attachments = [
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = (int)($config['smtp_port'] ?? 587);
         $mail->CharSet = 'UTF-8';
+        // Fail fast instead of hanging the HTTP request (PHPMailer default is 300s).
+        // 15s comfortably covers normal Gmail sends (~5-9s) with margin for slow days.
+        $mail->Timeout = 15;
 
         $fromEmail = !empty($config['from_email']) ? $config['from_email'] : $config['smtp_user'];
         $fromName  = !empty($config['from_name']) ? $config['from_name'] : '👓 XCOCO Eyewear';
