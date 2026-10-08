@@ -21,7 +21,7 @@
   
   <!-- Stylesheet & Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo-icon-32.png" sizes="32x32">
-  <link rel="stylesheet" href="assets/css/styles.css?v=4.2">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4.3">
 </head>
 <body class="orders-page">
 
@@ -598,6 +598,23 @@
     let orderHistory = [];
     let currentFilter = 'all';
 
+    // Strict per-user order filter — single source of truth for list, stats,
+    // and badges on this page.
+    // - Demo mock orders: demo user only.
+    // - Tagged orders: matching email only.
+    // - Untagged orders: hidden from members (ownership unprovable; showing
+    //   them leaks one account's orders into every other account on this browser).
+    function filterOrdersForUser(list) {
+      const isDemo = Boolean(currentUser && currentUser.email && currentUser.email.toLowerCase() === "demo@xcoco.com");
+      return (list || []).filter(o => {
+        if (!o) return false;
+        const isMockOrder = (o.orderId === "XC-98241" || o.orderId === "#XC-84291");
+        if (isMockOrder) return isDemo;
+        if (!o.userEmail || !currentUser || !currentUser.email) return false;
+        return o.userEmail.toLowerCase() === currentUser.email.toLowerCase();
+      });
+    }
+
     // Theme Management
     function initTheme() {
       const savedTheme = localStorage.getItem("xcoco_theme") || localStorage.getItem("theme") || "light";
@@ -690,33 +707,12 @@
         allOrders = [];
       }
 
-      const isDemo = Boolean(currentUser && currentUser.email && currentUser.email.toLowerCase() === "demo@xcoco.com");
-
       // 2. Filter orders specifically for the logged-in user
-      let userOrders = allOrders.filter(o => {
-        if (!o) return false;
-        const isMockOrder = (o.orderId === "XC-98241" || o.orderId === "#XC-84291");
-        
-        // Demo mock orders should ONLY ever appear for the demo user
-        if (isMockOrder && !isDemo) {
-          return false;
-        }
-
-        // Match by user email if tagged
-        if (o.userEmail && currentUser && currentUser.email) {
-          return o.userEmail.toLowerCase() === currentUser.email.toLowerCase();
-        }
-
-        // For non-mock orders created in this browser session
-        if (currentUser && currentUser.email && !isMockOrder) {
-          return true;
-        }
-
-        return isDemo;
-      });
+      let userOrders = filterOrdersForUser(allOrders);
 
       // Demo user fallback sample orders
-      if (isDemo && userOrders.length === 0) {
+      const isDemoUser = Boolean(currentUser && currentUser.email && currentUser.email.toLowerCase() === "demo@xcoco.com");
+      if (isDemoUser && userOrders.length === 0) {
         userOrders = [
           {
             orderId: "XC-98241",
@@ -749,13 +745,14 @@
         ];
       }
 
-      orderHistory = userOrders;
+      orderHistory = allOrders;
 
-      // Persist the clean synced list to both localStorage keys
+      // Persist the FULL synced list to both localStorage keys.
+      // (Never persist the filtered list — that would erase other accounts' orders.)
       localStorage.setItem("xcoco_orders", JSON.stringify(orderHistory));
       localStorage.setItem("xcoco_order_history", JSON.stringify(orderHistory));
 
-      renderOrdersList();
+      renderOrdersList(userOrders);
     }
 
     function calculateMemberTier(spent = 0) {
@@ -802,9 +799,12 @@
       document.getElementById("profilePhone").innerText = currentUser.phone || "-";
       document.getElementById("userAvatarText").innerText = (currentUser.name || "U").charAt(0).toUpperCase();
 
-      // Accurately compute total spent from actual orders
-      const totalSpent = orderHistory.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
-      document.getElementById("statOrdersCount").innerText = `${orderHistory.length} รายการ`;
+      // Accurately compute this user's total spent from their own orders only.
+      // (Never sum the global list — that leaks other accounts' orders into
+      // this account and poisons the stored tier.)
+      let myOrders = filterOrdersForUser(orderHistory);
+      const totalSpent = myOrders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+      document.getElementById("statOrdersCount").innerText = `${myOrders.length} รายการ`;
       document.getElementById("statTotalSpent").innerText = `฿${totalSpent.toLocaleString()}`;
 
       // Tier Calculation (100% harmonized with main website)
@@ -890,7 +890,7 @@
       if (pdSlider) pdSlider.value = pdVal;
       updatePdDisplay();
 
-      document.getElementById("tabOrdersBadge").innerText = orderHistory.length;
+      document.getElementById("tabOrdersBadge").innerText = filterOrdersForUser(orderHistory).length;
 
       // Update Navbar User Info
       const navName = document.getElementById("navUserName");
@@ -945,15 +945,17 @@
       renderOrdersList();
     }
 
-    function renderOrdersList() {
+    function renderOrdersList(baseOrders) {
       const wrapper = document.getElementById("ordersListWrapper");
       if (!wrapper) return;
 
-      let filtered = orderHistory;
+      // Default to this user's orders; callers may pass a pre-filtered list.
+      const mine = Array.isArray(baseOrders) ? baseOrders : filterOrdersForUser(orderHistory);
+      let filtered = mine;
       if (currentFilter === "in-progress") {
-        filtered = orderHistory.filter(o => o.status !== "completed");
+        filtered = mine.filter(o => o.status !== "completed");
       } else if (currentFilter === "completed") {
-        filtered = orderHistory.filter(o => o.status === "completed");
+        filtered = mine.filter(o => o.status === "completed");
       }
 
       if (filtered.length === 0) {

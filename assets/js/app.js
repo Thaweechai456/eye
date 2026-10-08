@@ -484,16 +484,15 @@ function renderOrderHistory() {
   const container = document.getElementById("ordersListContainer");
   // Show only the logged-in user's orders (demo mock orders stay demo-only).
   // Orders tagged with another user's email must never leak across accounts
-  // sharing the same browser.
+  // sharing the same browser. Untagged orders are hidden from members since
+  // ownership cannot be proven (same rule as orders.html).
   const isDemoUser = Boolean(currentUser && currentUser.email && currentUser.email.toLowerCase() === "demo@xcoco.com");
   const visibleOrders = orderHistory.filter(o => {
     if (!o) return false;
     const isMockOrder = (o.orderId === "XC-98241" || o.orderId === "#XC-84291");
-    if (isMockOrder && !isDemoUser) return false;
-    if (o.userEmail && currentUser && currentUser.email) {
-      return o.userEmail.toLowerCase() === currentUser.email.toLowerCase();
-    }
-    return true;
+    if (isMockOrder) return isDemoUser;
+    if (!o.userEmail || !currentUser || !currentUser.email) return false;
+    return o.userEmail.toLowerCase() === currentUser.email.toLowerCase();
   });
   const ordersCountEl = document.getElementById("profileOrdersCount");
   if (ordersCountEl) ordersCountEl.innerText = visibleOrders.length;
