@@ -40,8 +40,48 @@ try {
         `member_tier` VARCHAR(50) DEFAULT 'Classic Member',
         `total_spent` DECIMAL(10,2) DEFAULT 0.00,
         `agreed_pdpa` TINYINT(1) DEFAULT 1,
+        `role` ENUM('customer', 'admin') DEFAULT 'customer',
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+
+    // ตรวจสอบคอลัมน์ role หากตาราง users มีอยู่แล้ว
+    try {
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `role` ENUM('customer', 'admin') DEFAULT 'customer'");
+    } catch (PDOException $ex) {
+        // คอลัมน์ role มีอยู่แล้ว
+    }
+
+    // สร้างตาราง orders สำหรับบันทึกคำสั่งซื้อในฐานข้อมูล
+    $pdo->exec("CREATE TABLE IF NOT EXISTS `orders` (
+        `id` INT AUTO_INCREMENT PRIMARY KEY,
+        `order_code` VARCHAR(50) NOT NULL UNIQUE,
+        `customer_name` VARCHAR(150) NOT NULL,
+        `email` VARCHAR(255) NOT NULL,
+        `phone` VARCHAR(30) NULL,
+        `delivery_address` TEXT NULL,
+        `items_json` TEXT NOT NULL,
+        `subtotal` DECIMAL(10,2) DEFAULT 0.00,
+        `discount_amount` DECIMAL(10,2) DEFAULT 0.00,
+        `grand_total` DECIMAL(10,2) DEFAULT 0.00,
+        `status` ENUM('pending', 'assembling', 'shipped', 'completed', 'cancelled') DEFAULT 'pending',
+        `tracking_number` VARCHAR(100) NULL,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+
+    // สร้าง Default Admin หากยังไม่มี
+    $checkAdmin = $pdo->prepare("SELECT id FROM users WHERE email = :email LIMIT 1");
+    $checkAdmin->execute([':email' => 'admin@xcoco.com']);
+    if (!$checkAdmin->fetch()) {
+        $adminPassHash = password_hash('admin1234', PASSWORD_BCRYPT);
+        $insertAdmin = $pdo->prepare("INSERT INTO users (name, phone, email, password, role, member_tier) VALUES (:name, :phone, :email, :pass, 'admin', 'Super Admin')");
+        $insertAdmin->execute([
+            ':name' => 'ผู้ดูแลระบบ XCOCO (Admin)',
+            ':phone' => '0800000000',
+            ':email' => 'admin@xcoco.com',
+            ':pass' => $adminPassHash
+        ]);
+    }
 } catch (PDOException $e) {
     // ถ้ายังไม่ได้เชื่อมต่อฐานข้อมูล ให้ส่งสถานะ false เพื่อให้ระบบจัดการต่อไปได้
     $pdo = null;

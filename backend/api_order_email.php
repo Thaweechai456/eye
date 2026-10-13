@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
+require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/email_templates.php';
 
@@ -56,6 +57,26 @@ $subject = "ยืนยันคำสั่งซื้อ {$orderId} & ใบ
 
 // ส่งอีเมลผ่าน PHPMailer SMTP
 $mailResult = sendXcocoEmail($email, $customerName, $subject, $emailHtml);
+
+// บันทึกคำสั่งซื้อลงตาราง orders ใน MySQL
+if (isset($pdo) && $pdo !== null) {
+    try {
+        $stmtOrder = $pdo->prepare("INSERT INTO orders (order_code, customer_name, email, phone, delivery_address, items_json, subtotal, discount_amount, grand_total, status) VALUES (:code, :name, :email, :phone, :addr, :items, :sub, :disc, :grand, 'pending')");
+        $stmtOrder->execute([
+            ':code' => $orderId,
+            ':name' => $customerName,
+            ':email' => $email,
+            ':phone' => $input['phone'] ?? '',
+            ':addr' => $orderData['deliveryAddress'],
+            ':items' => json_encode($orderData['items'], JSON_UNESCAPED_UNICODE),
+            ':sub' => $orderData['subtotal'],
+            ':disc' => $orderData['discountAmount'],
+            ':grand' => $orderData['grandTotal']
+        ]);
+    } catch (PDOException $e) {
+        // Silently skip if DB error
+    }
+}
 
 echo json_encode([
     'success' => $mailResult['success'] ?? true,

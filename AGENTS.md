@@ -82,6 +82,20 @@ There is no package.json, no test suite, no linter, no CI. The project has no au
 - Email HTML templates use inline CSS (required for email clients). See `emailContent.php` and `backend/email_templates.php` for the pattern.
 - The PHPMailer library is vendored at `PHPMailer/` — do not run `composer install` in the project root.
 
+## Admin Management Portal
+
+- **URL:** `admin.html` (Accessible via login or user menu dropdown when role is admin)
+- **Default Super Admin:** `admin@xcoco.com` / `admin1234`
+- **Frontend:** `admin.html` (Operate Mode design, matches brand design system `#2E3A4A`, `#6EA8D7`, `#F5F8FB`)
+  - Admin login guard modal with offline LocalStorage fallback and MySQL session support.
+  - Store KPI cards: Users, Orders, Revenue, Subscribers.
+  - Member Management: search, tier filter, Rx view, delete customer button with safety confirmation modal (`#deleteConfirmModal`, prevents deleting admin accounts).
+  - Order Management: search, update order status (pending, processing, shipped, delivered, cancelled), tracking number input.
+  - Newsletter Subscribers: list view and copy-to-clipboard email export.
+- **Backend:** `backend/api_admin.php`
+  - Actions: `get_stats`, `get_users`, `delete_user`, `get_orders`, `update_order_status`, `get_subscribers`.
+- **Database:** `backend/db.php` creates/manages `orders` table and `role` column (`customer`, `admin`) in `users` table.
+
 ## Working Agreements (standing user instructions — apply in every session)
 
 - Never modify files before approval — always propose options and wait for confirmation first.

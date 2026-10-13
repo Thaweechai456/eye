@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบจัดการหลังบ้าน (Admin Portal) - XCOCO Eyewear</title>
+  
+  <!-- Immediate Theme Init -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem("xcoco_theme") || localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    })();
+  </script>
+
+  <!-- Google Fonts: Prompt & Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <link rel="icon" type="image/png" href="assets/images/Logo.png">
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    /* Admin Portal Dedicated Styling (Operate Mode) */
+    .admin-body {
+      background-color: var(--bg-primary);
+      min-height: 100vh;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-navbar {
+      background-color: var(--nav-bg);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .admin-badge-portal {
+      background: rgba(110, 168, 215, 0.15);
+      color: var(--brand-navy);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(110, 168, 215, 0.3);
+    }
+
+    [data-theme="dark"] .admin-badge-portal {
+      color: var(--brand-sky-blue);
+    }
+
+    .admin-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .admin-user-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+    }
+
+    .admin-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brand-navy);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .admin-container {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem;
+      flex: 1;
+    }
+
+    /* Stats Grid */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card-modern {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.35rem;
+      box-shadow: 0 4px 16px rgba(46, 58, 74, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stat-card-modern:hover {
+      transform: translateY(-2px);
+      border-color: var(--brand-sky-blue);
+    }
+
+    .stat-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(110, 168, 215, 0.12);
+      color: var(--brand-navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    [data-theme="dark"] .stat-icon-wrapper {
+      color: var(--brand-sky-blue);
+      background: rgba(110, 168, 215, 0.2);
+    }
+
+    .stat-detail {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-detail .stat-title {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-detail .stat-number {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    /* Admin Tabs */
+    .admin-tabs-bar {
+      display: flex;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.75rem;
+      padding-bottom: 0.75rem;
+      overflow-x: auto;
+    }
+
+    .admin-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-family: 'Prompt', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .admin-tab-btn:hover {
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .admin-tab-btn.active {
+      background: var(--brand-navy);
+      color: #ffffff;
+      border-color: var(--brand-navy);
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(46, 58, 74, 0.15);
+    }
+
+    [data-theme="dark"] .admin-tab-btn.active {
+      background: var(--brand-sky-blue);
+      color: #151b23;
+      border-color: var(--brand-sky-blue);
+    }
+
+    /* Table Section Header */
+    .table-control-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .search-filter-box {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-search-input {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 0.55rem 1.2rem;
+      font-size: 0.88rem;
+      color: var(--text-primary);
+      width: 260px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .admin-search-input:focus {
+      border-color: var(--brand-sky-blue);
+      box-shadow: 0 0 0 3px rgba(110, 168, 215, 0.15);
+    }
+
+    .admin-filter-select {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 0.55rem 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Data Table Card */
+    .table-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(46, 58, 74, 0.04);
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .admin-table th {
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      font-weight: 600;
+      padding: 0.85rem 1.2rem;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+      font-size: 0.82rem;
+    }
+
+    .admin-table td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+      background: rgba(110, 168, 215, 0.03);
+    }
+
+    /* Action Buttons */
+    .btn-delete-user {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: var(--radius-full);
+      padding: 0.4rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-delete-user:hover:not(:disabled) {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: #ef4444;
+      transform: translateY(-1px);
+    }
+
+    .btn-delete-user:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      background: var(--bg-subtle);
+      border-color: var(--border-color);
+      color: var(--text-muted);
+    }
+
+    /* Member Badge Tiers */
+    .badge-tier {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .badge-tier-classic { background: #f1f5f9; color: #475569; }
+    .badge-tier-silver { background: #e2e8f0; color: #1e293b; border: 1px solid #cbd5e1; }
+    .badge-tier-gold { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-tier-vip { background: #fae8ff; color: #86198f; border: 1px solid #f5d0fe; }
+    .badge-tier-admin { background: #fee2e2; color: #991b1b; font-weight: 700; }
+
+    /* Rx Eye Pill */
+    .rx-badge-pill {
+      display: inline-flex;
+      gap: 6px;
+      font-size: 0.75rem;
+      background: var(--bg-subtle);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-family: 'Space Grotesk', monospace;
+    }
+
+    /* Status Pills */
+    .order-status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-pending { background: #fef3c7; color: #b45309; }
+    .status-assembling { background: #e0f2fe; color: #0369a1; }
+    .status-shipped { background: #dcfce7; color: #15803d; }
+    .status-completed { background: #f1f5f9; color: #334155; }
+    .status-cancelled { background: #fee2e2; color: #b91c1c; }
+
+    /* Modal Backdrop */
+    .admin-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .admin-modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .admin-modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 460px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+      transform: translateY(15px);
+      transition: transform 0.25s ease;
+    }
+
+    .admin-modal-backdrop.active .admin-modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-danger-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fee2e2;
+      color: #ef4444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Login Guard Overlay */
+    .login-guard-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .admin-login-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 10px 35px rgba(46, 58, 74, 0.08);
+      text-align: center;
+    }
+
+    .admin-login-card h2 {
+      font-size: 1.5rem;
+      color: var(--brand-navy);
+      margin-top: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .admin-login-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .admin-form-group {
+      text-align: left;
+      margin-bottom: 1.25rem;
+    }
+
+    .admin-form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.4rem;
+    }
+
+    .admin-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
+      font-size: 0.92rem;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .admin-input:focus {
+      border-color: var(--brand-sky-blue);
+      box-shadow: 0 0 0 3px rgba(110, 168, 215, 0.15);
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Admin Login Guard Screen (Opens when not logged in as Admin) -->
+  <div id="adminLoginGuard" class="login-guard-screen" style="display: none;">
+    <div class="admin-login-card">
+      <div style="font-size: 2.8rem; line-height: 1;">🛡️</div>
+      <h2>เข้าสู่ระบบแอดมิน XCOCO</h2>
+      <p>ระบบจัดการหลังบ้านสำหรับผู้ดูแลระบบ (Admin Portal)</p>
+
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+        <div class="admin-form-group">
+          <label>อีเมลแอดมิน (Admin Email)</label>
+          <input type="email" id="adminEmailInput" class="admin-input" placeholder="admin@xcoco.com" required value="admin@xcoco.com">
+        </div>
+
+        <div class="admin-form-group">
+          <label>รหัสผ่าน (Password)</label>
+          <input type="password" id="adminPasswordInput" class="admin-input" placeholder="••••••••" required value="admin1234">
+        </div>
+
+        <div id="adminLoginAlert" style="display: none; padding: 0.65rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem; background: #fee2e2; color: #b91c1c;"></div>
+
+        <button type="submit" id="btnAdminSubmit" class="btn btn-primary btn-block" style="padding: 0.8rem;">
+          🔐 เข้าสู่ระบบหลังบ้าน
+        </button>
+      </form>
+
+      <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); font-size: 0.78rem; color: var(--text-muted);">
+        <p>💡 บัญชีทดสอบเริ่มต้น: <code>admin@xcoco.com</code> / รหัสผ่าน <code>admin1234</code></p>
+        <a href="index.html" style="color: var(--brand-sky-blue); text-decoration: underline; margin-top: 0.5rem; display: inline-block;">← กลับสู่หน้าหลักร้านค้า</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Navigation Header -->
+  <header class="admin-navbar">
+    <div class="admin-brand">
+      <a href="index.html" title="ไปยังหน้าร้าน XCOCO" style="display: flex; align-items: center; gap: 0.6rem;">
+        <img src="assets/images/Logo.png" alt="XCOCO Logo" style="height: 32px; width: auto;" onerror="this.style.display='none'">
+        <strong style="font-family: 'Montserrat', sans-serif; font-size: 1.25rem; color: var(--brand-navy); letter-spacing: 1px;">XCOCO</strong>
+      </a>
+      <span class="admin-badge-portal">ADMIN PORTAL</span>
+    </div>
+
+    <div class="admin-nav-actions">
+      <a href="index.html" class="btn btn-secondary btn-sm" title="เปิดดูหน้าร้าน">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        <span>หน้าร้าน</span>
+      </a>
+
+      <!-- Theme Toggle -->
+      <button class="icon-btn" onclick="toggleTheme()" title="สลับธีม สว่าง/มืด" style="width: 36px; height: 36px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+        </svg>
+      </button>
+
+      <!-- Current Admin User Badge -->
+      <div class="admin-user-pill">
+        <div class="admin-avatar">A</div>
+        <div style="display: flex; flex-direction: column;">
+          <strong id="topAdminName" style="font-size: 0.8rem; line-height: 1.2;">Admin</strong>
+          <small style="font-size: 0.68rem; color: var(--text-muted);">Super Admin</small>
+        </div>
+      </div>
+
+      <button class="btn btn-secondary btn-sm" onclick="logoutAdmin()" title="ออกจากระบบ" style="color: #ef4444;">
+        🚪 ออกจากระบบ
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Dashboard -->
+  <main class="admin-container">
+
+    <!-- Overview Stats Grid -->
+    <section class="admin-stats-grid">
+      <div class="stat-card-modern">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="stat-detail">
+          <span class="stat-title">สมาชิกทั้งหมด (Users)</span>
+          <span class="stat-number" id="statUsersCount">0</span>
+        </div>
+      </div>
+
+      <div class="stat-card-modern">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </div>
+        <div class="stat-detail">
+          <span class="stat-title">คำสั่งซื้อ (Orders)</span>
+          <span class="stat-number" id="statOrdersCount">0</span>
+        </div>
+      </div>
+
+      <div class="stat-card-modern">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div class="stat-detail">
+          <span class="stat-title">ยอดขายสะสม (Sales)</span>
+          <span class="stat-number" id="statRevenue">฿0</span>
+        </div>
+      </div>
+
+      <div class="stat-card-modern">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        <div class="stat-detail">
+          <span class="stat-title">Subscribers ติดตามข่าว</span>
+          <span class="stat-number" id="statSubsCount">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="admin-tabs-bar">
+      <button class="admin-tab-btn active" onclick="switchAdminTab('users', this)">
+        <span>👥 จัดการสมาชิก & บัญชีผู้ใช้</span>
+      </button>
+      <button class="admin-tab-btn" onclick="switchAdminTab('orders', this)">
+        <span>📦 จัดการคำสั่งซื้อ</span>
+      </button>
+      <button class="admin-tab-btn" onclick="switchAdminTab('subscribers', this)">
+        <span>✉️ รายชื่อ Subscribers</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: User Management -->
+    <section id="tabUsers" class="admin-tab-content">
+      <div class="table-control-header">
+        <div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.2rem;">รายชื่อสมาชิกทั้งหมด</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">สามารถตรวจสอบข้อมูลสมาชิก, ดูค่าสายตา และจัดการลบบัญชีผู้ใช้ได้</p>
+        </div>
+
+        <div class="search-filter-box">
+          <input type="text" id="userSearchInput" class="admin-search-input" placeholder="🔍 ค้นหาชื่อ, อีเมล, เบอร์โทร..." oninput="filterUsersTable()">
+          <select id="userTierFilter" class="admin-filter-select" onchange="filterUsersTable()">
+            <option value="all">ระดับสมาชิกทั้งหมด</option>
+            <option value="Classic Member">Classic</option>
+            <option value="Silver Member">Silver</option>
+            <option value="Gold Member">Gold</option>
+            <option value="VIP Member">VIP</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">ID</th>
+                <th>ข้อมูลสมาชิก</th>
+                <th>อีเมล / ช่องทางติดต่อ</th>
+                <th>ค่าสายตา (Rx)</th>
+                <th>ระดับสมาชิก</th>
+                <th>ยอดสะสม</th>
+                <th>วันที่สมัคร</th>
+                <th style="text-align: right;">การจัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">กำลังโหลดข้อมูลสมาชิก...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Orders Management -->
+    <section id="tabOrders" class="admin-tab-content" style="display: none;">
+      <div class="table-control-header">
+        <div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.2rem;">รายการคำสั่งซื้อแว่นตา</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">อัปเดตสถานะการตัดประกอบเลนส์ และกรอกเลข Tracking พัสดุ</p>
+        </div>
+
+        <div class="search-filter-box">
+          <input type="text" id="orderSearchInput" class="admin-search-input" placeholder="🔍 ค้นหารหัสคำสั่งซื้อ, ลูกค้า..." oninput="filterOrdersTable()">
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>รหัสออร์เดอร์</th>
+                <th>ลูกค้า</th>
+                <th>สินค้าที่สั่ง</th>
+                <th>ยอดชำระ</th>
+                <th>สถานะคำสั่งซื้อ</th>
+                <th>เลขพัสดุ (Tracking)</th>
+                <th>วันที่สั่งซื้อ</th>
+                <th style="text-align: right;">การจัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">กำลังโหลดข้อมูลคำสั่งซื้อ...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Subscribers -->
+    <section id="tabSubscribers" class="admin-tab-content" style="display: none;">
+      <div class="table-control-header">
+        <div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.2rem;">รายชื่อผู้ติดตามรับข่าวสาร (Newsletter Subscribers)</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted);">รายชื่ออีเมลที่กดรับโปรโมชั่นและส่วนลดจากหน้าเว็บ</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="exportSubscribers()">📋 คัดลอกอีเมลทั้งหมด</button>
+      </div>
+
+      <div class="table-card">
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width: 60px;">ลำดับ</th>
+                <th>อีเมลผู้ติดตาม</th>
+                <th>สถานะ</th>
+                <th>วันที่ติดตาม</th>
+              </tr>
+            </thead>
+            <tbody id="subscribersTableBody">
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-muted);">กำลังโหลดรายชื่อ...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Delete User Safe Confirmation Modal -->
+  <div id="deleteConfirmModal" class="admin-modal-backdrop">
+    <div class="admin-modal-box">
+      <div class="modal-danger-icon">⚠️</div>
+      <h3 style="font-size: 1.25rem; color: var(--brand-navy); margin-bottom: 0.5rem;">ยืนยันการลบบัญชีผู้ใช้งาน?</h3>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem;">
+        คุณต้องการลบบัญชีสมาชิกของ: <br>
+        <strong id="deleteTargetUserName" style="color: var(--text-primary); font-size: 1rem;">-</strong><br>
+        <span id="deleteTargetUserEmail" style="color: var(--text-muted); font-size: 0.85rem;">-</span>
+      </p>
+      <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 0.75rem; font-size: 0.8rem; color: #b91c1c; margin-bottom: 1.5rem;">
+        ⚠️ ข้อมูลสมาชิกและค่าสายตาจะถูกลบออกจากระบบอย่างถาวร
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+        <button class="btn btn-secondary btn-sm" onclick="closeDeleteModal()">ยกเลิก</button>
+        <button id="btnConfirmDeleteAction" class="btn btn-sm" style="background: #ef4444; color: #fff; border: 1px solid #ef4444;" onclick="executeDeleteUser()">
+          🗑️ ยืนยันลบบัญชีนี้
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="xcocoToastContainer" class="toast-container"></div>
+
+  <script>
+    // State management
+    let allUsers = [];
+    let allOrders = [];
+    let allSubscribers = [];
+    let deleteTargetId = null;
+
+    // Check Admin Authentication on Load
+    document.addEventListener("DOMContentLoaded", function() {
+      checkAdminAuth();
+    });
+
+    function checkAdminAuth() {
+      const userStr = localStorage.getItem("xcoco_current_user") || localStorage.getItem("xcoco_user");
+      let currentUser = null;
+      try {
+        currentUser = userStr ? JSON.parse(userStr) : null;
+      } catch (e) {}
+
+      // If user is admin
+      if (currentUser && (currentUser.role === "admin" || currentUser.email === "admin@xcoco.com")) {
+        document.getElementById("adminLoginGuard").style.display = "none";
+        document.getElementById("topAdminName").innerText = currentUser.name || "Admin";
+        loadDashboardData();
+      } else {
+        document.getElementById("adminLoginGuard").style.display = "flex";
+      }
+    }
+
+    async function handleAdminLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById("adminEmailInput").value.trim();
+      const password = document.getElementById("adminPasswordInput").value.trim();
+      const alertBox = document.getElementById("adminLoginAlert");
+      const btn = document.getElementById("btnAdminSubmit");
+
+      btn.disabled = true;
+      btn.innerText = "กำลังตรวจสอบ...";
+      alertBox.style.display = "none";
+
+      try {
+        const response = await fetch("backend/api_login.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.user) {
+          if (data.user.role === "admin" || email === "admin@xcoco.com") {
+            data.user.role = "admin";
+            localStorage.setItem("xcoco_current_user", JSON.stringify(data.user));
+            localStorage.setItem("xcoco_user", JSON.stringify(data.user));
+            document.getElementById("adminLoginGuard").style.display = "none";
+            document.getElementById("topAdminName").innerText = data.user.name || "Admin";
+            showToast("เข้าสู่ระบบแอดมินสำเร็จ!", "success");
+            loadDashboardData();
+          } else {
+            alertBox.style.display = "block";
+            alertBox.innerText = "บัญชีนี้ไม่มีสิทธิ์เข้าถึงระบบผู้ดูแลระบบ (Admin Only)";
+          }
+        } else {
+          alertBox.style.display = "block";
+          alertBox.innerText = data.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง";
+        }
+      } catch (err) {
+        // Fallback demo login
+        if (email === "admin@xcoco.com" && password === "admin1234") {
+          const adminUser = {
+            id: 999,
+            name: "ผู้ดูแลระบบ XCOCO (Admin)",
+            email: "admin@xcoco.com",
+            role: "admin",
+            member_tier: "Super Admin"
+          };
+          localStorage.setItem("xcoco_current_user", JSON.stringify(adminUser));
+          localStorage.setItem("xcoco_user", JSON.stringify(adminUser));
+          document.getElementById("adminLoginGuard").style.display = "none";
+          document.getElementById("topAdminName").innerText = adminUser.name;
+          showToast("เข้าสู่ระบบแอดมินสำเร็จ (Demo Mode)", "success");
+          loadDashboardData();
+        } else {
+          alertBox.style.display = "block";
+          alertBox.innerText = "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง";
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "🔐 เข้าสู่ระบบหลังบ้าน";
+      }
+    }
+
+    function logoutAdmin() {
+      if (confirm("คุณต้องการออกจากระบบแอดมินใช่หรือไม่?")) {
+        localStorage.removeItem("xcoco_current_user");
+        localStorage.removeItem("xcoco_user");
+        location.reload();
+      }
+    }
+
+    // Load All Dashboard Data
+    async function loadDashboardData() {
+      loadStats();
+      loadUsers();
+      loadOrders();
+      loadSubscribers();
+    }
+
+    // 1. Load Stats
+    async function loadStats() {
+      try {
+        const res = await fetch("backend/api_admin.php?action=get_stats");
+        const data = await res.json();
+        if (data.success && data.stats) {
+          document.getElementById("statUsersCount").innerText = data.stats.total_users;
+          document.getElementById("statOrdersCount").innerText = data.stats.total_orders;
+          document.getElementById("statRevenue").innerText = "฿" + Number(data.stats.total_revenue).toLocaleString();
+          document.getElementById("statSubsCount").innerText = data.stats.total_subscribers;
+        }
+      } catch (e) {}
+    }
+
+    // 2. Load Users Table
+    async function loadUsers() {
+      const tbody = document.getElementById("usersTableBody");
+      try {
+        const res = await fetch("backend/api_admin.php?action=get_users");
+        const data = await res.json();
+        if (data.success && data.users) {
+          allUsers = data.users;
+          renderUsersTable(allUsers);
+        } else {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem;">ไม่พบข้อมูลสมาชิก</td></tr>`;
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #ef4444;">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>`;
+      }
+    }
+
+    function renderUsersTable(users) {
+      const tbody = document.getElementById("usersTableBody");
+      if (!users || users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">ไม่พบรายชื่อสมาชิกที่ตรงกับเงื่อนไขค้นหา</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = users.map(user => {
+        const isAdmin = user.role === 'admin';
+        const tierClass = getTierBadgeClass(user.member_tier, isAdmin);
+        const rxText = (user.right_sph && user.left_sph) 
+          ? `R: ${user.right_sph} | L: ${user.left_sph} | PD: ${user.pd || 62}` 
+          : 'ยังไม่ระบุ';
+
+        return `
+          <tr>
+            <td style="font-family: 'Space Grotesk', monospace; font-weight: 600;">#${user.id}</td>
+            <td>
+              <strong style="color: var(--text-primary); display: block;">${escapeHtml(user.name)}</strong>
+              <small style="color: var(--text-muted); font-size: 0.75rem;">${escapeHtml(user.phone || '-')}</small>
+            </td>
+            <td>
+              <span>${escapeHtml(user.email)}</span>
+            </td>
+            <td>
+              <span class="rx-badge-pill">${rxText}</span>
+            </td>
+            <td>
+              <span class="badge-tier ${tierClass}">${isAdmin ? 'Admin' : (user.member_tier || 'Classic')}</span>
+            </td>
+            <td style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
+              ฿${Number(user.total_spent || 0).toLocaleString()}
+            </td>
+            <td style="font-size: 0.78rem; color: var(--text-muted);">
+              ${user.created_at ? user.created_at.substring(0, 10) : '-'}
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-delete-user" ${isAdmin ? 'disabled title="ไม่สามารถลบบัญชีผู้ดูแลระบบได้"' : ''} onclick="promptDeleteUser(${user.id}, '${escapeHtml(user.name)}', '${escapeHtml(user.email)}')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span>${isAdmin ? 'แอดมิน' : 'ลบบัญชี'}</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function filterUsersTable() {
+      const q = document.getElementById("userSearchInput").value.toLowerCase().trim();
+      const tier = document.getElementById("userTierFilter").value;
+
+      let filtered = allUsers.filter(u => {
+        const matchesQuery = !q || (
+          (u.name && u.name.toLowerCase().includes(q)) ||
+          (u.email && u.email.toLowerCase().includes(q)) ||
+          (u.phone && u.phone.includes(q))
+        );
+        const matchesTier = (tier === "all") || (u.member_tier === tier);
+        return matchesQuery && matchesTier;
+      });
+
+      renderUsersTable(filtered);
+    }
+
+    // Modal Delete User Confirmation
+    function promptDeleteUser(userId, userName, userEmail) {
+      deleteTargetId = userId;
+      document.getElementById("deleteTargetUserName").innerText = userName;
+      document.getElementById("deleteTargetUserEmail").innerText = userEmail;
+      document.getElementById("deleteConfirmModal").classList.add("active");
+    }
+
+    function closeDeleteModal() {
+      deleteTargetId = null;
+      document.getElementById("deleteConfirmModal").classList.remove("active");
+    }
+
+    async function executeDeleteUser() {
+      if (!deleteTargetId) return;
+
+      const btn = document.getElementById("btnConfirmDeleteAction");
+      btn.disabled = true;
+      btn.innerText = "กำลังลบ...";
+
+      try {
+        const res = await fetch("backend/api_admin.php?action=delete_user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: deleteTargetId })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          showToast(data.message || "ลบบัญชีสำเร็จ!", "success");
+          closeDeleteModal();
+          // Remove from local list
+          allUsers = allUsers.filter(u => u.id !== deleteTargetId);
+          renderUsersTable(allUsers);
+          loadStats();
+        } else {
+          alert("ไม่สามารถลบได้: " + (data.message || "เกิดข้อผิดพลาด"));
+        }
+      } catch (err) {
+        // Fallback for demo
+        allUsers = allUsers.filter(u => u.id !== deleteTargetId);
+        renderUsersTable(allUsers);
+        closeDeleteModal();
+        showToast("ลบบัญชีผู้ใช้เรียบร้อยแล้ว (Demo)", "success");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "🗑️ ยืนยันลบบัญชีนี้";
+      }
+    }
+
+    // 3. Load Orders Table
+    async function loadOrders() {
+      const tbody = document.getElementById("ordersTableBody");
+      try {
+        const res = await fetch("backend/api_admin.php?action=get_orders");
+        const data = await res.json();
+        if (data.success && data.orders && data.orders.length > 0) {
+          allOrders = data.orders;
+        } else {
+          // Pull from LocalStorage orders as fallback
+          const localOrdersStr = localStorage.getItem("xcoco_orders");
+          allOrders = localOrdersStr ? JSON.parse(localOrdersStr) : [];
+        }
+        renderOrdersTable(allOrders);
+      } catch (e) {
+        const localOrdersStr = localStorage.getItem("xcoco_orders");
+        allOrders = localOrdersStr ? JSON.parse(localOrdersStr) : [];
+        renderOrdersTable(allOrders);
+      }
+    }
+
+    function renderOrdersTable(orders) {
+      const tbody = document.getElementById("ordersTableBody");
+      if (!orders || orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">ยังไม่มีรายการคำสั่งซื้อ</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(ord => {
+        const code = ord.order_code || ord.orderId || ord.id || '#XC-00000';
+        const name = ord.customer_name || ord.customerName || 'ลูกค้า';
+        const total = ord.grand_total || ord.grandTotal || 0;
+        const status = ord.status || 'pending';
+        const track = ord.tracking_number || ord.trackingNumber || '-';
+        const date = ord.created_at || ord.date || '-';
+
+        return `
+          <tr>
+            <td><strong style="font-family: 'Space Grotesk', sans-serif; color: var(--brand-navy);">${code}</strong></td>
+            <td>
+              <div>${escapeHtml(name)}</div>
+              <small style="color: var(--text-muted); font-size: 0.75rem;">${escapeHtml(ord.email || '')}</small>
+            </td>
+            <td style="font-size: 0.8rem; max-width: 200px;">
+              ${Array.isArray(ord.items) ? ord.items.map(it => `${it.name} (x${it.quantity || 1})`).join(", ") : 'แว่นตาตัดเลนส์'}
+            </td>
+            <td style="font-family: 'Montserrat', sans-serif; font-weight: 700;">฿${Number(total).toLocaleString()}</td>
+            <td>
+              <select class="admin-filter-select" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;" onchange="updateOrderStatus('${code}', this.value)">
+                <option value="pending" ${status === 'pending' ? 'selected' : ''}>⏳ รอดำเนินการ</option>
+                <option value="assembling" ${status === 'assembling' ? 'selected' : ''}>👓 กำลังประกอบเลนส์</option>
+                <option value="shipped" ${status === 'shipped' ? 'selected' : ''}>🚚 จัดส่งแล้ว</option>
+                <option value="completed" ${status === 'completed' ? 'selected' : ''}>✅ สำเร็จ</option>
+                <option value="cancelled" ${status === 'cancelled' ? 'selected' : ''}>❌ ยกเลิก</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" value="${track !== '-' ? track : ''}" placeholder="ใส่เลขพัสดุ..." style="border: 1px solid var(--border-color); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.78rem; width: 130px;" onblur="updateOrderTracking('${code}', this.value)">
+            </td>
+            <td style="font-size: 0.75rem; color: var(--text-muted);">${date.substring(0, 10)}</td>
+            <td style="text-align: right;">
+              <button class="btn btn-secondary btn-sm" onclick="alert('ที่อยู่จัดส่ง: ' + '${escapeHtml(ord.delivery_address || ord.deliveryAddress || 'ไม่ระบุ')}')">ดูที่อยู่</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function filterOrdersTable() {
+      const q = document.getElementById("orderSearchInput").value.toLowerCase().trim();
+      let filtered = allOrders.filter(o => {
+        const code = (o.order_code || o.orderId || '').toLowerCase();
+        const name = (o.customer_name || o.customerName || '').toLowerCase();
+        return !q || code.includes(q) || name.includes(q);
+      });
+      renderOrdersTable(filtered);
+    }
+
+    async function updateOrderStatus(orderCode, newStatus) {
+      try {
+        await fetch("backend/api_admin.php?action=update_order_status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_code: orderCode, status: newStatus })
+        });
+        showToast(`อัปเดตสถานะ ${orderCode} เป็น "${newStatus}" แล้ว`, "success");
+      } catch (e) {
+        showToast(`อัปเดตสถานะสำเร็จ (Local)`, "success");
+      }
+    }
+
+    async function updateOrderTracking(orderCode, tracking) {
+      if (!tracking) return;
+      try {
+        await fetch("backend/api_admin.php?action=update_order_status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_code: orderCode, tracking_number: tracking })
+        });
+        showToast(`บันทึกเลขพัสดุ ${tracking} สำเร็จ`, "success");
+      } catch (e) {}
+    }
+
+    // 4. Load Subscribers
+    async function loadSubscribers() {
+      const tbody = document.getElementById("subscribersTableBody");
+      try {
+        const res = await fetch("backend/api_admin.php?action=get_subscribers");
+        const data = await res.json();
+        if (data.success && data.subscribers) {
+          allSubscribers = data.subscribers;
+          tbody.innerHTML = allSubscribers.map((s, idx) => `
+            <tr>
+              <td style="font-family: 'Space Grotesk', monospace;">${idx + 1}</td>
+              <td><strong>${escapeHtml(s.email)}</strong></td>
+              <td><span style="color: #16a34a; font-weight: 600; font-size: 0.78rem;">● Active</span></td>
+              <td style="font-size: 0.78rem; color: var(--text-muted);">${s.subscribed_at || '-'}</td>
+            </tr>
+          `).join("");
+        }
+      } catch (e) {}
+    }
+
+    function exportSubscribers() {
+      if (allSubscribers.length === 0) {
+        alert("ไม่มีรายชื่อ Subscribers");
+        return;
+      }
+      const emails = allSubscribers.map(s => s.email).join("\n");
+      navigator.clipboard.writeText(emails);
+      showToast("คัดลอกรายชื่ออีเมลทั้งหมดเรียบร้อยแล้ว!", "success");
+    }
+
+    // Tab Switching
+    function switchAdminTab(tabName, btnEl) {
+      document.querySelectorAll(".admin-tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".admin-tab-content").forEach(c => c.style.display = "none");
+
+      btnEl.classList.add("active");
+      if (tabName === 'users') document.getElementById("tabUsers").style.display = "block";
+      if (tabName === 'orders') document.getElementById("tabOrders").style.display = "block";
+      if (tabName === 'subscribers') document.getElementById("tabSubscribers").style.display = "block";
+    }
+
+    // Utilities
+    function getTierBadgeClass(tier, isAdmin) {
+      if (isAdmin) return 'badge-tier-admin';
+      if (!tier) return 'badge-tier-classic';
+      if (tier.includes('Silver')) return 'badge-tier-silver';
+      if (tier.includes('Gold')) return 'badge-tier-gold';
+      if (tier.includes('VIP')) return 'badge-tier-vip';
+      return 'badge-tier-classic';
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("xcoco_theme", next);
+    }
+
+    function showToast(message, type = "info") {
+      let toastContainer = document.getElementById("xcocoToastContainer");
+      if (!toastContainer) {
+        toastContainer = document.createElement("div");
+        toastContainer.id = "xcocoToastContainer";
+        toastContainer.className = "toast-container";
+        document.body.appendChild(toastContainer);
+      }
+
+      const toast = document.createElement("div");
+      toast.className = `brand-toast ${type}`;
+      toast.innerHTML = `
+        <div class="toast-icon">${type === "success" ? "✓" : "ℹ"}</div>
+        <div class="toast-body">${message}</div>
+      `;
+      toastContainer.appendChild(toast);
+
+      setTimeout(() => toast.classList.add("visible"), 20);
+      setTimeout(() => {
+        toast.classList.remove("visible");
+        setTimeout(() => toast.remove(), 400);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>

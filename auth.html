@@ -260,7 +260,13 @@
               <span>ทดลองเข้าสู่ระบบด่วน (Demo Account: demo@xcoco.com)</span>
             </button>
 
-            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <div style="margin-top: 1rem; text-align: center;">
+              <a href="admin.html" style="font-size: 0.82rem; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s;">
+                <span>🛡️ เข้าสู่ระบบผู้ดูแลระบบ (Admin Portal)</span>
+              </a>
+            </div>
+
+            <div style="text-align: center; margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-secondary);">
               ยังไม่มีบัญชีสมาชิก? 
               <button type="button" onclick="switchAuthTab('register')" style="background: none; border: none; padding: 0; font: inherit; color: var(--text-primary); font-weight: 700; text-decoration: underline; cursor: pointer;">
                 สมัครสมาชิกที่นี่
@@ -656,7 +662,11 @@
           localStorage.setItem("xcoco_current_user", JSON.stringify(userObj));
           showAlert("เข้าสู่ระบบสำเร็จ! กำลังนำท่านเข้าสู่ระบบ...", "success");
           setTimeout(() => {
-            window.location.href = getRedirectUrl();
+            if (userObj.role === 'admin' || userObj.email === 'admin@xcoco.com') {
+              window.location.href = "admin.html";
+            } else {
+              window.location.href = getRedirectUrl();
+            }
           }, 600);
           return;
         } else if (data && !data.success) {
@@ -676,21 +686,39 @@
       const localUsers = JSON.parse(localStorage.getItem("xcoco_users") || "[]");
       const user = localUsers.find(u => u.email.toLowerCase() === email && u.password === pass);
 
-      if (user || (email === "demo@xcoco.com" && pass === "1234")) {
-        const loggedUser = user || {
-          name: "คุณสมชาย สายตาดี",
-          email: "demo@xcoco.com",
-          phone: "081-234-5678",
-          birthdate: "1998-05-15",
-          address: "123/45 หมู่ 6 ถ.สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110",
-          member_tier: "Classic Member",
-          totalSpent: 0,
-          rx: { rSph: "-1.50", lSph: "-1.50", pd: 62 }
-        };
+      if (user || (email === "demo@xcoco.com" && pass === "1234") || (email === "admin@xcoco.com" && pass === "admin1234")) {
+        let loggedUser;
+        if (email === "admin@xcoco.com" && pass === "admin1234") {
+          loggedUser = {
+            name: "ผู้ดูแลระบบ XCOCO",
+            email: "admin@xcoco.com",
+            phone: "02-999-8888",
+            member_tier: "Super Admin",
+            role: "admin",
+            totalSpent: 0,
+            rx: { rSph: "0.00", lSph: "0.00", pd: 62 }
+          };
+        } else {
+          loggedUser = user || {
+            name: "คุณสมชาย สายตาดี",
+            email: "demo@xcoco.com",
+            phone: "081-234-5678",
+            birthdate: "1998-05-15",
+            address: "123/45 หมู่ 6 ถ.สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพฯ 10110",
+            member_tier: "Classic Member",
+            role: "customer",
+            totalSpent: 0,
+            rx: { rSph: "-1.50", lSph: "-1.50", pd: 62 }
+          };
+        }
         localStorage.setItem("xcoco_current_user", JSON.stringify(loggedUser));
         showAlert("เข้าสู่ระบบสำเร็จ! กำลังนำท่านเข้าสู่ระบบ...", "success");
         setTimeout(() => {
-          window.location.href = getRedirectUrl();
+          if (loggedUser.role === 'admin' || loggedUser.email === 'admin@xcoco.com') {
+            window.location.href = "admin.html";
+          } else {
+            window.location.href = getRedirectUrl();
+          }
         }, 600);
       } else {
         showAlert(apiError || "อีเมลหรือรหัสผ่านไม่ถูกต้อง (หากต้องการทดสอบ กดปุ่ม Demo ด้านล่าง)");

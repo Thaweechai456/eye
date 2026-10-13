@@ -55,11 +55,28 @@ if (isset($pdo) && $pdo !== null) {
 }
 
 // 2. Demo Fallback ถ้ายังไม่ได้เชื่อม MySQL
+if ($email === 'admin@xcoco.com' && $password === 'admin1234') {
+    echo json_encode([
+        'success' => true,
+        'message' => 'เข้าสู่ระบบแอดมินสำเร็จ (Admin Account)',
+        'user' => [
+            'id' => 999,
+            'name' => 'ผู้ดูแลระบบ XCOCO (Admin)',
+            'email' => 'admin@xcoco.com',
+            'phone' => '0800000000',
+            'role' => 'admin',
+            'member_tier' => 'Super Admin'
+        ]
+    ]);
+    exit;
+}
+
 if ($email === 'demo@xcoco.com' && $password === '1234') {
     echo json_encode([
         'success' => true,
         'message' => 'เข้าสู่ระบบสำเร็จ (Demo Account)',
         'user' => [
+            'id' => 1,
             'name' => 'คุณสมชาย สายตาดี',
             'email' => 'demo@xcoco.com',
             'phone' => '0812345678',
@@ -69,7 +86,8 @@ if ($email === 'demo@xcoco.com' && $password === '1234') {
             'left_sph' => '-1.50',
             'pd' => 62,
             'member_tier' => 'Classic Member',
-            'total_spent' => 0.00
+            'total_spent' => 0.00,
+            'role' => 'customer'
         ]
     ]);
     exit;

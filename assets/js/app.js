@@ -1153,11 +1153,18 @@ function initAuthUI() {
     document.getElementById("menuUserEmail").innerText = currentUser.email;
     if (btnAutofill) btnAutofill.style.display = "inline-flex";
 
+    const menuAdmin = document.getElementById("menuAdminPortalLink");
+    if (menuAdmin) {
+      menuAdmin.style.display = (currentUser.role === "admin" || currentUser.email === "admin@xcoco.com") ? "flex" : "none";
+    }
+
     updateMemberTierUI();
   } else {
     authBtn.style.display = "inline-flex";
     userProfileDropdown.style.display = "none";
     if (btnAutofill) btnAutofill.style.display = "none";
+    const menuAdmin = document.getElementById("menuAdminPortalLink");
+    if (menuAdmin) menuAdmin.style.display = "none";
   }
 
   updateMobileUserCard();
@@ -1205,7 +1212,12 @@ function updateMobileUserCard() {
           </div>
         </div>
       </div>
-      <button onclick="logoutUser()" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center; font-size: 0.78rem; margin-top: 0.75rem; padding: 0.45rem;">
+      ${(currentUser.role === 'admin' || currentUser.email === 'admin@xcoco.com') ? `
+        <a href="admin.html" class="btn btn-primary btn-sm" style="width: 100%; justify-content: center; font-size: 0.78rem; margin-top: 0.75rem; padding: 0.45rem; text-decoration: none;">
+          <span>🛡️ จัดการหลังบ้าน (Admin)</span>
+        </a>
+      ` : ''}
+      <button onclick="logoutUser()" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center; font-size: 0.78rem; margin-top: 0.5rem; padding: 0.45rem;">
         <span>ออกจากระบบ</span>
       </button>
     `;
