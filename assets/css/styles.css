@@ -4759,6 +4759,11 @@ button.link-terms {
   margin-top: 0.35rem;
 }
 
+/* Min/max scale labels use secondary ink to pass WCAG contrast at small size */
+.rx-pd-labels > span:not(.rx-pd-current) {
+  color: var(--text-secondary);
+}
+
 .rx-pd-current {
   font-weight: 700;
   color: var(--accent-primary);

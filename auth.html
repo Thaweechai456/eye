@@ -21,7 +21,7 @@
   
   <!-- Stylesheet & Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo-icon-32.png" sizes="32x32">
-  <link rel="stylesheet" href="assets/css/styles.css?v=4.3">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4.4">
 </head>
 <body class="auth-body">
 
@@ -394,13 +394,13 @@
                 <div>
                   <label class="rx-field-label">ตาขวา (Right SPH)</label>
                   <div class="rx-hybrid-wrap">
-                    <select id="regRightSphSelect" class="rx-hybrid-select" onchange="syncRegRxValue('regRightSph', this.value)"></select>
+                    <select id="regRightSphSelect" class="rx-hybrid-select" aria-label="ตาขวา (Right SPH)" onchange="syncRegRxValue('regRightSph', this.value)"></select>
                   </div>
                 </div>
                 <div>
                   <label class="rx-field-label">ตาซ้าย (Left SPH)</label>
                   <div class="rx-hybrid-wrap">
-                    <select id="regLeftSphSelect" class="rx-hybrid-select" onchange="syncRegRxValue('regLeftSph', this.value)"></select>
+                    <select id="regLeftSphSelect" class="rx-hybrid-select" aria-label="ตาซ้าย (Left SPH)" onchange="syncRegRxValue('regLeftSph', this.value)"></select>
                   </div>
                 </div>
               </div>
@@ -431,8 +431,8 @@
               <div class="rx-pd-combo">
                 <label class="rx-field-label">ระยะห่างรูม่านตา (PD mm)</label>
                 <div class="rx-pd-flex">
-                  <input type="range" id="regPdSlider" min="50" max="75" value="62" class="rx-pd-slider" oninput="document.getElementById('regPd').value=this.value; updateRegPdDisplay()">
-                  <input type="number" id="regPd" min="50" max="75" value="62" class="rx-pd-number" oninput="document.getElementById('regPdSlider').value=this.value; updateRegPdDisplay()">
+                  <input type="range" id="regPdSlider" min="50" max="75" value="62" class="rx-pd-slider" aria-label="ระยะห่างรูม่านตา (PD) แบบเลื่อน" oninput="document.getElementById('regPd').value=this.value; updateRegPdDisplay()">
+                  <input type="number" id="regPd" min="50" max="75" value="62" class="rx-pd-number" aria-label="ระยะห่างรูม่านตา (PD) แบบกรอกตัวเลข" oninput="document.getElementById('regPdSlider').value=this.value; updateRegPdDisplay()">
                   <span class="rx-pd-unit">mm</span>
                 </div>
                 <div class="rx-pd-labels">
@@ -446,8 +446,18 @@
             <div class="auth-form-group">
               <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; font-size: 0.8rem; font-weight: normal; color: var(--text-secondary);">
                 <input type="checkbox" id="regConsent" required checked style="margin-top: 3px;">
-                <span>ฉันยอมรับเงื่อนไขการให้บริการ และนโยบายการคุ้มครองข้อมูลส่วนบุคคล (PDPA) เพื่อรับสิทธิประโยชน์สมาชิก</span>
+                <span>ฉันได้อ่านและยินยอมตาม <button type="button" onclick="event.preventDefault();toggleAuthTermsDetail()" class="link-terms">ข้อตกลงและเงื่อนไขการให้บริการ</button> รวมถึงนโยบายความเป็นส่วนตัว (PDPA) ของ XCOCO Eyewear เพื่อรับสิทธิประโยชน์สมาชิก</span>
               </label>
+              <div id="authTermsDetailBox" class="terms-detail-box" style="display: none;">
+                <div class="terms-content">
+                  <strong>📜 เงื่อนไขและข้อตกลงการใช้บริการ XCOCO Eyewear:</strong>
+                  <ul>
+                    <li>ข้อมูลส่วนบุคคล (ชื่อ, เบอร์โทร, อีเมล, ค่าสายตา, ที่อยู่) จะถูกเก็บเป็นความลับเพื่อใช้ในขั้นตอนการตัดเลนส์และจัดส่งเท่านั้น</li>
+                    <li>รับประกันค่าสายตา 30 วัน หากใส่แล้วไม่สบายตาสามารถส่งกลับมาตัดเลนส์คู่ใหม่ได้ฟรี</li>
+                    <li>สมาชิกยินยอมรับข่าวสารโปรโมชันและโค้ดส่วนลดพิเศษผ่านทางอีเมล</li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
             <button type="submit" id="regSubmitBtn" class="btn-auth-primary">
@@ -618,6 +628,14 @@
 
     function forgotPasswordAlert() {
       showToast("🔒 ระบบกู้คืนรหัสผ่าน:\nกรุณาติดต่อเจ้าหน้าที่แอดมินทาง LINE: @xcoco เพื่อขอรับลิงก์รีเซ็ตรหัสผ่านความปลอดภัยสูงครับ", "info");
+    }
+
+    // Expand/collapse the PDPA + terms detail box (mirrors index.html toggleTermsDetail)
+    function toggleAuthTermsDetail() {
+      const box = document.getElementById("authTermsDetailBox");
+      if (box) {
+        box.style.display = box.style.display === "none" ? "block" : "none";
+      }
     }
 
     // Submit Login
