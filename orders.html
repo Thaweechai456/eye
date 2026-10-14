@@ -240,7 +240,7 @@
   </div>
 
   <!-- Not Logged In View -->
-  <div id="notLoggedInView" style="display: none; padding: 6rem 1.5rem; text-align: center;">
+  <div id="notLoggedInView" role="main" style="display: none; padding: 6rem 1.5rem; text-align: center;">
     <div style="max-width: 480px; margin: 0 auto; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 3rem 2rem; box-shadow: var(--card-shadow);">
       <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--text-secondary);">
         <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -604,6 +604,60 @@
     let orderHistory = [];
     let currentFilter = 'all';
 
+    // DB status enum -> storefront display. Single source of truth lives in
+    // MySQL (admin edits it); this map keeps both storefront pages identical.
+    const ORDER_STATUS_MAP = {
+      pending:    { status: "pending",    step: 1 },
+      assembling: { status: "assembling", step: 3 },
+      shipped:    { status: "shipped",    step: 4 },
+      completed:  { status: "completed",  step: 4 },
+      cancelled:  { status: "cancelled",  step: 1 }
+    };
+
+    // Pull this user's order statuses from the server and merge over local
+    // data (DB wins). Throttled + silent: offline keeps local values.
+    let orderSyncAt = 0;
+    let orderSyncInFlight = false;
+    async function syncOrderStatusFromServer() {
+      try {
+        if (orderSyncInFlight || !currentUser || !currentUser.email) return;
+        if (Date.now() - orderSyncAt < 60000) return;
+        orderSyncInFlight = true;
+        const res = await fetch("backend/api_admin.php?action=get_my_orders&email=" + encodeURIComponent(currentUser.email));
+        const data = await res.json();
+        orderSyncAt = Date.now();
+        if (!data || !data.success || !Array.isArray(data.orders) || data.orders.length === 0) return;
+        const byCode = {};
+        data.orders.forEach(o => { if (o && o.order_code) byCode[o.order_code] = o; });
+        let changed = false;
+        orderHistory.forEach(o => {
+          const remote = o && byCode[o.orderId];
+          if (!remote) return;
+          const m = ORDER_STATUS_MAP[remote.status];
+          if (m && (o.status !== m.status || o.step !== m.step)) {
+            o.status = m.status;
+            o.step = m.step;
+            changed = true;
+          }
+          const track = (remote.tracking_number || "").trim();
+          if (track && o.tracking_number !== track) {
+            o.tracking_number = track;
+            changed = true;
+          }
+        });
+        if (changed) {
+          localStorage.setItem("xcoco_orders", JSON.stringify(orderHistory));
+          localStorage.setItem("xcoco_order_history", JSON.stringify(orderHistory));
+          renderOrdersList();
+          renderProfileUI();
+        }
+      } catch (e) {
+        /* offline or server down: keep local values */
+      } finally {
+        orderSyncInFlight = false;
+      }
+    }
+
     // Strict per-user order filter — single source of truth for list, stats,
     // and badges on this page.
     // - Demo mock orders: demo user only.
@@ -694,6 +748,9 @@
 
       // Render Profile Details
       renderProfileUI();
+
+      // Sync statuses from server (admin truth); re-renders itself if changed
+      syncOrderStatusFromServer();
 
       // Update Cart Badge
       const cart = JSON.parse(localStorage.getItem("xcoco_cart") || "[]");
@@ -975,7 +1032,7 @@
       const mine = Array.isArray(baseOrders) ? baseOrders : filterOrdersForUser(orderHistory);
       let filtered = mine;
       if (currentFilter === "in-progress") {
-        filtered = mine.filter(o => o.status !== "completed");
+        filtered = mine.filter(o => o.status !== "completed" && o.status !== "cancelled");
       } else if (currentFilter === "completed") {
         filtered = mine.filter(o => o.status === "completed");
       }
@@ -1001,7 +1058,14 @@
 
       wrapper.innerHTML = filtered.map(order => {
         const isCompleted = order.status === "completed";
+        const isCancelled = order.status === "cancelled";
         const currentStep = order.step || (isCompleted ? 4 : 2);
+        const pillText = isCompleted ? 'จัดส่งสำเร็จเรียบร้อย'
+          : isCancelled ? 'ยกเลิกแล้ว'
+          : order.status === 'shipped' ? 'จัดส่งแล้ว'
+          : order.status === 'pending' ? 'รอดำเนินการ'
+          : 'กำลังประกอบเลนส์ (QC)';
+        const pillDot = isCompleted ? '#22c55e' : isCancelled ? '#ef4444' : '#eab308';
 
         return `
           <div class="order-card-pro">
@@ -1009,11 +1073,12 @@
               <div class="order-meta-group">
                 <span class="order-id-badge">${order.orderId}</span>
                 <span class="order-date-text">สั่งซื้อเมื่อ: ${order.date}</span>
+                ${order.tracking_number ? `<span class="order-date-text">📦 เลขพัสดุ: ${order.tracking_number}</span>` : ""}
                 <span class="badge-tag-modern">ชำระเงินสำเร็จ</span>
               </div>
               <span class="order-status-pill ${isCompleted ? 'completed' : 'in-progress'}">
-                <span style="width: 8px; height: 8px; border-radius: 50%; background: ${isCompleted ? '#22c55e' : '#eab308'}; display: inline-block;"></span>
-                <span>${isCompleted ? 'จัดส่งสำเร็จเรียบร้อย' : 'กำลังประกอบเลนส์ (QC)'}</span>
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: ${pillDot}; display: inline-block;"></span>
+                <span>${pillText}</span>
               </span>
             </div>
 

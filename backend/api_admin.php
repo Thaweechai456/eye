@@ -229,6 +229,29 @@ switch ($action) {
         break;
 
     // ------------------------------------------------------------------------
+    // 4b. ดึงคำสั่งซื้อของลูกค้าคนเดียว (Customer-safe: ตอบเฉพาะอีเมลที่ขอ)
+    // ใช้ให้หน้าร้านซิงก์สถานะจาก DB โดยไม่เห็นออเดอร์ของลูกค้าคนอื่น
+    // ------------------------------------------------------------------------
+    case 'get_my_orders':
+        $myEmail = trim($input['email'] ?? $_GET['email'] ?? '');
+        $myOrders = [];
+        if (!empty($myEmail) && isset($pdo) && $pdo !== null) {
+            try {
+                $stmt = $pdo->prepare("SELECT order_code, status, tracking_number, grand_total, updated_at FROM orders WHERE email = :email ORDER BY id DESC LIMIT 50");
+                $stmt->execute([':email' => $myEmail]);
+                $myOrders = $stmt->fetchAll();
+            } catch (PDOException $e) {
+                $myOrders = [];
+            }
+        }
+
+        echo json_encode([
+            'success' => true,
+            'orders' => $myOrders
+        ]);
+        break;
+
+    // ------------------------------------------------------------------------
     // 5. อัปเดตสถานะคำสั่งซื้อและเลขพัสดุ (Update Order Status)
     // ------------------------------------------------------------------------
     case 'update_order_status':

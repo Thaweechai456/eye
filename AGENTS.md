@@ -90,10 +90,10 @@ There is no package.json, no test suite, no linter, no CI. The project has no au
   - Admin login guard modal with offline LocalStorage fallback and MySQL session support.
   - Store KPI cards: Users, Orders, Revenue, Subscribers.
   - Member Management: search, tier filter, Rx view, delete customer button with safety confirmation modal (`#deleteConfirmModal`, prevents deleting admin accounts).
-  - Order Management: search, update order status (pending, processing, shipped, delivered, cancelled), tracking number input.
+  - Order Management: search, update order status (pending, assembling, shipped, completed, cancelled), tracking number input.
   - Newsletter Subscribers: list view and copy-to-clipboard email export.
 - **Backend:** `backend/api_admin.php`
-  - Actions: `get_stats`, `get_users`, `delete_user`, `get_orders`, `update_order_status`, `get_subscribers`.
+  - Actions: `get_stats`, `get_users`, `delete_user`, `get_orders`, `get_my_orders` (customer-safe, email-scoped for storefront status sync), `update_order_status`, `get_subscribers`.
 - **Database:** `backend/db.php` creates/manages `orders` table and `role` column (`customer`, `admin`) in `users` table.
 
 ## Working Agreements (standing user instructions — apply in every session)

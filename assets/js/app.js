@@ -481,6 +481,58 @@ function switchProfileTab(tab) {
   }
 }
 
+// DB status enum -> storefront display (same map as orders.html; MySQL is truth).
+const ORDER_STATUS_MAP = {
+  pending:    { status: "pending",    step: 1 },
+  assembling: { status: "assembling", step: 3 },
+  shipped:    { status: "shipped",    step: 4 },
+  completed:  { status: "completed",  step: 4 },
+  cancelled:  { status: "cancelled",  step: 1 }
+};
+
+// Pull this user's order statuses from the server and merge over local data
+// (DB wins). Throttled + silent: offline keeps local values.
+let orderSyncAt = 0;
+let orderSyncInFlight = false;
+async function syncOrderStatusFromServer() {
+  try {
+    if (orderSyncInFlight || !currentUser || !currentUser.email) return;
+    if (Date.now() - orderSyncAt < 60000) return;
+    orderSyncInFlight = true;
+    const res = await fetch("backend/api_admin.php?action=get_my_orders&email=" + encodeURIComponent(currentUser.email));
+    const data = await res.json();
+    orderSyncAt = Date.now();
+    if (!data || !data.success || !Array.isArray(data.orders) || data.orders.length === 0) return;
+    const byCode = {};
+    data.orders.forEach(o => { if (o && o.order_code) byCode[o.order_code] = o; });
+    let changed = false;
+    orderHistory.forEach(o => {
+      const remote = o && byCode[o.orderId];
+      if (!remote) return;
+      const m = ORDER_STATUS_MAP[remote.status];
+      if (m && (o.status !== m.status || o.step !== m.step)) {
+        o.status = m.status;
+        o.step = m.step;
+        changed = true;
+      }
+      const track = (remote.tracking_number || "").trim();
+      if (track && o.tracking_number !== track) {
+        o.tracking_number = track;
+        changed = true;
+      }
+    });
+    if (changed) {
+      localStorage.setItem("xcoco_orders", JSON.stringify(orderHistory));
+      localStorage.setItem("xcoco_order_history", JSON.stringify(orderHistory));
+      renderOrderHistory();
+    }
+  } catch (e) {
+    /* offline or server down: keep local values */
+  } finally {
+    orderSyncInFlight = false;
+  }
+}
+
 function renderOrderHistory() {
   const container = document.getElementById("ordersListContainer");
   // Show only the logged-in user's orders (demo mock orders stay demo-only).
@@ -519,7 +571,7 @@ function renderOrderHistory() {
           <div class="order-date">📅 สั่งซื้อเมื่อ: ${order.date}</div>
         </div>
         <span class="order-status-badge ${order.status === 'completed' ? 'status-completed' : 'status-in-progress'}">
-          ${order.status === 'completed' ? '🟢 จัดส่งสำเร็จ' : '🟡 กำลังประกอบเลนส์ (QC)'}
+          ${order.status === 'completed' ? '🟢 จัดส่งสำเร็จ' : order.status === 'cancelled' ? '🔴 ถูกยกเลิก' : order.status === 'shipped' ? '🚚 จัดส่งแล้ว' : order.status === 'pending' ? '⏳ รอดำเนินการ' : '🟡 กำลังประกอบเลนส์ (QC)'}
         </span>
       </div>
 
@@ -567,6 +619,8 @@ function renderOrderHistory() {
       </div>
     </div>
   `).join("");
+  // Refresh statuses from server in background (re-renders itself if changed)
+  syncOrderStatusFromServer();
 }
 
 function reorderItems(orderId) {
