@@ -858,7 +858,9 @@ function renderSmartRecommendations() {
     }
   } else if (activeRecomFilter === "cross") {
     setRecoHint("");
-    list = PRODUCTS.filter(p => p.category === "care" || p.price <= 990).slice(0, 4).map(p => ({
+    // Accessories only — no cheap frames mixed in (they pushed the real
+    // care items out of the slice).
+    list = PRODUCTS.filter(p => p.category === "care").map(p => ({
       ...p,
       reasonBadge: "✨ ไอเทมคู่หูสำหรับคุณ"
     }));
