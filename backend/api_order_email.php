@@ -76,6 +76,26 @@ if (isset($pdo) && $pdo !== null) {
     } catch (PDOException $e) {
         // Silently skip if DB error
     }
+
+    // ซิงก์ยอดสะสม + ระดับสมาชิกในตาราง users ให้ตรงกับคำสั่งซื้อจริง
+    // (หน้าแอดมินอ่านค่านี้ ถ้าไม่อัปเดตจะค้าง 0/Classic ตลอดไป)
+    try {
+        $grand = (float)($orderData['grandTotal'] ?? 0);
+        if ($grand > 0 && !empty($email)) {
+            $stmtSync = $pdo->prepare("UPDATE users SET total_spent = COALESCE(total_spent, 0) + :grand WHERE email = :email");
+            $stmtSync->execute([':grand' => $grand, ':email' => $email]);
+
+            $stmtSum = $pdo->prepare("SELECT COALESCE(SUM(grand_total), 0) FROM orders WHERE email = :email AND status != 'cancelled'");
+            $stmtSum->execute([':email' => $email]);
+            $lifetime = (float)$stmtSum->fetchColumn();
+            $tier = ($lifetime >= 3500) ? 'VIP Member' : (($lifetime >= 1500) ? 'Silver Member' : 'Classic Member');
+
+            $stmtTier = $pdo->prepare("UPDATE users SET member_tier = :tier WHERE email = :email");
+            $stmtTier->execute([':tier' => $tier, ':email' => $email]);
+        }
+    } catch (PDOException $e) {
+        // Silently skip if DB error
+    }
 }
 
 echo json_encode([
