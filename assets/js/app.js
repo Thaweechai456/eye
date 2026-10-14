@@ -2344,6 +2344,15 @@ function openCheckoutModal() {
     return;
   }
 
+  // สมาชิกเท่านั้นจึงสั่งซื้อได้: ยอดสะสม/ระดับขั้นผูกกับบัญชี เกสต์ไม่มีที่ลง
+  if (!currentUser || !currentUser.email) {
+    showToast("กรุณาเข้าสู่ระบบก่อนดำเนินการสั่งซื้อครับ 🧾", "warning");
+    setTimeout(() => {
+      window.location.href = "auth.html?mode=login&redirect=" + encodeURIComponent("index.html");
+    }, 900);
+    return;
+  }
+
   const deliveryAddressInput = document.getElementById("checkoutAddress");
   const deliveryAddress = (deliveryAddressInput && deliveryAddressInput.value.trim()) 
     ? deliveryAddressInput.value.trim() 
@@ -2355,7 +2364,8 @@ function openCheckoutModal() {
     customerEmail = currentUser.email;
   }
   if (!customerEmail) {
-    customerEmail = "robloxmakethegame123@gmail.com";
+    showToast("ไม่พบอีเมลสมาชิก กรุณาเข้าสู่ระบบใหม่อีกครั้งครับ", "error");
+    return;
   }
   const customerName = currentUser ? (currentUser.name || "คุณลูกค้า") : "คุณลูกค้า";
 
