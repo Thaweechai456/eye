@@ -271,7 +271,7 @@ let registeredUsers = JSON.parse(localStorage.getItem("xcoco_users")) || [
 
 // Wishlist, Recently Viewed, Order History & AI Recommendation State
 let wishlist = JSON.parse(localStorage.getItem("xcoco_wishlist")) || [];
-let recentlyViewed = JSON.parse(localStorage.getItem("xcoco_recently_viewed")) || ["frame_minimal_01", "frame_vintage_02", "frame_titanium_06"];
+let recentlyViewed = JSON.parse(localStorage.getItem("xcoco_recently_viewed")) || [];
 function loadInitialOrderHistory() {
   try {
     const o1 = JSON.parse(localStorage.getItem("xcoco_orders") || "[]");
@@ -323,6 +323,7 @@ function loadInitialOrderHistory() {
 let orderHistory = loadInitialOrderHistory();
 let activeRecomFilter = "all";
 let currentFaceShape = "oval";
+let faceQuizDone = false; // true once the user picks a face shape (quiz result)
 let pendingOrderData = null;
 let currentLensTint = "clear";
 
@@ -797,13 +798,34 @@ function renderSmartRecommendations() {
   const container = document.getElementById("recommendProductGrid");
   if (!container) return;
 
+  // Contextual hint under the tabs: empty when the tab shows genuine
+  // personalized data, honest guidance when it shows fallback content.
+  const recoHintEl = document.getElementById("recoHint");
+  const setRecoHint = (html) => {
+    if (!recoHintEl) return;
+    if (html) {
+      recoHintEl.innerHTML = html;
+      recoHintEl.hidden = false;
+    } else {
+      recoHintEl.innerHTML = "";
+      recoHintEl.hidden = true;
+    }
+  };
+
+  // Bestsellers pool for honest fallbacks (badged frames only, no accessories)
+  const bestsellers = PRODUCTS.filter(p => p.badge && p.category !== "care");
+
   let list = [];
-  
+
   if (activeRecomFilter === "recent") {
-    list = PRODUCTS.filter(p => recentlyViewed.includes(p.id)).map(p => ({
-      ...p,
-      reasonBadge: "👁️ เพิ่งดูล่าสุด"
-    }));
+    const seen = PRODUCTS.filter(p => recentlyViewed.includes(p.id));
+    if (seen.length > 0) {
+      list = seen.map(p => ({ ...p, reasonBadge: "👁️ เพิ่งดูล่าสุด" }));
+      setRecoHint("");
+    } else {
+      list = bestsellers.slice(0, 4).map(p => ({ ...p, reasonBadge: "🔥 ยอดนิยมประจำสัปดาห์" }));
+      setRecoHint("คุณยังไม่มีประวัติการเข้าชม — ลองกดดูสินค้าด้านบน แล้วกลับมาดูตรงนี้ได้เลย");
+    }
   } else if (activeRecomFilter === "face") {
     const faceCatMap = {
       oval: ["vintage", "titanium"],
@@ -812,25 +834,37 @@ function renderSmartRecommendations() {
       heart: ["titanium", "vintage"]
     };
     const cats = faceCatMap[currentFaceShape] || ["vintage", "titanium"];
-    list = PRODUCTS.filter(p => cats.includes(p.category)).map(p => ({
-      ...p,
-      reasonBadge: `🎯 แมตช์ตาม${FACE_MATCH_DATA[currentFaceShape]?.title || "รูปหน้าคุณ"}`
-    }));
+    if (faceQuizDone) {
+      list = PRODUCTS.filter(p => cats.includes(p.category)).map(p => ({
+        ...p,
+        reasonBadge: `🎯 แมตช์ตาม${FACE_MATCH_DATA[currentFaceShape]?.title || "รูปหน้าคุณ"}`
+      }));
+      setRecoHint("");
+    } else {
+      list = PRODUCTS.filter(p => cats.includes(p.category)).map(p => ({
+        ...p,
+        reasonBadge: "🎯 ทรงหน้ายอดนิยม"
+      }));
+      setRecoHint(`แว่นด้านล่างอิงทรงหน้ายอดนิยม — <a href="#face-match">เช็คทรงหน้าของคุณ (1 นาที)</a> เพื่อคำแนะนำที่ตรงกว่า`);
+    }
   } else if (activeRecomFilter === "wishlist") {
-    list = PRODUCTS.filter(p => wishlist.includes(p.id)).map(p => ({
-      ...p,
-      reasonBadge: "❤️ จากรายการที่คุณถูกใจ"
-    }));
-    if (list.length === 0) {
-      list = PRODUCTS.slice(0, 4).map(p => ({ ...p, reasonBadge: "🔥 แนะนำสำหรับคุณ" }));
+    const loved = PRODUCTS.filter(p => wishlist.includes(p.id));
+    if (loved.length > 0) {
+      list = loved.map(p => ({ ...p, reasonBadge: "❤️ จากรายการที่คุณถูกใจ" }));
+      setRecoHint("");
+    } else {
+      list = bestsellers.slice(0, 4).map(p => ({ ...p, reasonBadge: "⭐ รุ่นขายดี" }));
+      setRecoHint("กด 🤍 ที่สินค้าที่ชอบ แล้วรายการโปรดจะมาโชว์ตรงนี้");
     }
   } else if (activeRecomFilter === "cross") {
+    setRecoHint("");
     list = PRODUCTS.filter(p => p.category === "care" || p.price <= 990).slice(0, 4).map(p => ({
       ...p,
       reasonBadge: "✨ ไอเทมคู่หูสำหรับคุณ"
     }));
   } else {
     // "all": Smart curated mix
+    setRecoHint("");
     const recents = PRODUCTS.filter(p => recentlyViewed.includes(p.id)).slice(0, 2).map(p => ({ ...p, reasonBadge: "👁️ แวะดูล่าสุด" }));
     const faceMatches = PRODUCTS.filter(p => p.id === "frame_titanium_06" || p.id === "frame_fashion_04").map(p => ({ ...p, reasonBadge: "🎯 เหมาะกับรูปหน้า" }));
     const careItems = PRODUCTS.filter(p => p.category === "care").slice(0, 1).map(p => ({ ...p, reasonBadge: "✨ ไอเทมคู่หูดูแลแว่น" }));
@@ -847,6 +881,7 @@ function renderSmartRecommendations() {
 
   if (list.length === 0) {
     list = PRODUCTS.slice(0, 4).map(p => ({ ...p, reasonBadge: "🔥 แนะนำสำหรับคุณ" }));
+    setRecoHint("");
   }
 
   container.innerHTML = list.map(product => {
@@ -2464,6 +2499,7 @@ const FACE_MATCH_DATA = {
 
 function selectFaceShape(shapeKey) {
   currentFaceShape = shapeKey;
+  faceQuizDone = true;
   const cards = document.querySelectorAll(".face-card");
   cards.forEach(c => c.classList.remove("active"));
   
@@ -2494,6 +2530,7 @@ function filterByFaceMatch(shapeKey) {
   const data = FACE_MATCH_DATA[shapeKey];
   if (!data) return;
 
+  faceQuizDone = true;
   activeCategory = data.recommendedCategory;
   const tabs = document.querySelectorAll(".tab-btn");
   tabs.forEach(t => {
@@ -2507,6 +2544,7 @@ function filterByFaceMatch(shapeKey) {
 // Personalized Email Trigger Functions (Requirement #3)
 function triggerFaceMatchEmail(shapeKey) {
   currentFaceShape = shapeKey;
+  faceQuizDone = true;
   renderSmartRecommendations();
 
   if (currentUser && currentUser.email) {

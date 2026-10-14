@@ -5972,6 +5972,20 @@ a.btn svg.btn-ico:last-child {
   transition: opacity 0.2s ease;
 }
 
+/* --- Recommendation contextual hint (honest fallback guidance) --- */
+.reco-hint {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin: 0 0 1.1rem;
+  line-height: 1.6;
+}
+
+.reco-hint a {
+  color: var(--brand-sky-blue-ink);
+  font-weight: 600;
+}
+
 /* --- Toast notifications --- */
 .toast-container {
   position: fixed;
