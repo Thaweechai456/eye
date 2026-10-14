@@ -656,9 +656,15 @@
     // Check Authentication
     function initDashboard() {
       const savedUser = localStorage.getItem("xcoco_current_user");
+      const authBtn = document.getElementById("authBtn");
+      const profileDropdown = document.getElementById("userProfileDropdown");
       if (!savedUser) {
         document.getElementById("notLoggedInView").style.display = "block";
         document.getElementById("loggedInView").style.display = "none";
+        // Logged out: show the login button, hide the member menu (it only
+        // holds placeholder text like "user@example.com" with no real session).
+        if (authBtn) authBtn.style.display = "";
+        if (profileDropdown) profileDropdown.style.display = "none";
         return;
       }
 
@@ -671,8 +677,14 @@
       if (!currentUser || !currentUser.email) {
         document.getElementById("notLoggedInView").style.display = "block";
         document.getElementById("loggedInView").style.display = "none";
+        if (authBtn) authBtn.style.display = "";
+        if (profileDropdown) profileDropdown.style.display = "none";
         return;
       }
+
+      // Logged in: show the member menu, hide the login button.
+      if (authBtn) authBtn.style.display = "none";
+      if (profileDropdown) profileDropdown.style.display = "";
 
       document.getElementById("notLoggedInView").style.display = "none";
       document.getElementById("loggedInView").style.display = "block";
